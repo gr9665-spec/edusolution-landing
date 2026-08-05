@@ -1,0 +1,33 @@
+<!-- 섹션1 이미지 히어로 | 모바일 최적화 -->
+<style>
+.esh{width:100%;min-height:90vh;box-sizing:border-box;position:relative;overflow:hidden;display:flex;align-items:center;font-family:'Noto Sans KR',sans-serif;background-image:url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1600&q=80');background-size:cover;background-position:center 30%;}
+.esh::before{content:'';position:absolute;inset:0;background:rgba(10,18,35,.62);z-index:1;}
+.esh::after{content:'';position:absolute;bottom:0;left:0;right:0;height:300px;background:linear-gradient(to bottom,transparent 0%,#1a2d4a 100%);z-index:2;}
+.esh-in{position:relative;z-index:3;max-width:1200px;margin:0 auto;padding:80px 6% 180px;width:100%;box-sizing:border-box;text-align:center;}
+.esh h1{font-size:clamp(3.6rem,8vw,6.2rem);font-weight:900;line-height:1.18;letter-spacing:-.03em;color:#fff;margin:0 0 1.75rem;text-shadow:0 2px 28px rgba(0,0,0,.5);}
+.esh h1 .line2{font-family:'Playfair Display',Georgia,serif;font-style:italic;font-weight:700;color:#a0cde0;display:block;font-size:105%;}
+.esh-sub{font-size:clamp(17px,2.8vw,22px);line-height:1.9;color:rgba(255,255,255,.78);margin:0 0 2.5rem;}
+.esh-sub strong{color:#7ab8d8;font-weight:500;text-decoration:underline;text-underline-offset:4px;}
+.esh-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;}
+.esh-bp{background:#4a7fa5;color:#ffffff !important;padding:20px 42px;border-radius:10px;font-size:clamp(15px,2vw,18px);font-weight:700;border:2px solid #4a7fa5;cursor:pointer;font-family:'Noto Sans KR',sans-serif;text-decoration:none;display:inline-block;transition:background .2s,transform .15s;}
+.esh-bp:hover{background:#6b9dbd;transform:translateY(-2px);}
+.esh-bs{background:rgba(255,255,255,.12);color:#ffffff !important;padding:20px 34px;border-radius:10px;font-size:clamp(15px,2vw,18px);font-weight:700;border:2px solid rgba(255,255,255,.7);cursor:pointer;font-family:'Noto Sans KR',sans-serif;text-decoration:none;display:inline-block;transition:background .2s,border-color .2s;}
+.esh-bs:hover{background:rgba(255,255,255,.22);border-color:#fff;}
+@media(max-width:600px){
+  .esh{min-height:75vh;}
+  .esh-in{padding:60px 5% 150px;}
+  .esh::after{height:180px;}
+  .esh-btns{flex-direction:column;align-items:center;}
+  .esh-bp,.esh-bs{width:100%;max-width:320px;text-align:center;padding:18px 20px;}
+}
+</style>
+<div class="esh">
+  <div class="esh-in">
+    <h1>1:1 맞춤 관리<br><span class="line2">TEAM 에듀솔루션</span></h1>
+    <p class="esh-sub">학위취득, 대학입시, 대학원 진학, 자격증 등<br>각 분야 전문가들이 맞춤형 상담을 통해<br><strong>여러분의 미래를 함께 설계합니다</strong></p>
+    <div class="esh-btns">
+      <a href="#es-form" class="esh-bp">1:1 무료 상담 신청 →</a>
+      <a href="https://edu-solution.co.kr/30" class="esh-bs">수강생 후기 보기</a>
+    </div>
+  </div>
+</div>

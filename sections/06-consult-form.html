@@ -1,0 +1,171 @@
+<!-- =============================================
+   에듀솔루션 | 섹션 6 — 무료 상담 폼 (EmailJS 연동)
+   아임웹: 새 섹션 → 코드 위젯 → 붙여넣기
+   섹션 배경: #1a2d4a  /  섹션 상하 패딩: 0
+================================================ -->
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>emailjs.init('k9jqBez4YeBqYDgzf');</script>
+
+<style>
+.es6{width:100%;background:#1a2d4a;padding:100px 6%;box-sizing:border-box;font-family:'Noto Sans KR',sans-serif;position:relative;overflow:hidden;}
+.es6::before{content:'EDUSOLUTION';position:absolute;bottom:-30px;right:-10px;font-size:clamp(60px,10vw,140px);font-weight:900;color:rgba(255,255,255,.025);letter-spacing:-.05em;white-space:nowrap;pointer-events:none;font-family:'Playfair Display',serif;}
+.es6-in{max-width:760px;margin:0 auto;position:relative;z-index:1;}
+.es6-lbl{font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#6b9dbd;margin-bottom:.9rem;display:flex;align-items:center;gap:8px;}
+.es6-lbl::before{content:'';display:block;width:28px;height:2px;background:#6b9dbd;border-radius:2px;}
+.es6 h2{font-size:clamp(2.4rem,3.6vw,3.4rem);font-weight:900;letter-spacing:-.04em;line-height:1.22;color:#fff;margin:0 0 1rem;}
+.es6 h2 em{font-family:'Playfair Display',serif;font-style:italic;color:#7ab8d8;}
+.es6-sub{font-size:17px;color:rgba(255,255,255,.55);line-height:1.9;margin:0 0 3.5rem;}
+.es6-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;}
+.es6-fg{display:flex;flex-direction:column;gap:8px;}
+.es6-fg.full{grid-column:1/-1;}
+.es6-lbl2{font-size:12px;font-weight:700;color:rgba(255,255,255,.42);letter-spacing:.08em;text-transform:uppercase;}
+.es6-input,.es6-select{background:rgba(255,255,255,.07);border:1px solid rgba(107,157,189,.22);border-radius:10px;padding:16px 18px;font-size:16px;color:#fff;font-family:'Noto Sans KR',sans-serif;outline:none;width:100%;box-sizing:border-box;transition:border-color .2s,background .2s;-webkit-appearance:none;}
+.es6-input::placeholder{color:rgba(255,255,255,.22);}
+.es6-input:focus,.es6-select:focus{border-color:#4a7fa5;background:rgba(107,157,189,.12);}
+.es6-select option{background:#1a2d4a;color:#fff;}
+.es6-textarea{resize:vertical;min-height:96px;line-height:1.6;font-family:'Noto Sans KR',sans-serif;}
+.es6-optional{color:rgba(255,255,255,.3);font-weight:400;text-transform:none;letter-spacing:0;margin-left:6px;}
+.es6-radio-wrap{display:flex;gap:.75rem;}
+.es6-radio{flex:1;padding:16px;background:rgba(255,255,255,.04);border:1px solid rgba(107,157,189,.2);border-radius:10px;text-align:center;font-size:15px;color:rgba(255,255,255,.55);cursor:pointer;font-family:'Noto Sans KR',sans-serif;transition:all .2s;}
+.es6-radio:hover,.es6-radio.on{border-color:#4a7fa5;background:rgba(74,127,165,.18);color:#a0cde0;font-weight:700;}
+.es6-agree{grid-column:1/-1;display:flex;align-items:flex-start;gap:10px;cursor:pointer;}
+.es6-agree input[type=checkbox]{margin-top:3px;accent-color:#4a7fa5;width:16px;height:16px;flex-shrink:0;}
+.es6-agree span{font-size:14px;color:rgba(255,255,255,.35);line-height:1.7;}
+.es6-submit{grid-column:1/-1;margin-top:.5rem;background:#4a7fa5;color:#fff !important;border:none;border-radius:10px;padding:20px;font-size:18px;font-weight:900;cursor:pointer;font-family:'Noto Sans KR',sans-serif;letter-spacing:-.01em;transition:background .2s,transform .1s;width:100%;}
+.es6-submit:hover{background:#6b9dbd;transform:translateY(-1px);}
+.es6-submit:disabled{background:#3a5a6a;cursor:not-allowed;transform:none;}
+/* 에러 메시지 */
+.es6-error{color:#ff8a8a;font-size:13px;margin-top:4px;display:none;}
+.es6-error.show{display:block;}
+/* 완료 메시지 */
+.es6-success{display:none;text-align:center;padding:3rem 0;}
+.es6-success.show{display:block;}
+.es6-success-ico{font-size:56px;margin-bottom:1rem;}
+.es6-success-title{font-size:24px;font-weight:900;color:#fff;margin-bottom:.75rem;}
+.es6-success-sub{font-size:16px;color:rgba(255,255,255,.55);line-height:1.8;}
+@media(max-width:600px){.es6-grid{grid-template-columns:1fr;}.es6-fg.full{grid-column:1;}}
+</style>
+
+<div class="es6" id="es-form">
+  <div class="es6-in">
+    <div class="es6-lbl">Free Consultation</div>
+    <h2>지금 바로 무료로<br><em>상담받으세요</em></h2>
+    <p class="es6-sub">전담 담당자가 직접 연락드립니다. 부담 없이 궁금한 것부터 물어보세요.</p>
+
+    <!-- 폼 -->
+    <div class="es6-grid" id="es6-form-body">
+      <div class="es6-fg">
+        <label class="es6-lbl2">이름</label>
+        <input class="es6-input" id="es6-name" type="text" placeholder="홍길동">
+        <span class="es6-error" id="err-name">이름을 입력해주세요</span>
+      </div>
+      <div class="es6-fg">
+        <label class="es6-lbl2">연락처</label>
+        <input class="es6-input" id="es6-phone" type="tel" placeholder="010-0000-0000">
+        <span class="es6-error" id="err-phone">연락처를 입력해주세요</span>
+      </div>
+      <div class="es6-fg full">
+        <label class="es6-lbl2">목표 과정</label>
+        <select class="es6-select" id="es6-goal">
+          <option value="" disabled selected>목표를 선택해주세요</option>
+          <option>학위 취득 (전문학사/학사)</option>
+          <option>사회복지사 2급</option>
+          <option>보육교사 2급</option>
+          <option>기사/산업기사 응시자격</option>
+          <option>편입</option>
+          <option>대학원 진학</option>
+          <option>기타</option>
+        </select>
+        <span class="es6-error" id="err-goal">목표 과정을 선택해주세요</span>
+      </div>
+      <div class="es6-fg full">
+        <label class="es6-lbl2">최종 학력</label>
+        <select class="es6-select" id="es6-edu">
+          <option value="" disabled selected>최종 학력을 선택해주세요</option>
+          <option>고등학교 졸업</option>
+          <option>2/3년제 졸업</option>
+          <option>4년제 졸업</option>
+          <option>대학교 중퇴 / 제적</option>
+        </select>
+        <span class="es6-error" id="err-edu">최종 학력을 선택해주세요</span>
+      </div>
+      <div class="es6-fg full">
+        <label class="es6-lbl2">상담 방식</label>
+        <div class="es6-radio-wrap">
+          <button class="es6-radio on" onclick="this.parentElement.querySelectorAll('.es6-radio').forEach(b=>b.classList.remove('on'));this.classList.add('on')">💬 카카오톡</button>
+          <button class="es6-radio" onclick="this.parentElement.querySelectorAll('.es6-radio').forEach(b=>b.classList.remove('on'));this.classList.add('on')">📞 전화 상담</button>
+        </div>
+      </div>
+      <div class="es6-fg full">
+        <label class="es6-lbl2">문의 내용<span class="es6-optional">(선택)</span></label>
+        <textarea class="es6-input es6-textarea" id="es6-message" placeholder="더 자세히 알고 싶은 내용이나 현재 상황을 자유롭게 적어주세요"></textarea>
+      </div>
+      <label class="es6-agree">
+        <input type="checkbox" id="es6-agree">
+        <span>개인정보 수집 및 이용에 동의합니다. 수집된 정보는 상담 목적으로만 사용됩니다.</span>
+      </label>
+      <span class="es6-error full" id="err-agree" style="grid-column:1/-1;">개인정보 수집에 동의해주세요</span>
+      <button class="es6-submit" id="es6-submit-btn" onclick="es6Submit()">
+        무료 상담 신청하기
+      </button>
+    </div>
+
+    <!-- 완료 메시지 -->
+    <div class="es6-success" id="es6-success">
+      <div class="es6-success-ico">✅</div>
+      <p class="es6-success-title">신청이 완료되었습니다!</p>
+      <p class="es6-success-sub">전담 담당자가 빠른 시간 내에<br>직접 연락드리겠습니다.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+function es6Submit() {
+  var name  = document.getElementById('es6-name').value.trim();
+  var phone = document.getElementById('es6-phone').value.trim();
+  var goal  = document.getElementById('es6-goal').value;
+  var edu   = document.getElementById('es6-edu').value;
+  var agree = document.getElementById('es6-agree').checked;
+  var message = document.getElementById('es6-message').value.trim();
+  var method = document.querySelector('.es6-radio.on') ? document.querySelector('.es6-radio.on').innerText : '';
+
+  var ok = true;
+  document.querySelectorAll('.es6-error').forEach(function(e){ e.classList.remove('show'); });
+
+  if (!name)  { document.getElementById('err-name').classList.add('show');  ok = false; }
+  if (!phone) { document.getElementById('err-phone').classList.add('show'); ok = false; }
+  if (!goal)  { document.getElementById('err-goal').classList.add('show');  ok = false; }
+  if (!edu)   { document.getElementById('err-edu').classList.add('show');   ok = false; }
+  if (!agree) { document.getElementById('err-agree').classList.add('show'); ok = false; }
+  if (!ok) return;
+
+  var btn = document.getElementById('es6-submit-btn');
+  btn.textContent = '전송 중...';
+  btn.disabled = true;
+
+  emailjs.send('service_i38779r', 'template_bfc6i4o', {
+    user_name:   name,
+    user_phone:  phone,
+    user_goal:   goal,
+    user_edu:    edu,
+    user_method: method,
+    user_message: message || '(작성 안 함)'
+  }).then(function() {
+    document.getElementById('es6-form-body').style.display = 'none';
+    document.getElementById('es6-success').classList.add('show');
+
+    // 구글 전환 추적 👇
+    gtag('event', 'conversion', {
+      'send_to': 'AW-16886735349/IpM9CKDxha8cEPXDnPQ-',
+      'value': 1.0,
+      'currency': 'KRW'
+    });
+
+  }, function(error) {
+    btn.textContent = '무료 상담 신청하기';
+    btn.disabled = false;
+    alert('전송 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.\n(' + error.text + ')');
+  });
+}
+</script>

@@ -1,0 +1,129 @@
+<!-- 섹션5 수강생 후기 v5 | 아임웹 코드 위젯에 붙여넣기 -->
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet">
+<style>
+.es5{width:100%;background:#f4f7fb;padding:100px 6%;box-sizing:border-box;font-family:'Noto Sans KR',sans-serif;}
+.es5-in{max-width:1100px;margin:0 auto;}
+.es5-label{font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#4a7fa5;margin-bottom:1rem;display:flex;align-items:center;justify-content:center;gap:8px;}
+.es5-label::before,.es5-label::after{content:'';display:block;width:28px;height:2px;background:#4a7fa5;border-radius:2px;}
+.es5-head{text-align:center;margin-bottom:.75rem;}
+.es5 h2{font-size:clamp(2.2rem,4vw,3.6rem);font-weight:900;letter-spacing:-.04em;line-height:1.2;color:#1a2d4a;margin:0 0 1rem;}
+.es5 h2 em{font-family:'Playfair Display',serif;font-style:italic;color:#4a7fa5;}
+.es5-head-sub{font-size:clamp(15px,1.7vw,18px);color:#7a8fa5;margin:0 0 3.5rem;text-align:center;}
+.es5-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.75rem;}
+.es5-card{background:#fff;border-radius:22px;padding:2.5rem 2.5rem 2rem;border:1px solid rgba(74,127,165,.1);position:relative;overflow:hidden;transition:border-color .3s,transform .3s,box-shadow .3s;display:flex;flex-direction:column;}
+.es5-card:hover{border-color:rgba(74,127,165,.3);transform:translateY(-6px);box-shadow:0 20px 56px rgba(74,127,165,.12);}
+.es5-quote-bg{position:absolute;top:-18px;left:16px;font-family:'Playfair Display',serif;font-size:200px;line-height:1;color:rgba(74,127,165,.06);pointer-events:none;user-select:none;}
+.es5-stars{display:flex;gap:4px;margin-bottom:1.4rem;position:relative;z-index:1;}
+.es5-star{width:20px;height:20px;background:#f5a623;clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);flex-shrink:0;}
+.es5-headline{font-size:clamp(16px,1.8vw,20px);font-weight:900;color:#1a2d4a;line-height:1.5;margin:0 0 1.25rem;position:relative;z-index:1;letter-spacing:-.02em;}
+.es5-headline mark{background:none;color:#4a7fa5;}
+.es5-text{font-size:clamp(14px,1.5vw,15px);line-height:2;color:#4a5a6a;margin:0 0 auto;position:relative;z-index:1;padding-bottom:1.75rem;}
+.es5-text strong{color:#1a2d4a;font-weight:700;}
+.es5-div{height:1px;background:rgba(74,127,165,.1);margin-bottom:1.5rem;}
+.es5-foot{display:flex;align-items:center;gap:14px;position:relative;z-index:1;}
+.es5-av{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#ddeaf4,#b8d4ea);color:#1a2d4a;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:900;flex-shrink:0;border:2px solid rgba(74,127,165,.2);}
+.es5-name{font-size:16px;font-weight:700;color:#1a2d4a;margin:0 0 3px;}
+.es5-meta{font-size:13px;color:#8a9ab0;margin:0;}
+.es5-badge{margin-left:auto;flex-shrink:0;background:#1a2d4a;color:#a0cde0;font-size:12px;font-weight:700;padding:6px 13px;border-radius:7px;white-space:nowrap;}
+.es5-cta-wrap{text-align:center;margin-top:3rem;display:flex;justify-content:center;gap:14px;flex-wrap:wrap;}
+.es5-cta{display:inline-block;background:#4a7fa5;color:#fff !important;padding:18px 48px;border-radius:10px;font-size:17px;font-weight:700;text-decoration:none;transition:background .2s,transform .15s;}
+.es5-cta:hover{background:#1a2d4a;transform:translateY(-2px);}
+.es5-cta-sub{display:inline-block;background:#fff;color:#4a7fa5 !important;padding:16px 48px;border-radius:10px;font-size:17px;font-weight:700;text-decoration:none;border:2px solid #4a7fa5;box-sizing:border-box;transition:background .2s,transform .15s;}
+.es5-cta-sub:hover{background:#ddeaf4;transform:translateY(-2px);}
+@media(max-width:900px){.es5-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:540px){.es5-grid{grid-template-columns:1fr;}.es5{padding:60px 5%;}}
+</style>
+<div class="es5" id="es-reviews">
+  <div class="es5-in">
+    <div class="es5-label">Our Review</div>
+    <div class="es5-head">
+      <h2>실제 수강생들의<br><em>솔직한 후기</em></h2>
+    </div>
+    <p class="es5-head-sub">팀 에듀솔루션과 함께 과정을 성공했어요!</p>
+    <div class="es5-grid">
+
+      <div class="es5-card">
+        <div class="es5-quote-bg">"</div>
+        <div class="es5-stars"><div class="es5-star"></div><div class="es5-star"></div><div class="es5-star"></div><div class="es5-star"></div><div class="es5-star"></div></div>
+        <p class="es5-headline">"과제 하나도 <mark>놓치지 않고</mark><br>성적이 훨씬 잘 나왔어요!"</p>
+        <p class="es5-text">과제 마감일마다 미리 알려주셔서 하나도 놓치지 않았어요. 혼자 했으면 분명 까먹었을 텐데, <strong>담당자 덕분에 성적이 생각보다 훨씬 잘 나왔습니다.</strong></p>
+        <div class="es5-div"></div>
+        <div class="es5-foot">
+          <div class="es5-av">김</div>
+          <div><p class="es5-name">김○○ 님 (30대)</p><p class="es5-meta">직장인 / 학사 학위 취득</p></div>
+          <span class="es5-badge">학사 학위</span>
+        </div>
+      </div>
+
+      <div class="es5-card">
+        <div class="es5-quote-bg">"</div>
+        <div class="es5-stars"><div class="es5-star"></div><div class="es5-star"></div><div class="es5-star"></div><div class="es5-star"></div><div class="es5-star"></div></div>
+        <p class="es5-headline">"서류 걱정 없이<br><mark>공부에만 집중</mark>할 수 있었어요."</p>
+        <p class="es5-text">서류 어디다 제출하는지 몰라서 걱정했는데 담당자분이 전부 처리해 주셨어요. <strong>저는 그냥 공부만 하면 됐습니다. 이게 진짜 큰 장점이에요.</strong></p>
+        <div class="es5-div"></div>
+        <div class="es5-foot">
+          <div class="es5-av">이</div>
+          <div><p class="es5-name">이○○ 님 (40대)</p><p class="es5-meta">주부 / 사회복지사 2급 취득</p></div>
+          <span class="es5-badge">사복 2급</span>
+        </div>
+      </div>
+
+      <div class="es5-card">
+        <div class="es5-quote-bg">"</div>
+        <div class="es5-stars"><div class="es5-star"></div><div class="es5-star"></div><div class="es5-star"></div><div class="es5-star"></div><div class="es5-star"></div></div>
+        <p class="es5-headline">"생각보다 <mark>훨씬 빠르게</mark><br>기사 응시자격 갖췄어요!"</p>
+        <p class="es5-text">제 자격증 이력을 보고 딱 맞게 계산해 주셨어요. <strong>생각보다 훨씬 빠르게 기사 응시자격을 갖출 수 있었습니다.</strong></p>
+        <div class="es5-div"></div>
+        <div class="es5-foot">
+          <div class="es5-av">박</div>
+          <div><p class="es5-name">박○○ 님 (20대)</p><p class="es5-meta">취준생 / 기사 응시자격 취득</p></div>
+          <span class="es5-badge">기사 자격</span>
+        </div>
+      </div>
+
+      <div class="es5-card">
+        <div class="es5-quote-bg">"</div>
+        <div class="es5-stars"><div class="es5-star"></div><div class="es5-star"></div><div class="es5-star"></div><div class="es5-star"></div><div class="es5-star"></div></div>
+        <p class="es5-headline">"끝까지 <mark>같은 담당자</mark>가<br>책임지고 함께했어요."</p>
+        <p class="es5-text">다른 곳은 처음에만 연락 잘 되고 수강 시작하면 느려지던데, <strong>여기는 끝까지 담당자가 동일했고 응답도 빠릿빠릿했어요.</strong></p>
+        <div class="es5-div"></div>
+        <div class="es5-foot">
+          <div class="es5-av">최</div>
+          <div><p class="es5-name">최○○ 님 (30대)</p><p class="es5-meta">직장인 / 전문학사 취득</p></div>
+          <span class="es5-badge">전문학사</span>
+        </div>
+      </div>
+
+      <div class="es5-card">
+        <div class="es5-quote-bg">"</div>
+        <div class="es5-stars"><div class="es5-star"></div><div class="es5-star"></div><div class="es5-star"></div><div class="es5-star"></div><div class="es5-star"></div></div>
+        <p class="es5-headline">"학사 + 보육교사 2급<br><mark>동시에 다 됐어요!</mark>"</p>
+        <p class="es5-text">학사 학위랑 보육교사 2급 동시에 준비했는데 수강 순서까지 전부 설계해 주셔서 겹치지 않고 효율적으로 진행됐어요. <strong>혼자였으면 절대 못 했을 것 같아요.</strong></p>
+        <div class="es5-div"></div>
+        <div class="es5-foot">
+          <div class="es5-av">정</div>
+          <div><p class="es5-name">정○○ 님 (30대)</p><p class="es5-meta">경력단절 / 학사+보육교사 동시</p></div>
+          <span class="es5-badge">학사+보육교사</span>
+        </div>
+      </div>
+
+      <div class="es5-card">
+        <div class="es5-quote-bg">"</div>
+        <div class="es5-stars"><div class="es5-star"></div><div class="es5-star"></div><div class="es5-star"></div><div class="es5-star"></div><div class="es5-star"></div></div>
+        <p class="es5-headline">"첫 상담에서 <mark>전 과정이</mark><br>다 나왔어요."</p>
+        <p class="es5-text">여러 군데 상담받아봤는데 에듀솔루션이 제일 구체적으로 답해줬어요. <strong>몇 학기에 뭘 들어야 하는지까지 처음 상담에서 다 나왔습니다.</strong></p>
+        <div class="es5-div"></div>
+        <div class="es5-foot">
+          <div class="es5-av">윤</div>
+          <div><p class="es5-name">윤○○ 님 (20대)</p><p class="es5-meta">대학생 / 편입 학점 설계</p></div>
+          <span class="es5-badge">편입 학점</span>
+        </div>
+      </div>
+
+    </div>
+    <div class="es5-cta-wrap">
+      <a href="https://edu-solution.co.kr/30" class="es5-cta-sub">후기 더보기</a>
+      <a href="#es-form" class="es5-cta">나도 무료 상담받기 →</a>
+    </div>
+  </div>
+</div>

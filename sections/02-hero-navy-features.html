@@ -1,0 +1,60 @@
+<!-- 섹션1 히어로 (네이비) | 모바일 최적화 -->
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet">
+<style>
+.es1{width:100%;background:#1a2d4a;padding:80px 6%;box-sizing:border-box;font-family:'Noto Sans KR',sans-serif;position:relative;overflow:hidden;}
+.es1::before{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(0deg,transparent,transparent 47px,rgba(255,255,255,.025) 47px,rgba(255,255,255,.025) 48px),repeating-linear-gradient(90deg,transparent,transparent 47px,rgba(255,255,255,.025) 47px,rgba(255,255,255,.025) 48px);pointer-events:none;}
+.es1-in{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;position:relative;z-index:1;}
+.es1-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(107,157,189,.18);border:1px solid rgba(107,157,189,.35);color:#afd0e8;padding:10px 20px;border-radius:100px;font-size:14px;font-weight:500;letter-spacing:.04em;margin-bottom:2rem;}
+.es1-dot{width:8px;height:8px;border-radius:50%;background:#6b9dbd;animation:es1p 2s infinite;}
+@keyframes es1p{0%,100%{opacity:1}50%{opacity:.35}}
+.es1 h1{font-size:clamp(2.4rem,4vw,4.8rem);font-weight:900;line-height:1.2;letter-spacing:-.03em;color:#fff;margin:0 0 1.75rem;}
+.es1 h1 .ac{color:#7ab8d8;}
+.es1 h1 .sr{font-family:'Playfair Display',serif;font-style:italic;font-weight:700;color:#a0cde0;}
+.es1-sub{font-size:clamp(15px,1.8vw,19px);line-height:2.05;color:rgba(255,255,255,.62);margin:0;max-width:480px;}
+.es1-sub strong{color:rgba(255,255,255,.92);font-weight:600;}
+.es1-cards{display:flex;flex-direction:column;border-top:1px solid rgba(255,255,255,.12);}
+.es1-card{background:none;border:none;border-bottom:1px solid rgba(255,255,255,.12);border-radius:0;padding:1.6rem .25rem 1.6rem 1.1rem;display:grid;grid-template-columns:44px 1fr;align-items:flex-start;gap:18px;min-height:auto;position:relative;transition:padding-left .35s,background .35s;}
+.es1-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:#7ab8d8;transform:scaleY(0);transform-origin:center;transition:transform .35s;}
+.es1-card:hover{background:rgba(255,255,255,.03);padding-left:1.5rem;transform:none;}
+.es1-card:hover::before{transform:scaleY(1);}
+.es1-ico{width:44px;height:44px;border-radius:50%;flex-shrink:0;background:none;border:1px solid rgba(122,184,216,.4);display:flex;align-items:center;justify-content:center;color:#7ab8d8;}
+.es1-ct{font-size:clamp(15px,1.6vw,17px);font-weight:700;color:#fff;margin:0 0 6px;letter-spacing:-.01em;}
+.es1-cd{font-size:clamp(12px,1.3vw,14px);color:rgba(255,255,255,.5);line-height:1.7;margin:0;}
+@media(max-width:900px){
+  .es1-in{grid-template-columns:1fr;gap:3rem;}
+  .es1-badge{font-size:13px;}
+}
+@media(max-width:480px){
+  .es1{padding:60px 5%;}
+  .es1-badge{font-size:12px;padding:8px 14px;}
+  .es1-card{padding:1.3rem .25rem 1.3rem .9rem;gap:14px;}
+  .es1-ico{width:38px;height:38px;}
+}
+</style>
+<div class="es1">
+  <div class="es1-in">
+    <div>
+      <div class="es1-badge"><div class="es1-dot"></div>담당자 직접 배정 · 전 과정 책임 관리</div>
+      <h1>성적, 기간, 행정까지<br><span class="sr">전부</span> 챙기는<br><span class="ac">전문 담당자</span></h1>
+      <p class="es1-sub">학위취득, 대학입시, 대학원 진학, 자격증 취득까지<br><strong>처음부터 끝까지</strong> 전담 담당자가 직접 관리합니다.<br>막히는 것 없이, 빠짐없이.</p>
+    </div>
+    <div class="es1-cards">
+      <div class="es1-card">
+        <div class="es1-ico"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg></div>
+        <div><p class="es1-ct">프리미엄 타겟 컨설팅</p><p class="es1-cd">수의대·약대 편입, 대학원 진학까지 설계</p></div>
+      </div>
+      <div class="es1-card">
+        <div class="es1-ico"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><polyline points="17 11 19 13 23 9"></polyline></svg></div>
+        <div><p class="es1-ct">끝까지 같은 담당자</p><p class="es1-cd">중간에 바뀌지 않는 고정 1:1 케어</p></div>
+      </div>
+      <div class="es1-card">
+        <div class="es1-ico"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg></div>
+        <div><p class="es1-ct">투명한 학점 기준</p><p class="es1-cd">상담 단계에서 미리 정확히 안내</p></div>
+      </div>
+      <div class="es1-card">
+        <div class="es1-ico"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></div>
+        <div><p class="es1-ct">검증된 후기만</p><p class="es1-cd">실제 수강생의 솔직한 후기만 공개</p></div>
+      </div>
+    </div>
+  </div>
+</div>

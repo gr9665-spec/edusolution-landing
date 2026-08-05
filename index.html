@@ -1,0 +1,1727 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>에듀솔루션 - 로컬 미리보기</title>
+</head>
+<body>
+<!-- 섹션0 NAV | 아임웹 코드 위젯 -->
+<!-- ⚠️ 로고 이미지(assets/logo.png)는 원본이 아직 채워지지 않았습니다.
+     아임웹 관리자 > 미디어 라이브러리에서 원본 로고 파일을 다운받아
+     이 저장소의 assets/logo.png 자리에 넣어주세요. (base64 데이터가 너무 길어
+     안전하게 자동 복사할 수 없어 비워뒀습니다) -->
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+.es0{width:100%;background:rgba(255,255,255,.96);backdrop-filter:blur(10px);border-bottom:1px solid rgba(14,31,61,.09);box-sizing:border-box;font-family:'Noto Sans KR',sans-serif;position:sticky;top:0;z-index:9999;}
+.es0-in{max-width:1200px;margin:0 auto;padding:0 5%;height:80px;display:flex;align-items:center;justify-content:space-between;gap:1.5rem;}
+.es0-logo{display:flex;align-items:center;text-decoration:none;flex-shrink:0;}
+.es0-logo img{height:64px;width:auto;display:block;}
+.es0-nav{display:flex;align-items:center;list-style:none;margin:0;padding:0;}
+.es0-nav li a{display:flex;align-items:center;height:80px;padding:0 22px;font-size:15px;color:#4a5568;text-decoration:none;font-weight:500;white-space:nowrap;border-bottom:2.5px solid transparent;transition:color .2s,border-color .2s;box-sizing:border-box;}
+.es0-nav li a:hover{color:#1a2d4a;border-bottom-color:#4a7fa5;}
+.es0-cta{background:#1a2d4a;color:#ffffff !important;padding:13px 24px;border-radius:8px;font-size:15px;font-weight:700;text-decoration:none !important;white-space:nowrap;flex-shrink:0;transition:background .2s;display:inline-block;line-height:1;}
+.es0-cta:hover{background:#4a7fa5;color:#ffffff !important;}
+/* 햄버거 버튼 */
+.es0-ham{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px;background:none;border:none;}
+.es0-ham span{display:block;width:24px;height:2px;background:#1a2d4a;border-radius:2px;transition:all .3s;}
+/* 모바일 드롭다운 메뉴 */
+.es0-mob{display:none;position:absolute;top:80px;left:0;right:0;background:#fff;border-bottom:1px solid rgba(14,31,61,.09);z-index:9998;box-shadow:0 8px 24px rgba(0,0,0,.08);}
+.es0-mob.open{display:block;}
+.es0-mob a{display:block;padding:16px 6%;font-size:16px;color:#1a2d4a;text-decoration:none;font-weight:500;border-bottom:1px solid rgba(14,31,61,.06);}
+.es0-mob a:last-child{border-bottom:none;}
+.es0-mob a:hover{background:#f7f9fb;}
+.es0-mob-cta{background:#1a2d4a !important;color:#fff !important;margin:1rem 6%;border-radius:8px;text-align:center;font-weight:700 !important;}
+@media(max-width:768px){
+  .es0-nav{display:none;}
+  .es0-ham{display:flex;}
+  .es0-cta{display:none;}
+  .es0-in{height:68px;}
+  .es0-logo img{height:52px;}
+  .es0-mob{top:68px;}
+}
+</style>
+<div class="es0" style="position:sticky;top:0;z-index:9999;">
+  <div class="es0-in">
+    <a href="/" class="es0-logo"><img src="../assets/logo.png" alt="EDUSOLUTION"></a>
+    <ul class="es0-nav">
+      <li><a href="https://edu-solution.co.kr/27">팀 에듀솔루션</a></li>
+      <li><a href="https://edu-solution.co.kr/28">학점은행제</a></li>
+      <li><a href="https://edu-solution.co.kr/29">교육정보</a></li>
+      <li><a href="https://edu-solution.co.kr/30">수강생 후기</a></li>
+    </ul>
+    <button class="es0-ham" onclick="document.getElementById('es0mob').classList.toggle('open')" aria-label="메뉴">
+      <span></span><span></span><span></span>
+    </button>
+    <a href="https://edu-solution.co.kr/#es-form" class="es0-cta">1:1 무료 상담</a>
+  </div>
+  <div class="es0-mob" id="es0mob">
+    <a href="https://edu-solution.co.kr/27">팀 에듀솔루션</a>
+    <a href="https://edu-solution.co.kr/28">학점은행제</a>
+    <a href="https://edu-solution.co.kr/29">교육정보</a>
+    <a href="https://edu-solution.co.kr/30">수강생 후기</a>
+    <a href="https://edu-solution.co.kr/#es-form" class="es0-mob-cta">1:1 무료 상담</a>
+  </div>
+</div>
+
+
+<!-- 섹션1 이미지 히어로 | 모바일 최적화 -->
+<style>
+.esh{width:100%;min-height:90vh;box-sizing:border-box;position:relative;overflow:hidden;display:flex;align-items:center;font-family:'Noto Sans KR',sans-serif;background-image:url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1600&q=80');background-size:cover;background-position:center 30%;}
+.esh::before{content:'';position:absolute;inset:0;background:rgba(10,18,35,.62);z-index:1;}
+.esh::after{content:'';position:absolute;bottom:0;left:0;right:0;height:300px;background:linear-gradient(to bottom,transparent 0%,#1a2d4a 100%);z-index:2;}
+.esh-in{position:relative;z-index:3;max-width:1200px;margin:0 auto;padding:80px 6% 180px;width:100%;box-sizing:border-box;text-align:center;}
+.esh h1{font-size:clamp(3.6rem,8vw,6.2rem);font-weight:900;line-height:1.18;letter-spacing:-.03em;color:#fff;margin:0 0 1.75rem;text-shadow:0 2px 28px rgba(0,0,0,.5);}
+.esh h1 .line2{font-family:'Playfair Display',Georgia,serif;font-style:italic;font-weight:700;color:#a0cde0;display:block;font-size:105%;}
+.esh-sub{font-size:clamp(17px,2.8vw,22px);line-height:1.9;color:rgba(255,255,255,.78);margin:0 0 2.5rem;}
+.esh-sub strong{color:#7ab8d8;font-weight:500;text-decoration:underline;text-underline-offset:4px;}
+.esh-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;}
+.esh-bp{background:#4a7fa5;color:#ffffff !important;padding:20px 42px;border-radius:10px;font-size:clamp(15px,2vw,18px);font-weight:700;border:2px solid #4a7fa5;cursor:pointer;font-family:'Noto Sans KR',sans-serif;text-decoration:none;display:inline-block;transition:background .2s,transform .15s;}
+.esh-bp:hover{background:#6b9dbd;transform:translateY(-2px);}
+.esh-bs{background:rgba(255,255,255,.12);color:#ffffff !important;padding:20px 34px;border-radius:10px;font-size:clamp(15px,2vw,18px);font-weight:700;border:2px solid rgba(255,255,255,.7);cursor:pointer;font-family:'Noto Sans KR',sans-serif;text-decoration:none;display:inline-block;transition:background .2s,border-color .2s;}
+.esh-bs:hover{background:rgba(255,255,255,.22);border-color:#fff;}
+@media(max-width:600px){
+  .esh{min-height:75vh;}
+  .esh-in{padding:60px 5% 150px;}
+  .esh::after{height:180px;}
+  .esh-btns{flex-direction:column;align-items:center;}
+  .esh-bp,.esh-bs{width:100%;max-width:320px;text-align:center;padding:18px 20px;}
+}
+</style>
+<div class="esh">
+  <div class="esh-in">
+    <h1>1:1 맞춤 관리<br><span class="line2">TEAM 에듀솔루션</span></h1>
+    <p class="esh-sub">학위취득, 대학입시, 대학원 진학, 자격증 등<br>각 분야 전문가들이 맞춤형 상담을 통해<br><strong>여러분의 미래를 함께 설계합니다</strong></p>
+    <div class="esh-btns">
+      <a href="#es-form" class="esh-bp">1:1 무료 상담 신청 →</a>
+      <a href="https://edu-solution.co.kr/30" class="esh-bs">수강생 후기 보기</a>
+    </div>
+  </div>
+</div>
+
+
+<!-- 섹션1 히어로 (네이비) | 모바일 최적화 -->
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet">
+<style>
+.es1{width:100%;background:#1a2d4a;padding:80px 6%;box-sizing:border-box;font-family:'Noto Sans KR',sans-serif;position:relative;overflow:hidden;}
+.es1::before{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(0deg,transparent,transparent 47px,rgba(255,255,255,.025) 47px,rgba(255,255,255,.025) 48px),repeating-linear-gradient(90deg,transparent,transparent 47px,rgba(255,255,255,.025) 47px,rgba(255,255,255,.025) 48px);pointer-events:none;}
+.es1-in{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;position:relative;z-index:1;}
+.es1-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(107,157,189,.18);border:1px solid rgba(107,157,189,.35);color:#afd0e8;padding:10px 20px;border-radius:100px;font-size:14px;font-weight:500;letter-spacing:.04em;margin-bottom:2rem;}
+.es1-dot{width:8px;height:8px;border-radius:50%;background:#6b9dbd;animation:es1p 2s infinite;}
+@keyframes es1p{0%,100%{opacity:1}50%{opacity:.35}}
+.es1 h1{font-size:clamp(2.4rem,4vw,4.8rem);font-weight:900;line-height:1.2;letter-spacing:-.03em;color:#fff;margin:0 0 1.75rem;}
+.es1 h1 .ac{color:#7ab8d8;}
+.es1 h1 .sr{font-family:'Playfair Display',serif;font-style:italic;font-weight:700;color:#a0cde0;}
+.es1-sub{font-size:clamp(15px,1.8vw,19px);line-height:2.05;color:rgba(255,255,255,.62);margin:0;max-width:480px;}
+.es1-sub strong{color:rgba(255,255,255,.92);font-weight:600;}
+.es1-cards{display:flex;flex-direction:column;border-top:1px solid rgba(255,255,255,.12);}
+.es1-card{background:none;border:none;border-bottom:1px solid rgba(255,255,255,.12);border-radius:0;padding:1.6rem .25rem 1.6rem 1.1rem;display:grid;grid-template-columns:44px 1fr;align-items:flex-start;gap:18px;min-height:auto;position:relative;transition:padding-left .35s,background .35s;}
+.es1-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:#7ab8d8;transform:scaleY(0);transform-origin:center;transition:transform .35s;}
+.es1-card:hover{background:rgba(255,255,255,.03);padding-left:1.5rem;transform:none;}
+.es1-card:hover::before{transform:scaleY(1);}
+.es1-ico{width:44px;height:44px;border-radius:50%;flex-shrink:0;background:none;border:1px solid rgba(122,184,216,.4);display:flex;align-items:center;justify-content:center;color:#7ab8d8;}
+.es1-ct{font-size:clamp(15px,1.6vw,17px);font-weight:700;color:#fff;margin:0 0 6px;letter-spacing:-.01em;}
+.es1-cd{font-size:clamp(12px,1.3vw,14px);color:rgba(255,255,255,.5);line-height:1.7;margin:0;}
+@media(max-width:900px){
+  .es1-in{grid-template-columns:1fr;gap:3rem;}
+  .es1-badge{font-size:13px;}
+}
+@media(max-width:480px){
+  .es1{padding:60px 5%;}
+  .es1-badge{font-size:12px;padding:8px 14px;}
+  .es1-card{padding:1.3rem .25rem 1.3rem .9rem;gap:14px;}
+  .es1-ico{width:38px;height:38px;}
+}
+</style>
+<div class="es1">
+  <div class="es1-in">
+    <div>
+      <div class="es1-badge"><div class="es1-dot"></div>담당자 직접 배정 · 전 과정 책임 관리</div>
+      <h1>성적, 기간, 행정까지<br><span class="sr">전부</span> 챙기는<br><span class="ac">전문 담당자</span></h1>
+      <p class="es1-sub">학위취득, 대학입시, 대학원 진학, 자격증 취득까지<br><strong>처음부터 끝까지</strong> 전담 담당자가 직접 관리합니다.<br>막히는 것 없이, 빠짐없이.</p>
+    </div>
+    <div class="es1-cards">
+      <div class="es1-card">
+        <div class="es1-ico"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg></div>
+        <div><p class="es1-ct">프리미엄 타겟 컨설팅</p><p class="es1-cd">수의대·약대 편입, 대학원 진학까지 설계</p></div>
+      </div>
+      <div class="es1-card">
+        <div class="es1-ico"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><polyline points="17 11 19 13 23 9"></polyline></svg></div>
+        <div><p class="es1-ct">끝까지 같은 담당자</p><p class="es1-cd">중간에 바뀌지 않는 고정 1:1 케어</p></div>
+      </div>
+      <div class="es1-card">
+        <div class="es1-ico"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg></div>
+        <div><p class="es1-ct">투명한 학점 기준</p><p class="es1-cd">상담 단계에서 미리 정확히 안내</p></div>
+      </div>
+      <div class="es1-card">
+        <div class="es1-ico"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></div>
+        <div><p class="es1-ct">검증된 후기만</p><p class="es1-cd">실제 수강생의 솔직한 후기만 공개</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- 섹션3 서비스 v2 | 아임웹 코드 위젯에 붙여넣기 -->
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+<style>
+.es3{width:100%;background:#f7f9fb;padding:120px 6%;box-sizing:border-box;font-family:'Noto Sans KR',sans-serif;}
+.es3-in{max-width:1100px;margin:0 auto;}
+.es3-label{font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#4a7fa5;margin-bottom:.9rem;display:flex;align-items:center;gap:8px;}
+.es3-label::before{content:'';display:block;width:28px;height:2px;background:#4a7fa5;border-radius:2px;}
+.es3-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:4rem;gap:3rem;}
+.es3-head-left{flex-shrink:0;}
+.es3 h2{font-size:clamp(2.4rem,4.5vw,3.8rem);font-weight:900;letter-spacing:-.04em;line-height:1.2;color:#1a2d4a;margin:0;}
+.es3 h2 em{font-family:'Playfair Display',serif;font-style:italic;color:#4a7fa5;}
+.es3-sub{font-size:clamp(15px,1.6vw,17px);color:#6b7f93;line-height:2;margin:0;text-align:right;}
+.es3-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;}
+.es3-item{background:#fff;border-radius:20px;padding:2.75rem 2.25rem 2.5rem;border:1px solid rgba(74,127,165,.1);position:relative;overflow:hidden;transition:border-color .3s,transform .3s,box-shadow .3s;}
+.es3-item:hover{border-color:rgba(74,127,165,.35);transform:translateY(-5px);box-shadow:0 16px 48px rgba(74,127,165,.1);}
+.es3-item::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#4a7fa5,#7ab8d8);transform:scaleX(0);transform-origin:left;transition:transform .4s ease;}
+.es3-item:hover::after{transform:scaleX(1);}
+.es3-ico-wrap{width:60px;height:60px;border-radius:16px;background:linear-gradient(135deg,#ddeaf4,#c8e0ef);display:flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:1.5rem;border:1px solid rgba(74,127,165,.15);transition:background .3s;}
+.es3-item:hover .es3-ico-wrap{background:linear-gradient(135deg,#4a7fa5,#6b9dbd);}
+.es3-bg-ico{position:absolute;right:-10px;bottom:-10px;font-size:110px;opacity:.05;line-height:1;pointer-events:none;user-select:none;}
+.es3-title{font-size:clamp(19px,2.1vw,22px) !important;font-weight:900 !important;color:#1a2d4a !important;margin:0 0 1rem !important;letter-spacing:-.03em !important;line-height:1.3 !important;}
+.es3-body{font-size:clamp(14px,1.55vw,16px);color:#6b7f93;line-height:2;margin:0 0 1.5rem;}
+.es3-tags{display:flex;flex-wrap:wrap;gap:7px;}
+.es3-tag{font-size:13px;font-weight:600;color:#4a7fa5;background:#ddeaf4;padding:6px 14px;border-radius:100px;}
+@media(max-width:900px){
+  .es3-head{flex-direction:column;align-items:flex-start;gap:1rem;}
+  .es3-sub{text-align:left;}
+  .es3-grid{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:560px){
+  .es3{padding:70px 5%;}
+  .es3-grid{grid-template-columns:1fr;}
+  .es3-item{padding:2.25rem 1.75rem;}
+}
+</style>
+<div class="es3">
+  <div class="es3-in">
+    <div class="es3-head">
+      <div class="es3-head-left">
+        <div class="es3-label">Core Service</div>
+        <h2>담당자가 직접<br><em>모든 걸 챙깁니다</em></h2>
+      </div>
+      <p class="es3-sub">수강 등록부터 수료까지 성적·기간·행정 하나도 빠짐없이.<br>학습에만 집중하실 수 있도록 나머지는 전부 저희가 책임집니다.</p>
+    </div>
+    <div class="es3-grid">
+
+      <div class="es3-item">
+        <div class="es3-ico-wrap">📊</div>
+        <div class="es3-bg-ico">📊</div>
+        <p class="es3-title">성적 밀착 관리</p>
+        <p class="es3-body">출석률·과제 제출·중간·기말 시험 일정을 담당자가 직접 체크합니다. 놓치는 항목 없이 알림을 드려 학점을 최대한 확보합니다.</p>
+        <div class="es3-tags"><span class="es3-tag">출석 체크</span><span class="es3-tag">과제 알림</span><span class="es3-tag">시험 일정</span></div>
+      </div>
+
+      <div class="es3-item">
+        <div class="es3-ico-wrap">📅</div>
+        <div class="es3-bg-ico">📅</div>
+        <p class="es3-title">기간 최적화 설계</p>
+        <p class="es3-body">목표 학위 또는 자격증까지의 최단 기간을 계산하여 수강 순서와 학기를 설계합니다. 불필요한 시간 낭비 없이 정확하게.</p>
+        <div class="es3-tags"><span class="es3-tag">최단 기간</span><span class="es3-tag">학기 구성</span></div>
+      </div>
+
+      <div class="es3-item">
+        <div class="es3-ico-wrap">📋</div>
+        <div class="es3-bg-ico">📋</div>
+        <p class="es3-title">행정 절차 전담</p>
+        <p class="es3-body">학습자 등록, 학점 인정 신청까지 복잡한 행정 절차를 담당자가 직접 처리합니다. 서류 때문에 막히는 일이 없도록.</p>
+        <div class="es3-tags"><span class="es3-tag">학습자 등록</span><span class="es3-tag">학점 인정</span></div>
+      </div>
+
+      <div class="es3-item">
+        <div class="es3-ico-wrap">🎯</div>
+        <div class="es3-bg-ico">🎯</div>
+        <p class="es3-title">맞춤 커리큘럼</p>
+        <p class="es3-body">기존 보유 학점·자격증·경력을 최대한 활용해 목표까지의 최적 경로를 설계합니다. 불필요한 과목은 단 하나도 없습니다.</p>
+        <div class="es3-tags"><span class="es3-tag">기존 학점 활용</span><span class="es3-tag">자격증 연계</span></div>
+      </div>
+
+      <div class="es3-item">
+        <div class="es3-ico-wrap">💬</div>
+        <div class="es3-bg-ico">💬</div>
+        <p class="es3-title">전담 담당자 소통</p>
+        <p class="es3-body">수강 중 어떤 질문도 담당자에게 직접 물어볼 수 있습니다. 빠른 응답으로 걱정을 즉시 해소해 드립니다.</p>
+        <div class="es3-tags"><span class="es3-tag">카카오 직통</span><span class="es3-tag">전화 상담</span></div>
+      </div>
+
+      <div class="es3-item">
+        <div class="es3-ico-wrap">📚</div>
+        <div class="es3-bg-ico">📚</div>
+        <p class="es3-title">학습 자료 제공</p>
+        <p class="es3-body">수강 기간 동안 필요한 강의 자료를 기간 내 전체 제공합니다. 따로 찾아다니는 시간 없이 학습에만 집중하실 수 있습니다.</p>
+        <div class="es3-tags"><span class="es3-tag">기간 내 전체</span><span class="es3-tag">정리 자료</span></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<div class="esw-wrap">
+  <div class="esw-inner">
+    <p class="esw-label">Caution</p>
+    <p class="esw-title">학점은행제 상담,<br><em>이런 곳은 꼭 조심하세요</em></p>
+    <p class="esw-sub">막상 등록하고 나면 후회하는 경우가 많습니다.<br class="esw-br">상담받기 전에 꼭 확인하세요.</p>
+
+    <div class="esw-grid">
+      <div class="esw-card esw-bad">
+        <div class="esw-icon">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+            <line x1="12" y1="9" x2="12" y2="13"></line>
+            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+          </svg>
+        </div>
+        <p class="esw-card-title">이런 업체는 주의하세요</p>
+        <ul class="esw-list">
+          <li>설명 없이 "일단 등록부터" 하자는 상담</li>
+          <li>담당 멘토가 자주 바뀌거나 연락이 끊김</li>
+          <li>학점 인정 기준을 제대로 설명해주지 않음</li>
+          <li>출처가 불분명한 후기로 부풀린 홍보</li>
+          <li>등록 후 추가 비용을 요구</li>
+        </ul>
+      </div>
+
+      <div class="esw-card esw-good">
+        <div class="esw-icon">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        </div>
+        <p class="esw-card-title">에듀솔루션은 다릅니다</p>
+        <ul class="esw-list">
+          <li>전담 플래너가 처음부터 끝까지 1:1 케어</li>
+          <li>학점 인정 기준을 상담 단계에서 투명하게 안내</li>
+          <li>저희 수강생의 실제 후기만 공개</li>
+          <li>등록 전, 부담 없이 비교 상담 가능</li>
+          <li>중요 일정을 놓치지 않도록 먼저 챙겨드림</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="esw-cta-wrap">
+      <a href="#es-form" class="esw-cta">나에게 맞는 플래너와 상담하기 →</a>
+    </div>
+  </div>
+</div>
+
+<style>
+.esw-wrap{
+  width:100%;
+  background:#f7f9fb;
+  padding:72px 20px;
+  box-sizing:border-box;
+}
+.esw-inner{
+  max-width:1120px;
+  margin:0 auto;
+  text-align:center;
+}
+.esw-label{
+  font-size:15px !important;
+  font-weight:700 !important;
+  letter-spacing:.12em !important;
+  text-transform:uppercase !important;
+  color:#4a7fa5 !important;
+  margin:0 0 16px 0 !important;
+}
+.esw-title{
+  font-size:2.6rem !important;
+  line-height:1.4 !important;
+  font-weight:800 !important;
+  color:#1a2d4a !important;
+  margin:0 0 18px 0 !important;
+}
+.esw-title em{
+  font-style:normal;
+  color:#c0504d;
+}
+.esw-sub{
+  font-size:19px !important;
+  line-height:1.6 !important;
+  color:#6b7f93 !important;
+  margin:0 0 48px 0 !important;
+}
+.esw-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:24px;
+  text-align:left;
+}
+.esw-card{
+  background:#fff;
+  border-radius:16px;
+  padding:32px 28px;
+  border-top:5px solid transparent;
+  box-shadow:0 4px 20px rgba(26,45,74,.06);
+}
+.esw-bad{
+  border-top-color:#c0504d;
+}
+.esw-good{
+  border-top-color:#4a7fa5;
+  background:#fbfdff;
+}
+.esw-icon{
+  width:56px;
+  height:56px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin-bottom:18px;
+}
+.esw-bad .esw-icon{
+  background:#fbe7e6;
+  color:#c0504d;
+}
+.esw-good .esw-icon{
+  background:#e8f1f8;
+  color:#1a2d4a;
+}
+.esw-card-title{
+  font-size:23px !important;
+  font-weight:800 !important;
+  margin:0 0 20px 0 !important;
+}
+.esw-bad .esw-card-title{ color:#a8453f !important; }
+.esw-good .esw-card-title{ color:#1a2d4a !important; }
+.esw-list{
+  margin:0;
+  padding:0;
+  list-style:none;
+}
+.esw-list li{
+  position:relative;
+  padding-left:26px;
+  margin-bottom:16px;
+  font-size:17px !important;
+  line-height:1.55 !important;
+  color:#3c4a5c !important;
+}
+.esw-bad .esw-list li::before{
+  content:"✕";
+  position:absolute;
+  left:0;
+  top:1px;
+  color:#c0504d;
+  font-weight:700;
+  font-size:15px;
+}
+.esw-good .esw-list li::before{
+  content:"✓";
+  position:absolute;
+  left:0;
+  top:1px;
+  color:#4a7fa5;
+  font-weight:700;
+  font-size:15px;
+}
+.esw-cta-wrap{
+  margin-top:44px;
+}
+.esw-cta{
+  display:inline-block !important;
+  background-color:#1a2d4a !important;
+  background-image:none !important;
+  color:#ffffff !important;
+  font-size:18px !important;
+  font-weight:700 !important;
+  text-decoration:none !important;
+  padding:18px 40px !important;
+  border-radius:50px !important;
+  border:none !important;
+  transition:transform .25s, box-shadow .25s;
+}
+.esw-cta:hover{
+  color:#ffffff !important;
+  transform:translateY(-2px);
+  box-shadow:0 8px 20px rgba(26,45,74,.25);
+}
+.esw-cta:visited{
+  color:#ffffff !important;
+}
+
+@media (max-width:768px){
+  .esw-wrap{ padding:56px 16px; }
+  .esw-title{ font-size:1.9rem !important; }
+  .esw-br{ display:none; }
+  .esw-grid{ grid-template-columns:1fr; }
+}
+</style>
+
+
+<!-- 섹션5 수강생 후기 v5 | 아임웹 코드 위젯에 붙여넣기 -->
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet">
+<style>
+.es5{width:100%;background:#f4f7fb;padding:100px 6%;box-sizing:border-box;font-family:'Noto Sans KR',sans-serif;}
+.es5-in{max-width:1100px;margin:0 auto;}
+.es5-label{font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#4a7fa5;margin-bottom:1rem;display:flex;align-items:center;justify-content:center;gap:8px;}
+.es5-label::before,.es5-label::after{content:'';display:block;width:28px;height:2px;background:#4a7fa5;border-radius:2px;}
+.es5-head{text-align:center;margin-bottom:.75rem;}
+.es5 h2{font-size:clamp(2.2rem,4vw,3.6rem);font-weight:900;letter-spacing:-.04em;line-height:1.2;color:#1a2d4a;margin:0 0 1rem;}
+.es5 h2 em{font-family:'Playfair Display',serif;font-style:italic;color:#4a7fa5;}
+.es5-head-sub{font-size:clamp(15px,1.7vw,18px);color:#7a8fa5;margin:0 0 3.5rem;text-align:center;}
+.es5-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.75rem;}
+.es5-card{background:#fff;border-radius:22px;padding:2.5rem 2.5rem 2rem;border:1px solid rgba(74,127,165,.1);position:relative;overflow:hidden;transition:border-color .3s,transform .3s,box-shadow .3s;display:flex;flex-direction:column;}
+.es5-card:hover{border-color:rgba(74,127,165,.3);transform:translateY(-6px);box-shadow:0 20px 56px rgba(74,127,165,.12);}
+.es5-quote-bg{position:absolute;top:-18px;left:16px;font-family:'Playfair Display',serif;font-size:200px;line-height:1;color:rgba(74,127,165,.06);pointer-events:none;user-select:none;}
+.es5-stars{display:flex;gap:4px;margin-bottom:1.4rem;position:relative;z-index:1;}
+.es5-star{width:20px;height:20px;background:#f5a623;clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);flex-shrink:0;}
+.es5-headline{font-size:clamp(16px,1.8vw,20px);font-weight:900;color:#1a2d4a;line-height:1.5;margin:0 0 1.25rem;position:relative;z-index:1;letter-spacing:-.02em;}
+.es5-headline mark{background:none;color:#4a7fa5;}
+.es5-text{font-size:clamp(14px,1.5vw,15px);line-height:2;color:#4a5a6a;margin:0 0 auto;position:relative;z-index:1;padding-bottom:1.75rem;}
+.es5-text strong{color:#1a2d4a;font-weight:700;}
+.es5-div{height:1px;background:rgba(74,127,165,.1);margin-bottom:1.5rem;}
+.es5-foot{display:flex;align-items:center;gap:14px;position:relative;z-index:1;}
+.es5-av{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#ddeaf4,#b8d4ea);color:#1a2d4a;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:900;flex-shrink:0;border:2px solid rgba(74,127,165,.2);}
+.es5-name{font-size:16px;font-weight:700;color:#1a2d4a;margin:0 0 3px;}
+.es5-meta{font-size:13px;color:#8a9ab0;margin:0;}
+.es5-badge{margin-left:auto;flex-shrink:0;background:#1a2d4a;color:#a0cde0;font-size:12px;font-weight:700;padding:6px 13px;border-radius:7px;white-space:nowrap;}
+.es5-cta-wrap{text-align:center;margin-top:3rem;display:flex;justify-content:center;gap:14px;flex-wrap:wrap;}
+.es5-cta{display:inline-block;background:#4a7fa5;color:#fff !important;padding:18px 48px;border-radius:10px;font-size:17px;font-weight:700;text-decoration:none;transition:background .2s,transform .15s;}
+.es5-cta:hover{background:#1a2d4a;transform:translateY(-2px);}
+.es5-cta-sub{display:inline-block;background:#fff;color:#4a7fa5 !important;padding:16px 48px;border-radius:10px;font-size:17px;font-weight:700;text-decoration:none;border:2px solid #4a7fa5;box-sizing:border-box;transition:background .2s,transform .15s;}
+.es5-cta-sub:hover{background:#ddeaf4;transform:translateY(-2px);}
+@media(max-width:900px){.es5-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:540px){.es5-grid{grid-template-columns:1fr;}.es5{padding:60px 5%;}}
+</style>
+<div class="es5" id="es-reviews">
+  <div class="es5-in">
+    <div class="es5-label">Our Review</div>
+    <div class="es5-head">
+      <h2>실제 수강생들의<br><em>솔직한 후기</em></h2>
+    </div>
+    <p class="es5-head-sub">팀 에듀솔루션과 함께 과정을 성공했어요!</p>
+    <div class="es5-grid">
+
+      <div class="es5-card">
+        <div class="es5-quote-bg">"</div>
+        <div class="es5-stars"><div class="es5-star"></div><div class="es5-star"></div><div class="es5-star"></div><div class="es5-star"></div><div class="es5-star"></div></div>
+        <p class="es5-headline">"과제 하나도 <mark>놓치지 않고</mark><br>성적이 훨씬 잘 나왔어요!"</p>
+        <p class="es5-text">과제 마감일마다 미리 알려주셔서 하나도 놓치지 않았어요. 혼자 했으면 분명 까먹었을 텐데, <strong>담당자 덕분에 성적이 생각보다 훨씬 잘 나왔습니다.</strong></p>
+        <div class="es5-div"></div>
+        <div class="es5-foot">
+          <div class="es5-av">김</div>
+          <div><p class="es5-name">김○○ 님 (30대)</p><p class="es5-meta">직장인 / 학사 학위 취득</p></div>
+          <span class="es5-badge">학사 학위</span>
+        </div>
+      </div>
+
+      <div class="es5-card">
+        <div class="es5-quote-bg">"</div>
+        <div class="es5-stars"><div class="es5-star"></div><div class="es5-star"></div><div class="es5-star"></div><div class="es5-star"></div><div class="es5-star"></div></div>
+        <p class="es5-headline">"서류 걱정 없이<br><mark>공부에만 집중</mark>할 수 있었어요."</p>
+        <p class="es5-text">서류 어디다 제출하는지 몰라서 걱정했는데 담당자분이 전부 처리해 주셨어요. <strong>저는 그냥 공부만 하면 됐습니다. 이게 진짜 큰 장점이에요.</strong></p>
+        <div class="es5-div"></div>
+        <div class="es5-foot">
+          <div class="es5-av">이</div>
+          <div><p class="es5-name">이○○ 님 (40대)</p><p class="es5-meta">주부 / 사회복지사 2급 취득</p></div>
+          <span class="es5-badge">사복 2급</span>
+        </div>
+      </div>
+
+      <div class="es5-card">
+        <div class="es5-quote-bg">"</div>
+        <div class="es5-stars"><div class="es5-star"></div><div class="es5-star"></div><div class="es5-star"></div><div class="es5-star"></div><div class="es5-star"></div></div>
+        <p class="es5-headline">"생각보다 <mark>훨씬 빠르게</mark><br>기사 응시자격 갖췄어요!"</p>
+        <p class="es5-text">제 자격증 이력을 보고 딱 맞게 계산해 주셨어요. <strong>생각보다 훨씬 빠르게 기사 응시자격을 갖출 수 있었습니다.</strong></p>
+        <div class="es5-div"></div>
+        <div class="es5-foot">
+          <div class="es5-av">박</div>
+          <div><p class="es5-name">박○○ 님 (20대)</p><p class="es5-meta">취준생 / 기사 응시자격 취득</p></div>
+          <span class="es5-badge">기사 자격</span>
+        </div>
+      </div>
+
+      <div class="es5-card">
+        <div class="es5-quote-bg">"</div>
+        <div class="es5-stars"><div class="es5-star"></div><div class="es5-star"></div><div class="es5-star"></div><div class="es5-star"></div><div class="es5-star"></div></div>
+        <p class="es5-headline">"끝까지 <mark>같은 담당자</mark>가<br>책임지고 함께했어요."</p>
+        <p class="es5-text">다른 곳은 처음에만 연락 잘 되고 수강 시작하면 느려지던데, <strong>여기는 끝까지 담당자가 동일했고 응답도 빠릿빠릿했어요.</strong></p>
+        <div class="es5-div"></div>
+        <div class="es5-foot">
+          <div class="es5-av">최</div>
+          <div><p class="es5-name">최○○ 님 (30대)</p><p class="es5-meta">직장인 / 전문학사 취득</p></div>
+          <span class="es5-badge">전문학사</span>
+        </div>
+      </div>
+
+      <div class="es5-card">
+        <div class="es5-quote-bg">"</div>
+        <div class="es5-stars"><div class="es5-star"></div><div class="es5-star"></div><div class="es5-star"></div><div class="es5-star"></div><div class="es5-star"></div></div>
+        <p class="es5-headline">"학사 + 보육교사 2급<br><mark>동시에 다 됐어요!</mark>"</p>
+        <p class="es5-text">학사 학위랑 보육교사 2급 동시에 준비했는데 수강 순서까지 전부 설계해 주셔서 겹치지 않고 효율적으로 진행됐어요. <strong>혼자였으면 절대 못 했을 것 같아요.</strong></p>
+        <div class="es5-div"></div>
+        <div class="es5-foot">
+          <div class="es5-av">정</div>
+          <div><p class="es5-name">정○○ 님 (30대)</p><p class="es5-meta">경력단절 / 학사+보육교사 동시</p></div>
+          <span class="es5-badge">학사+보육교사</span>
+        </div>
+      </div>
+
+      <div class="es5-card">
+        <div class="es5-quote-bg">"</div>
+        <div class="es5-stars"><div class="es5-star"></div><div class="es5-star"></div><div class="es5-star"></div><div class="es5-star"></div><div class="es5-star"></div></div>
+        <p class="es5-headline">"첫 상담에서 <mark>전 과정이</mark><br>다 나왔어요."</p>
+        <p class="es5-text">여러 군데 상담받아봤는데 에듀솔루션이 제일 구체적으로 답해줬어요. <strong>몇 학기에 뭘 들어야 하는지까지 처음 상담에서 다 나왔습니다.</strong></p>
+        <div class="es5-div"></div>
+        <div class="es5-foot">
+          <div class="es5-av">윤</div>
+          <div><p class="es5-name">윤○○ 님 (20대)</p><p class="es5-meta">대학생 / 편입 학점 설계</p></div>
+          <span class="es5-badge">편입 학점</span>
+        </div>
+      </div>
+
+    </div>
+    <div class="es5-cta-wrap">
+      <a href="https://edu-solution.co.kr/30" class="es5-cta-sub">후기 더보기</a>
+      <a href="#es-form" class="es5-cta">나도 무료 상담받기 →</a>
+    </div>
+  </div>
+</div>
+
+
+<!-- =============================================
+   에듀솔루션 | 섹션 6 — 무료 상담 폼 (EmailJS 연동)
+   아임웹: 새 섹션 → 코드 위젯 → 붙여넣기
+   섹션 배경: #1a2d4a  /  섹션 상하 패딩: 0
+================================================ -->
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>emailjs.init('k9jqBez4YeBqYDgzf');</script>
+
+<style>
+.es6{width:100%;background:#1a2d4a;padding:100px 6%;box-sizing:border-box;font-family:'Noto Sans KR',sans-serif;position:relative;overflow:hidden;}
+.es6::before{content:'EDUSOLUTION';position:absolute;bottom:-30px;right:-10px;font-size:clamp(60px,10vw,140px);font-weight:900;color:rgba(255,255,255,.025);letter-spacing:-.05em;white-space:nowrap;pointer-events:none;font-family:'Playfair Display',serif;}
+.es6-in{max-width:760px;margin:0 auto;position:relative;z-index:1;}
+.es6-lbl{font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#6b9dbd;margin-bottom:.9rem;display:flex;align-items:center;gap:8px;}
+.es6-lbl::before{content:'';display:block;width:28px;height:2px;background:#6b9dbd;border-radius:2px;}
+.es6 h2{font-size:clamp(2.4rem,3.6vw,3.4rem);font-weight:900;letter-spacing:-.04em;line-height:1.22;color:#fff;margin:0 0 1rem;}
+.es6 h2 em{font-family:'Playfair Display',serif;font-style:italic;color:#7ab8d8;}
+.es6-sub{font-size:17px;color:rgba(255,255,255,.55);line-height:1.9;margin:0 0 3.5rem;}
+.es6-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;}
+.es6-fg{display:flex;flex-direction:column;gap:8px;}
+.es6-fg.full{grid-column:1/-1;}
+.es6-lbl2{font-size:12px;font-weight:700;color:rgba(255,255,255,.42);letter-spacing:.08em;text-transform:uppercase;}
+.es6-input,.es6-select{background:rgba(255,255,255,.07);border:1px solid rgba(107,157,189,.22);border-radius:10px;padding:16px 18px;font-size:16px;color:#fff;font-family:'Noto Sans KR',sans-serif;outline:none;width:100%;box-sizing:border-box;transition:border-color .2s,background .2s;-webkit-appearance:none;}
+.es6-input::placeholder{color:rgba(255,255,255,.22);}
+.es6-input:focus,.es6-select:focus{border-color:#4a7fa5;background:rgba(107,157,189,.12);}
+.es6-select option{background:#1a2d4a;color:#fff;}
+.es6-textarea{resize:vertical;min-height:96px;line-height:1.6;font-family:'Noto Sans KR',sans-serif;}
+.es6-optional{color:rgba(255,255,255,.3);font-weight:400;text-transform:none;letter-spacing:0;margin-left:6px;}
+.es6-radio-wrap{display:flex;gap:.75rem;}
+.es6-radio{flex:1;padding:16px;background:rgba(255,255,255,.04);border:1px solid rgba(107,157,189,.2);border-radius:10px;text-align:center;font-size:15px;color:rgba(255,255,255,.55);cursor:pointer;font-family:'Noto Sans KR',sans-serif;transition:all .2s;}
+.es6-radio:hover,.es6-radio.on{border-color:#4a7fa5;background:rgba(74,127,165,.18);color:#a0cde0;font-weight:700;}
+.es6-agree{grid-column:1/-1;display:flex;align-items:flex-start;gap:10px;cursor:pointer;}
+.es6-agree input[type=checkbox]{margin-top:3px;accent-color:#4a7fa5;width:16px;height:16px;flex-shrink:0;}
+.es6-agree span{font-size:14px;color:rgba(255,255,255,.35);line-height:1.7;}
+.es6-submit{grid-column:1/-1;margin-top:.5rem;background:#4a7fa5;color:#fff !important;border:none;border-radius:10px;padding:20px;font-size:18px;font-weight:900;cursor:pointer;font-family:'Noto Sans KR',sans-serif;letter-spacing:-.01em;transition:background .2s,transform .1s;width:100%;}
+.es6-submit:hover{background:#6b9dbd;transform:translateY(-1px);}
+.es6-submit:disabled{background:#3a5a6a;cursor:not-allowed;transform:none;}
+/* 에러 메시지 */
+.es6-error{color:#ff8a8a;font-size:13px;margin-top:4px;display:none;}
+.es6-error.show{display:block;}
+/* 완료 메시지 */
+.es6-success{display:none;text-align:center;padding:3rem 0;}
+.es6-success.show{display:block;}
+.es6-success-ico{font-size:56px;margin-bottom:1rem;}
+.es6-success-title{font-size:24px;font-weight:900;color:#fff;margin-bottom:.75rem;}
+.es6-success-sub{font-size:16px;color:rgba(255,255,255,.55);line-height:1.8;}
+@media(max-width:600px){.es6-grid{grid-template-columns:1fr;}.es6-fg.full{grid-column:1;}}
+</style>
+
+<div class="es6" id="es-form">
+  <div class="es6-in">
+    <div class="es6-lbl">Free Consultation</div>
+    <h2>지금 바로 무료로<br><em>상담받으세요</em></h2>
+    <p class="es6-sub">전담 담당자가 직접 연락드립니다. 부담 없이 궁금한 것부터 물어보세요.</p>
+
+    <!-- 폼 -->
+    <div class="es6-grid" id="es6-form-body">
+      <div class="es6-fg">
+        <label class="es6-lbl2">이름</label>
+        <input class="es6-input" id="es6-name" type="text" placeholder="홍길동">
+        <span class="es6-error" id="err-name">이름을 입력해주세요</span>
+      </div>
+      <div class="es6-fg">
+        <label class="es6-lbl2">연락처</label>
+        <input class="es6-input" id="es6-phone" type="tel" placeholder="010-0000-0000">
+        <span class="es6-error" id="err-phone">연락처를 입력해주세요</span>
+      </div>
+      <div class="es6-fg full">
+        <label class="es6-lbl2">목표 과정</label>
+        <select class="es6-select" id="es6-goal">
+          <option value="" disabled selected>목표를 선택해주세요</option>
+          <option>학위 취득 (전문학사/학사)</option>
+          <option>사회복지사 2급</option>
+          <option>보육교사 2급</option>
+          <option>기사/산업기사 응시자격</option>
+          <option>편입</option>
+          <option>대학원 진학</option>
+          <option>기타</option>
+        </select>
+        <span class="es6-error" id="err-goal">목표 과정을 선택해주세요</span>
+      </div>
+      <div class="es6-fg full">
+        <label class="es6-lbl2">최종 학력</label>
+        <select class="es6-select" id="es6-edu">
+          <option value="" disabled selected>최종 학력을 선택해주세요</option>
+          <option>고등학교 졸업</option>
+          <option>2/3년제 졸업</option>
+          <option>4년제 졸업</option>
+          <option>대학교 중퇴 / 제적</option>
+        </select>
+        <span class="es6-error" id="err-edu">최종 학력을 선택해주세요</span>
+      </div>
+      <div class="es6-fg full">
+        <label class="es6-lbl2">상담 방식</label>
+        <div class="es6-radio-wrap">
+          <button class="es6-radio on" onclick="this.parentElement.querySelectorAll('.es6-radio').forEach(b=>b.classList.remove('on'));this.classList.add('on')">💬 카카오톡</button>
+          <button class="es6-radio" onclick="this.parentElement.querySelectorAll('.es6-radio').forEach(b=>b.classList.remove('on'));this.classList.add('on')">📞 전화 상담</button>
+        </div>
+      </div>
+      <div class="es6-fg full">
+        <label class="es6-lbl2">문의 내용<span class="es6-optional">(선택)</span></label>
+        <textarea class="es6-input es6-textarea" id="es6-message" placeholder="더 자세히 알고 싶은 내용이나 현재 상황을 자유롭게 적어주세요"></textarea>
+      </div>
+      <label class="es6-agree">
+        <input type="checkbox" id="es6-agree">
+        <span>개인정보 수집 및 이용에 동의합니다. 수집된 정보는 상담 목적으로만 사용됩니다.</span>
+      </label>
+      <span class="es6-error full" id="err-agree" style="grid-column:1/-1;">개인정보 수집에 동의해주세요</span>
+      <button class="es6-submit" id="es6-submit-btn" onclick="es6Submit()">
+        무료 상담 신청하기
+      </button>
+    </div>
+
+    <!-- 완료 메시지 -->
+    <div class="es6-success" id="es6-success">
+      <div class="es6-success-ico">✅</div>
+      <p class="es6-success-title">신청이 완료되었습니다!</p>
+      <p class="es6-success-sub">전담 담당자가 빠른 시간 내에<br>직접 연락드리겠습니다.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+function es6Submit() {
+  var name  = document.getElementById('es6-name').value.trim();
+  var phone = document.getElementById('es6-phone').value.trim();
+  var goal  = document.getElementById('es6-goal').value;
+  var edu   = document.getElementById('es6-edu').value;
+  var agree = document.getElementById('es6-agree').checked;
+  var message = document.getElementById('es6-message').value.trim();
+  var method = document.querySelector('.es6-radio.on') ? document.querySelector('.es6-radio.on').innerText : '';
+
+  var ok = true;
+  document.querySelectorAll('.es6-error').forEach(function(e){ e.classList.remove('show'); });
+
+  if (!name)  { document.getElementById('err-name').classList.add('show');  ok = false; }
+  if (!phone) { document.getElementById('err-phone').classList.add('show'); ok = false; }
+  if (!goal)  { document.getElementById('err-goal').classList.add('show');  ok = false; }
+  if (!edu)   { document.getElementById('err-edu').classList.add('show');   ok = false; }
+  if (!agree) { document.getElementById('err-agree').classList.add('show'); ok = false; }
+  if (!ok) return;
+
+  var btn = document.getElementById('es6-submit-btn');
+  btn.textContent = '전송 중...';
+  btn.disabled = true;
+
+  emailjs.send('service_i38779r', 'template_bfc6i4o', {
+    user_name:   name,
+    user_phone:  phone,
+    user_goal:   goal,
+    user_edu:    edu,
+    user_method: method,
+    user_message: message || '(작성 안 함)'
+  }).then(function() {
+    document.getElementById('es6-form-body').style.display = 'none';
+    document.getElementById('es6-success').classList.add('show');
+
+    // 구글 전환 추적 👇
+    gtag('event', 'conversion', {
+      'send_to': 'AW-16886735349/IpM9CKDxha8cEPXDnPQ-',
+      'value': 1.0,
+      'currency': 'KRW'
+    });
+
+  }, function(error) {
+    btn.textContent = '무료 상담 신청하기';
+    btn.disabled = false;
+    alert('전송 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.\n(' + error.text + ')');
+  });
+}
+</script>
+
+
+<a href="http://pf.kakao.com/_PxdxhHn/chat" target="_blank" class="esk-float" id="esk-float">
+  <span class="esk-pulse"></span>
+  <span class="esk-icon">
+    <svg viewBox="0 0 24 24" width="26" height="26" fill="#391B1B">
+      <path d="M12 2C6.477 2 2 5.701 2 10.273c0 2.916 1.84 5.484 4.61 6.978-.203.752-.735 2.726-.842 3.15-.13.524.193.518.406.377.166-.11 2.65-1.8 3.726-2.534.687.1 1.394.152 2.1.152 5.523 0 10-3.701 10-8.273C22 5.701 17.523 2 12 2z"/>
+    </svg>
+  </span>
+  <span class="esk-text">카카오톡<br>무료 상담</span>
+</a>
+
+<style>
+.esk-float{
+  position:fixed;
+  right:20px;
+  bottom:28px;
+  z-index:9999;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  background:#FEE500;
+  color:#391B1B;
+  text-decoration:none;
+  border-radius:50px;
+  padding:14px 20px 14px 14px;
+  box-shadow:0 6px 20px rgba(0,0,0,.18);
+  transition:transform .25s, box-shadow .25s;
+  font-family:inherit;
+}
+.esk-float:hover{
+  transform:translateY(-3px);
+  box-shadow:0 10px 24px rgba(0,0,0,.24);
+}
+.esk-icon{
+  width:36px;
+  height:36px;
+  background:#fff;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+}
+.esk-text{
+  font-size:13px !important;
+  font-weight:700 !important;
+  line-height:1.35 !important;
+  color:#391B1B !important;
+  white-space:nowrap;
+}
+.esk-pulse{
+  position:absolute;
+  inset:0;
+  border-radius:50px;
+  background:#FEE500;
+  opacity:.6;
+  animation:esk-pulse-anim 2.2s ease-out infinite;
+  z-index:-1;
+}
+@keyframes esk-pulse-anim{
+  0%{ transform:scale(1); opacity:.55; }
+  70%{ transform:scale(1.12); opacity:0; }
+  100%{ transform:scale(1.12); opacity:0; }
+}
+
+@media (max-width:768px){
+  .esk-float{
+    right:14px;
+    bottom:18px;
+    padding:12px 16px 12px 12px;
+  }
+  .esk-icon{ width:32px; height:32px; }
+  .esk-text{ font-size:12px !important; }
+}
+
+/* 텍스트만 숨기고 아이콘만 보이는 초소형 화면 (선택사항) */
+@media (max-width:380px){
+  .esk-text{ display:none; }
+  .esk-float{ padding:14px; border-radius:50%; }
+}
+</style>
+
+
+<!-- 플로팅 트리거 뱃지 (카카오 버튼 바로 위) -->
+<button class="esd-fab" id="esd-fab-btn" type="button">
+  <span class="esd-fab-icon-wrap"><span class="esd-fab-icon">📝</span></span>
+  <span class="esd-fab-text">30초<br>자가진단</span>
+</button>
+
+<!-- 팝업 모달 -->
+<div class="esd-modal-overlay" id="esd-modal-overlay">
+  <div class="esd-modal-box">
+    <button class="esd-modal-close" id="esd-modal-close" type="button">✕</button>
+
+    <p class="esd-label">Quick Check</p>
+    <p class="esd-title">나에게 맞는 과정,<br><em>30초면 확인돼요</em></p>
+    <p class="esd-sub">간단한 선택만으로 가장 가까운 학습 방향을 알려드릴게요.</p>
+
+    <div class="esd-progress"><span class="esd-progress-bar" id="esd-bar"></span></div>
+    <p class="esd-step-label" id="esd-step-label">STEP 1 / 2</p>
+
+    <div class="esd-step-panel" id="esd-step1">
+      <p class="esd-q">최종 학력이 어떻게 되시나요?</p>
+      <div class="esd-options">
+        <button class="esd-opt" data-edu="고등학교 졸업">고등학교 졸업</button>
+        <button class="esd-opt" data-edu="2/3년제 졸업">2/3년제 졸업</button>
+        <button class="esd-opt" data-edu="4년제 졸업">4년제 졸업</button>
+        <button class="esd-opt" data-edu="대학교 중퇴 / 제적">대학교 중퇴 / 제적</button>
+      </div>
+    </div>
+
+    <div class="esd-step-panel" id="esd-step2" style="display:none;">
+      <p class="esd-q">가장 이루고 싶은 목표는 무엇인가요?</p>
+      <div class="esd-options">
+        <button class="esd-opt" data-goal="학위 취득">학위 취득 (전문학사·학사)</button>
+        <button class="esd-opt" data-goal="사회복지사 2급">사회복지사 2급</button>
+        <button class="esd-opt" data-goal="보육교사 2급">보육교사 2급</button>
+        <button class="esd-opt" data-goal="기사·산업기사 응시자격">기사·산업기사 응시자격</button>
+        <button class="esd-opt" data-goal="편입">편입</button>
+        <button class="esd-opt" data-goal="대학원 진학">대학원 진학</button>
+        <button class="esd-opt" data-goal="기타">기타</button>
+      </div>
+      <button class="esd-back" id="esd-back-btn" type="button">← 이전으로</button>
+    </div>
+
+    <div class="esd-step-panel" id="esd-result" style="display:none;">
+      <div class="esd-result-icon">🎯</div>
+      <p class="esd-result-msg" id="esd-result-msg"></p>
+      <p class="esd-result-sub" id="esd-result-sub"></p>
+
+      <div class="esd-roadmap" id="esd-roadmap"></div>
+
+      <div class="esd-checklist-box">
+        <p class="esd-checklist-title">📋 상담 전에 미리 확인해보면 좋아요</p>
+        <ul class="esd-checklist" id="esd-checklist"></ul>
+      </div>
+
+      <p class="esd-cta-lead">정확한 학점 계산과 일정은 1:1 상담에서 바로 확인할 수 있어요</p>
+      <div class="esd-result-cta">
+        <a href="http://pf.kakao.com/_PxdxhHn/chat" target="_blank" class="esd-cta esd-cta-kakao">💬 카카오톡으로 무료 상담받기</a>
+        <a href="#es-form" class="esd-cta esd-cta-form" id="esd-form-link">상담 폼 작성하기 →</a>
+      </div>
+      <button class="esd-retry" id="esd-retry-btn" type="button">다시 진단하기</button>
+    </div>
+  </div>
+</div>
+
+<style>
+/* ── 플로팅 트리거 뱃지 ── */
+.esd-fab{
+  position:fixed;
+  right:20px;
+  bottom:106px;
+  z-index:9998;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  background:#4a7fa5;
+  color:#fff;
+  border:none;
+  border-radius:50px;
+  padding:14px 20px 14px 14px;
+  box-shadow:0 6px 20px rgba(74,127,165,.32);
+  cursor:pointer;
+  font-family:inherit;
+  transition:transform .25s, box-shadow .25s;
+}
+.esd-fab:hover{
+  transform:translateY(-3px);
+  box-shadow:0 10px 24px rgba(74,127,165,.4);
+}
+.esd-fab-icon-wrap{
+  width:36px;
+  height:36px;
+  background:#fff;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+}
+.esd-fab-icon{ font-size:18px; }
+.esd-fab-text{
+  font-size:13px !important;
+  font-weight:700 !important;
+  line-height:1.25 !important;
+  color:#fff !important;
+  text-align:left;
+  white-space:nowrap;
+}
+
+@media (max-width:768px){
+  .esd-fab{ right:14px; bottom:86px; padding:12px 16px 12px 12px; }
+  .esd-fab-icon-wrap{ width:32px; height:32px; }
+  .esd-fab-text{ font-size:12px !important; }
+}
+@media (max-width:380px){
+  .esd-fab-text{ display:none; }
+  .esd-fab{ padding:14px; border-radius:50%; }
+}
+
+/* ── 모달 ── */
+.esd-modal-overlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(20,30,45,.55);
+  z-index:10000;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  box-sizing:border-box;
+  overflow-y:auto;
+}
+.esd-modal-overlay.open{ display:flex; }
+.esd-modal-box{
+  position:relative;
+  background:#fff;
+  border-radius:22px;
+  padding:40px 32px 36px;
+  max-width:480px;
+  width:100%;
+  max-height:88vh;
+  overflow-y:auto;
+  box-shadow:0 20px 60px rgba(0,0,0,.25);
+  text-align:left;
+  margin:auto;
+}
+.esd-modal-close{
+  position:absolute;
+  top:16px;
+  right:16px;
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  background:#f0f3f6;
+  border:none;
+  color:#6b7f93;
+  font-size:16px;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.esd-modal-close:hover{ background:#e3e9ef; color:#1a2d4a; }
+
+.esd-label{
+  font-size:14px !important;
+  font-weight:700 !important;
+  letter-spacing:.12em !important;
+  text-transform:uppercase !important;
+  color:#4a7fa5 !important;
+  margin:0 0 14px 0 !important;
+}
+.esd-title{
+  font-size:1.9rem !important;
+  line-height:1.4 !important;
+  font-weight:800 !important;
+  color:#1a2d4a !important;
+  margin:0 0 12px 0 !important;
+}
+.esd-title em{ font-style:normal; color:#4a7fa5; }
+.esd-sub{
+  font-size:16px !important;
+  line-height:1.6 !important;
+  color:#6b7f93 !important;
+  margin:0 0 28px 0 !important;
+}
+
+.esd-progress{
+  width:100%;
+  height:6px;
+  background:#e8edf2;
+  border-radius:6px;
+  overflow:hidden;
+  margin-bottom:14px;
+}
+.esd-progress-bar{
+  display:block;
+  height:100%;
+  width:0%;
+  background:#4a7fa5;
+  border-radius:6px;
+  transition:width .35s ease;
+}
+.esd-step-label{
+  font-size:13px !important;
+  font-weight:700 !important;
+  letter-spacing:.08em !important;
+  color:#9fb0c2 !important;
+  margin:0 0 20px 0 !important;
+  text-align:center;
+}
+.esd-q{
+  font-size:19px;
+  font-weight:800;
+  color:#1a2d4a;
+  margin:0 0 20px 0;
+  text-align:center;
+}
+.esd-options{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+.esd-opt{
+  background:#f7f9fb;
+  border:1.5px solid #e3e9ef;
+  border-radius:12px;
+  padding:14px 12px;
+  font-size:15px;
+  font-weight:600;
+  color:#3c4a5c;
+  cursor:pointer;
+  font-family:inherit;
+  transition:all .2s;
+  text-align:center;
+}
+.esd-opt:hover{
+  border-color:#4a7fa5;
+  background:#eef5fa;
+  color:#1a2d4a;
+}
+.esd-back{
+  margin-top:18px;
+  background:none;
+  border:none;
+  color:#9fb0c2;
+  font-size:14px;
+  font-weight:600;
+  cursor:pointer;
+  font-family:inherit;
+  display:block;
+  text-align:center;
+  width:100%;
+}
+.esd-back:hover{ color:#4a7fa5; }
+
+#esd-result{ text-align:center; }
+.esd-result-icon{ font-size:38px; margin-bottom:12px; }
+.esd-result-msg{
+  font-size:18px;
+  font-weight:800;
+  color:#1a2d4a;
+  line-height:1.5;
+  margin:0 0 8px 0;
+}
+.esd-result-sub{
+  font-size:14px;
+  color:#6b7f93;
+  line-height:1.6;
+  margin:0 0 22px 0;
+}
+
+.esd-roadmap{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:2px;
+  flex-wrap:wrap;
+  background:#f7f9fb;
+  border-radius:14px;
+  padding:18px 10px 14px;
+  margin-bottom:20px;
+}
+.esd-rm-step{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:5px;
+  width:70px;
+}
+.esd-rm-dot{
+  width:30px;
+  height:30px;
+  border-radius:50%;
+  background:#4a7fa5;
+  color:#fff;
+  font-size:13px;
+  font-weight:800;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+}
+.esd-rm-text{
+  font-size:11px;
+  font-weight:600;
+  color:#3c4a5c;
+  text-align:center;
+  line-height:1.3;
+}
+.esd-rm-arrow{
+  font-size:15px;
+  color:#a9c6da;
+  padding:0 1px;
+}
+
+.esd-checklist-box{
+  background:#fbfdff;
+  border:1px solid #dde9f1;
+  border-radius:14px;
+  padding:18px 18px;
+  margin-bottom:20px;
+  text-align:left;
+}
+.esd-checklist-title{
+  font-size:14px;
+  font-weight:800;
+  color:#1a2d4a;
+  margin:0 0 10px 0;
+}
+.esd-checklist{
+  margin:0;
+  padding:0;
+  list-style:none;
+}
+.esd-checklist li{
+  position:relative;
+  padding-left:20px;
+  margin-bottom:9px;
+  font-size:14px;
+  line-height:1.5;
+  color:#3c4a5c;
+}
+.esd-checklist li:last-child{ margin-bottom:0; }
+.esd-checklist li::before{
+  content:"✓";
+  position:absolute;
+  left:0;
+  top:0;
+  color:#4a7fa5;
+  font-weight:700;
+  font-size:12px;
+}
+.esd-cta-lead{
+  font-size:12px;
+  color:#9fb0c2;
+  text-align:center;
+  margin:0 0 12px 0;
+}
+.esd-result-cta{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  margin-bottom:16px;
+}
+.esd-cta{
+  display:block !important;
+  text-decoration:none !important;
+  padding:15px !important;
+  border-radius:12px !important;
+  font-size:16px !important;
+  font-weight:700 !important;
+  transition:transform .2s;
+  border:none !important;
+}
+.esd-cta-kakao{ background-color:#FEE500 !important; color:#391B1B !important; }
+.esd-cta-form{ background-color:#1a2d4a !important; color:#ffffff !important; }
+.esd-cta:hover{ transform:translateY(-2px); }
+.esd-cta-kakao:visited{ color:#391B1B !important; }
+.esd-cta-form:visited{ color:#ffffff !important; }
+.esd-retry{
+  background:none;
+  border:none;
+  color:#9fb0c2;
+  font-size:13px;
+  font-weight:600;
+  cursor:pointer;
+  font-family:inherit;
+}
+.esd-retry:hover{ color:#4a7fa5; }
+
+@media (max-width:600px){
+  .esd-modal-box{ padding:32px 22px 28px; }
+  .esd-title{ font-size:1.6rem !important; }
+  .esd-options{ grid-template-columns:1fr; }
+}
+</style>
+
+<script>
+(function(){
+  var eduChoice = '';
+  var goalChoice = '';
+
+  var goalData = {
+    '학위 취득': {
+      msg: '맞춤 학습 설계로 최소 시간에 학위를 받을 수 있도록 안내해드릴게요.',
+      stage2: '전공 학점 설계',
+      checklist: ['보유 학점이 전공 필수 요건에 맞는지 확인', '연간 이수 가능 학점 한도 확인', '졸업 논문·실습 여부 확인']
+    },
+    '사회복지사 2급': {
+      msg: '사회복지사 2급 자격증과 학위를 함께 준비할 수 있는 과목 조합을 알려드릴게요.',
+      stage2: '사회복지 과목 설계',
+      checklist: ['사회복지 현장실습 가능 기관 확인', '필수 이수 과목 누락 여부 확인', '학위와 자격증 동시 취득 가능 여부 확인']
+    },
+    '보육교사 2급': {
+      msg: '보육교사 2급 취득을 위한 필수 과목과 실습 일정을 한눈에 정리해드릴게요.',
+      stage2: '보육교사 과목 설계',
+      checklist: ['보육실습 기관 배정 여부 확인', '필수 이수 과목 순서 확인', '자격증 발급 절차 확인']
+    },
+    '기사·산업기사 응시자격': {
+      msg: '응시자격을 가장 빠르게 충족하는 학점 조합을 설계해드릴게요.',
+      stage2: '응시자격 학점 설계',
+      checklist: ['응시자격에 필요한 전공 학점 충족 여부 확인', '실기·필기 시험 일정 확인', '관련 학과 인정 여부 확인']
+    },
+    '편입': {
+      msg: '지금까지 인정된 학점으로 편입 가능한 전략부터 확인해보세요.',
+      stage2: '편입 학점 매칭',
+      checklist: ['현재 인정 학점이 목표 대학 편입 조건에 맞는지 확인', 'GPA 관리 전략 확인', '편입 시험·면접 일정 확인']
+    },
+    '대학원 진학': {
+      msg: '대학원 진학에 필요한 학점과 일정을 미리 준비할 수 있도록 도와드릴게요.',
+      stage2: '대학원 진학 학점 설계',
+      checklist: ['대학원 지원 자격(학위) 충족 여부 확인', '연구계획서 준비 일정 확인', '추천서·면접 준비 확인']
+    },
+    '기타': {
+      msg: '어떤 목표든, 1:1 상담으로 가장 정확한 방향을 잡아드릴게요.',
+      stage2: '맞춤 학점 설계',
+      checklist: ['목표에 맞는 과정 확인', '필요한 학점·자격 요건 확인', '진행 일정 계획 수립']
+    }
+  };
+  var eduMsg = {
+    '고등학교 졸업': '처음 시작이라도 걱정 마세요, 기초부터 설계해드립니다.',
+    '2/3년제 졸업': '이미 들은 학점을 최대한 인정받는 방향으로 설계해드립니다.',
+    '4년제 졸업': '추가 학위나 자격증도 효율적으로 준비할 수 있어요.',
+    '대학교 중퇴 / 제적': '기존 학점을 활용해 빠르게 다시 시작할 수 있도록 도와드립니다.'
+  };
+  var goalToFormValue = {
+    '학위 취득': '학위 취득 (전문학사/학사)',
+    '기사·산업기사 응시자격': '기사/산업기사 응시자격'
+  };
+
+  var overlay = document.getElementById('esd-modal-overlay');
+  var step1 = document.getElementById('esd-step1');
+  var step2 = document.getElementById('esd-step2');
+  var result = document.getElementById('esd-result');
+  var bar = document.getElementById('esd-bar');
+  var stepLabel = document.getElementById('esd-step-label');
+
+  /* 모달 열기/닫기 */
+  document.getElementById('esd-fab-btn').addEventListener('click', function(){
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  });
+  function closeModal(){
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.getElementById('esd-modal-close').addEventListener('click', closeModal);
+  overlay.addEventListener('click', function(e){
+    if (e.target === overlay) closeModal();
+  });
+
+  document.querySelectorAll('#esd-step1 .esd-opt').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      eduChoice = btn.getAttribute('data-edu');
+      step1.style.display = 'none';
+      step2.style.display = 'block';
+      bar.style.width = '50%';
+      stepLabel.textContent = 'STEP 2 / 2';
+    });
+  });
+
+  document.querySelectorAll('#esd-step2 .esd-opt').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      goalChoice = btn.getAttribute('data-goal');
+      step2.style.display = 'none';
+      result.style.display = 'block';
+      bar.style.width = '100%';
+      stepLabel.style.display = 'none';
+
+      var data = goalData[goalChoice] || goalData['기타'];
+      document.getElementById('esd-result-msg').textContent = data.msg;
+      document.getElementById('esd-result-sub').textContent = eduMsg[eduChoice] || '';
+
+      var rmStages = ['무료 상담', data.stage2, '학점 이수', '취득'];
+      var rmHtml = '';
+      rmStages.forEach(function(label, i){
+        rmHtml += '<div class="esd-rm-step"><span class="esd-rm-dot">' + (i+1) + '</span><span class="esd-rm-text">' + label + '</span></div>';
+        if (i < rmStages.length - 1) rmHtml += '<span class="esd-rm-arrow">→</span>';
+      });
+      document.getElementById('esd-roadmap').innerHTML = rmHtml;
+
+      var clHtml = '';
+      data.checklist.forEach(function(item){
+        clHtml += '<li>' + item + '</li>';
+      });
+      document.getElementById('esd-checklist').innerHTML = clHtml;
+    });
+  });
+
+  document.getElementById('esd-back-btn').addEventListener('click', function(){
+    step2.style.display = 'none';
+    step1.style.display = 'block';
+    bar.style.width = '0%';
+    stepLabel.style.display = 'block';
+    stepLabel.textContent = 'STEP 1 / 2';
+  });
+
+  document.getElementById('esd-retry-btn').addEventListener('click', function(){
+    eduChoice = ''; goalChoice = '';
+    result.style.display = 'none';
+    step1.style.display = 'block';
+    bar.style.width = '0%';
+    stepLabel.style.display = 'block';
+    stepLabel.textContent = 'STEP 1 / 2';
+  });
+
+  /* 상담 폼으로 이동: 모달 닫고, 값 채운 뒤, 기존 스무스스크롤 스크립트가 이동을 처리함 */
+  document.getElementById('esd-form-link').addEventListener('click', function(){
+    var eduSel = document.getElementById('es6-edu');
+    var goalSel = document.getElementById('es6-goal');
+    if (eduSel && eduChoice) eduSel.value = eduChoice;
+    if (goalSel && goalChoice) goalSel.value = goalToFormValue[goalChoice] || goalChoice;
+    closeModal();
+  });
+})();
+</script>
+
+
+<!-- =============================================
+   에듀솔루션 | 폼 라벨 가시성 개선
+   ※ 메인 페이지 코드 위젯에 추가
+   ※ 기존 코드 아무 곳에나 붙여넣기 가능
+================================================ -->
+<style>
+
+/* 라벨 텍스트 — 훨씬 밝게 */
+.es6-lbl2{
+  font-size:13px;
+  font-weight:700;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  color:rgba(255,255,255,.85) !important;
+  margin-bottom:6px;
+  display:block;
+}
+
+/* 입력창 placeholder 도 살짝 밝게 */
+.es6-input::placeholder{
+  color:rgba(255,255,255,.38);
+}
+
+/* select 기본 텍스트색 */
+.es6-select{
+  color:rgba(255,255,255,.75);
+}
+
+/* 값이 선택됐을 때 더 밝게 */
+.es6-select:not([value=""]),
+.es6-input:not(:placeholder-shown){
+  color:#fff;
+}
+
+/* 개인정보 동의 텍스트 */
+.es6-agree span{
+  color:rgba(255,255,255,.55);
+}
+
+</style>
+
+
+<!-- =============================================
+   에듀솔루션 | 애니메이션 전용 코드 v3
+   ※ 기존 애니메이션 코드 위젯 삭제 후 교체
+   ※ 페이지 최하단에 추가
+   ※ 섹션 배경·패딩 모두 0
+================================================ -->
+<style>
+
+/* ── 1. 히어로 타이틀 ── */
+.esh h1 > *{
+  display:inline-block;
+  animation:heroUp 1.1s cubic-bezier(.16,1,.3,1) both;
+}
+.esh h1 .line2{ animation-delay:.18s; }
+@keyframes heroUp{
+  from{ opacity:0; transform:translateY(50px); }
+  to{   opacity:1; transform:none; }
+}
+.esh-sub{
+  animation:fadeInSub 1s .38s cubic-bezier(.16,1,.3,1) both;
+}
+.esh-btns{
+  animation:fadeInSub .9s .58s cubic-bezier(.16,1,.3,1) both;
+}
+@keyframes fadeInSub{
+  from{ opacity:0; transform:translateY(16px); }
+  to{   opacity:1; transform:none; }
+}
+
+/* ── 2. 스크롤 트리거 공통 ── */
+.scroll-hidden{
+  opacity:0;
+  transform:translateY(22px);
+  transition:
+    opacity   .95s cubic-bezier(.16,1,.3,1),
+    transform .95s cubic-bezier(.16,1,.3,1);
+}
+.scroll-show{
+  opacity:1 !important;
+  transform:none !important;
+}
+
+/* ── 3. 섹션1 카드 ── */
+.es1-card{
+  transition:background .3s, transform .3s, box-shadow .3s,
+             opacity .9s cubic-bezier(.16,1,.3,1);
+}
+.es1-card.scroll-hidden{ opacity:0; transform:translateY(22px); }
+.es1-card.scroll-show:nth-child(1){ transition-delay:.0s; }
+.es1-card.scroll-show:nth-child(2){ transition-delay:.12s; }
+.es1-card.scroll-show:nth-child(3){ transition-delay:.24s; }
+.es1-card.scroll-show:nth-child(4){ transition-delay:.36s; }
+.es1-card:hover{ box-shadow:0 8px 32px rgba(74,127,165,.28); }
+
+/* ── 4. 섹션2 stat ── */
+.es2-item{
+  transition:opacity .9s cubic-bezier(.16,1,.3,1),
+             transform .9s cubic-bezier(.16,1,.3,1),
+             background .2s;
+}
+.es2-item.scroll-hidden{ opacity:0; transform:translateY(14px); }
+.es2-item.scroll-show:nth-child(1){ transition-delay:.0s; }
+.es2-item.scroll-show:nth-child(2){ transition-delay:.12s; }
+.es2-item.scroll-show:nth-child(3){ transition-delay:.24s; }
+.es2-item.scroll-show:nth-child(4){ transition-delay:.36s; }
+
+/* ── 5. 섹션3 카드 ── */
+.es3-item{
+  transition:opacity .9s cubic-bezier(.16,1,.3,1),
+             transform .9s cubic-bezier(.16,1,.3,1),
+             background .3s;
+}
+.es3-item.scroll-hidden{ opacity:0; transform:translateY(20px); }
+.es3-item.scroll-show:nth-child(1){ transition-delay:.0s;  }
+.es3-item.scroll-show:nth-child(2){ transition-delay:.12s; }
+.es3-item.scroll-show:nth-child(3){ transition-delay:.24s; }
+.es3-item.scroll-show:nth-child(4){ transition-delay:.36s; }
+.es3-item.scroll-show:nth-child(5){ transition-delay:.48s; }
+.es3-item.scroll-show:nth-child(6){ transition-delay:.60s; }
+
+/* ── 6. 섹션4 스텝 ── */
+.es4-step{
+  transition:opacity .9s cubic-bezier(.16,1,.3,1),
+             transform .9s cubic-bezier(.16,1,.3,1);
+}
+.es4-step.scroll-hidden{ opacity:0; transform:translateY(18px); }
+.es4-step.scroll-show:nth-child(1){ transition-delay:.0s;  }
+.es4-step.scroll-show:nth-child(2){ transition-delay:.14s; }
+.es4-step.scroll-show:nth-child(3){ transition-delay:.28s; }
+.es4-step.scroll-show:nth-child(4){ transition-delay:.42s; }
+.es4-step.scroll-show:nth-child(5){ transition-delay:.56s; }
+
+/* ── 7. 섹션5 카드 ── */
+.es5-card{
+  transition:opacity .9s cubic-bezier(.16,1,.3,1),
+             transform .9s cubic-bezier(.16,1,.3,1),
+             border-color .3s, box-shadow .3s;
+}
+.es5-card.scroll-hidden{ opacity:0; transform:translateY(20px); }
+.es5-card.scroll-show:nth-child(1){ transition-delay:.0s;  }
+.es5-card.scroll-show:nth-child(2){ transition-delay:.12s; }
+.es5-card.scroll-show:nth-child(3){ transition-delay:.24s; }
+.es5-card.scroll-show:nth-child(4){ transition-delay:.36s; }
+.es5-card.scroll-show:nth-child(5){ transition-delay:.48s; }
+.es5-card.scroll-show:nth-child(6){ transition-delay:.60s; }
+
+/* ── 8. 폼 인풋 마이크로 ── */
+.es6-input:focus,
+.es6-select:focus{
+  box-shadow:0 0 0 3px rgba(74,127,165,.2);
+  transform:translateY(-1px);
+  transition:border-color .25s, background .25s,
+             box-shadow .25s, transform .25s;
+}
+
+/* ── 9. 제출 버튼 idle 펄스 ── */
+@keyframes submitPulse{
+  0%,100%{ box-shadow:0 0 0 0 rgba(74,127,165,.4); }
+  50%{     box-shadow:0 0 0 10px rgba(74,127,165,0); }
+}
+#es6-submit-btn:not(:disabled){
+  animation:submitPulse 2.8s 2s infinite;
+}
+
+/* ── 10. 배지 등장 ── */
+.es1-badge{
+  animation:badgePop .8s .2s cubic-bezier(.34,1.56,.64,1) both;
+}
+@keyframes badgePop{
+  from{ opacity:0; transform:scale(.82); }
+  to{   opacity:1; transform:scale(1); }
+}
+
+</style>
+
+<script>
+(function(){
+
+  /* ── IntersectionObserver ── */
+  /* rootMargin 넉넉하게 → 요소가 화면에 들어올 때 여유있게 트리거 */
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(!e.isIntersecting) return;
+      e.target.classList.remove('scroll-hidden');
+      e.target.classList.add('scroll-show');
+      io.unobserve(e.target);
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -20px 0px' });
+
+  function registerScroll(sel){
+    document.querySelectorAll(sel).forEach(function(el){
+      el.classList.add('scroll-hidden');
+      io.observe(el);
+    });
+  }
+
+  function registerText(sel, delay){
+    document.querySelectorAll(sel).forEach(function(el){
+      el.classList.add('scroll-hidden');
+      el.style.transitionDelay = (delay || 0) + 's';
+      io.observe(el);
+    });
+  }
+
+  /* ── 숫자 카운터 ── */
+  function countUp(el, target, duration){
+    var isFloat = String(target).indexOf('.') !== -1;
+    var startTime = null;
+    function step(ts){
+      if(!startTime) startTime = ts;
+      var p = Math.min((ts - startTime) / duration, 1);
+      var ease = 1 - Math.pow(1 - p, 4);
+      var val = ease * target;
+      el.textContent = isFloat
+        ? val.toFixed(1)
+        : Math.floor(val).toLocaleString();
+      if(p < 1) requestAnimationFrame(step);
+      else el.textContent = isFloat ? target.toFixed(1) : Number(target).toLocaleString();
+    }
+    requestAnimationFrame(step);
+  }
+
+  var statsObserver = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(!e.isIntersecting) return;
+      var el = e.target;
+      countUp(el, parseFloat(el.getAttribute('data-count')), 2000);
+      statsObserver.unobserve(el);
+    });
+  }, { threshold: 0.5 });
+
+  function initStats(){
+    var map = [
+      { sel:'.es2-in .es2-item:nth-child(1) .es2-main', count:'28000' },
+      { sel:'.es2-in .es2-item:nth-child(2) .es2-main', count:'99.9' },
+    ];
+    map.forEach(function(m){
+      var el = document.querySelector(m.sel);
+      if(!el) return;
+      el.setAttribute('data-count', m.count);
+      statsObserver.observe(el);
+    });
+  }
+
+  /* ── 네비 스크롤 그림자 ── */
+  function initNav(){
+    var nav = document.querySelector('.es0');
+    if(!nav) return;
+    window.addEventListener('scroll', function(){
+      nav.style.boxShadow = window.scrollY > 60
+        ? '0 4px 28px rgba(14,31,61,.13)'
+        : 'none';
+      nav.style.background = window.scrollY > 60
+        ? 'rgba(255,255,255,.99)'
+        : 'rgba(255,255,255,.96)';
+    }, { passive:true });
+  }
+
+  /* ── 부드러운 앵커 스크롤 ── */
+  function initSmoothScroll(){
+    document.querySelectorAll('a[href^="#"]').forEach(function(a){
+      a.addEventListener('click', function(e){
+        var target = document.querySelector(this.getAttribute('href'));
+        if(!target) return;
+        e.preventDefault();
+        window.scrollTo({
+          top: target.getBoundingClientRect().top + window.scrollY - 80,
+          behavior: 'smooth'
+        });
+        var mob = document.getElementById('es0mob');
+        if(mob) mob.classList.remove('open');
+      });
+    });
+  }
+
+  /* ── 섹션3 카드 3D 틸트 (데스크탑) ── */
+  function initTilt(){
+    if(window.innerWidth < 768) return;
+    document.querySelectorAll('.es3-item').forEach(function(card){
+      card.addEventListener('mousemove', function(e){
+        var r = card.getBoundingClientRect();
+        var x = (e.clientX - r.left) / r.width  - 0.5;
+        var y = (e.clientY - r.top)  / r.height - 0.5;
+        card.style.transform =
+          'translateY(-3px) rotateX('+(-y*4)+'deg) rotateY('+(x*4)+'deg)';
+        card.style.transition = 'transform .12s';
+      });
+      card.addEventListener('mouseleave', function(){
+        card.style.transform = '';
+        card.style.transition = 'transform .6s cubic-bezier(.16,1,.3,1)';
+      });
+    });
+  }
+
+  /* ── 전체 초기화 ── */
+  function init(){
+    registerScroll('.es1-card');
+    registerScroll('.es2-item');
+    registerScroll('.es3-item');
+    registerScroll('.es4-step');
+    registerScroll('.es5-card');
+
+    /* 헤딩 */
+    registerText('.es1 h1',  0);
+    registerText('.es3 h2',  0);
+    registerText('.es4 h2',  0);
+    registerText('.es5 h2',  0);
+    registerText('.es6 h2',  0);
+
+    /* 서브텍스트 - 헤딩보다 0.15s 뒤 */
+    registerText('.es1-sub',  0.15);
+    registerText('.es3-sub',  0.15);
+    registerText('.es4-sub',  0.15);
+    registerText('.es5-cta',  0.15);
+    registerText('.es6-sub',  0.15);
+
+    /* 라벨 */
+    registerText('.es3-label', 0);
+    registerText('.es4-label', 0);
+    registerText('.es5-label', 0);
+    registerText('.es6-lbl',   0);
+
+    /* 기타 */
+    registerText('.es4-note',       0.6);
+    registerText('#es6-form-body',  0.12);
+
+    initStats();
+    initNav();
+    initSmoothScroll();
+    initTilt();
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+})();
+</script>
+
+
+</body>
+</html>

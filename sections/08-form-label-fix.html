@@ -1,0 +1,40 @@
+<!-- =============================================
+   에듀솔루션 | 폼 라벨 가시성 개선
+   ※ 메인 페이지 코드 위젯에 추가
+   ※ 기존 코드 아무 곳에나 붙여넣기 가능
+================================================ -->
+<style>
+
+/* 라벨 텍스트 — 훨씬 밝게 */
+.es6-lbl2{
+  font-size:13px;
+  font-weight:700;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  color:rgba(255,255,255,.85) !important;
+  margin-bottom:6px;
+  display:block;
+}
+
+/* 입력창 placeholder 도 살짝 밝게 */
+.es6-input::placeholder{
+  color:rgba(255,255,255,.38);
+}
+
+/* select 기본 텍스트색 */
+.es6-select{
+  color:rgba(255,255,255,.75);
+}
+
+/* 값이 선택됐을 때 더 밝게 */
+.es6-select:not([value=""]),
+.es6-input:not(:placeholder-shown){
+  color:#fff;
+}
+
+/* 개인정보 동의 텍스트 */
+.es6-agree span{
+  color:rgba(255,255,255,.55);
+}
+
+</style>
