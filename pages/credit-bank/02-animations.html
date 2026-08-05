@@ -1,0 +1,248 @@
+<!-- =============================================
+   에듀솔루션 | 학점은행제 페이지 애니메이션
+   ※ 학점은행제 페이지 최하단에 추가
+   ※ 섹션 배경·패딩 모두 0
+================================================ -->
+<style>
+
+/* ── 1. 히어로 ── */
+.pk-hero-lbl{
+  animation:badgePop .8s .1s cubic-bezier(.34,1.56,.64,1) both;
+}
+@keyframes badgePop{
+  from{ opacity:0; transform:scale(.82); }
+  to{   opacity:1; transform:scale(1); }
+}
+.pk-hero h1{
+  animation:heroUp 1.1s .22s cubic-bezier(.16,1,.3,1) both;
+}
+@keyframes heroUp{
+  from{ opacity:0; transform:translateY(40px); }
+  to{   opacity:1; transform:none; }
+}
+.pk-hero-sub{
+  animation:fadeUp .95s .42s cubic-bezier(.16,1,.3,1) both;
+}
+@keyframes fadeUp{
+  from{ opacity:0; transform:translateY(18px); }
+  to{   opacity:1; transform:none; }
+}
+
+/* ── 2. 스크롤 트리거 공통 ── */
+.scroll-hidden{
+  opacity:0;
+  transform:translateY(22px);
+  transition:
+    opacity   .95s cubic-bezier(.16,1,.3,1),
+    transform .95s cubic-bezier(.16,1,.3,1);
+}
+.scroll-show{
+  opacity:1 !important;
+  transform:none !important;
+}
+
+/* ── 3. 제도 개요 — what-item 왼쪽 슬라이드 ── */
+.pk-what-item{
+  transition:opacity .9s cubic-bezier(.16,1,.3,1),
+             transform .9s cubic-bezier(.16,1,.3,1);
+}
+.pk-what-item.scroll-hidden{
+  opacity:0;
+  transform:translateX(-20px);
+}
+.pk-what-item.scroll-show:nth-child(1){ transition-delay:.0s;  }
+.pk-what-item.scroll-show:nth-child(2){ transition-delay:.13s; }
+.pk-what-item.scroll-show:nth-child(3){ transition-delay:.26s; }
+
+/* ── 4. 비주얼 박스 ── */
+.pk-what-visual{
+  transition:opacity .95s .1s cubic-bezier(.16,1,.3,1),
+             transform .95s .1s cubic-bezier(.16,1,.3,1);
+}
+.pk-what-visual.scroll-hidden{
+  opacity:0;
+  transform:translateY(28px);
+}
+
+/* ── 5. 목표 카드 스태거 ── */
+.pk-goal-card{
+  transition:opacity .9s cubic-bezier(.16,1,.3,1),
+             transform .9s cubic-bezier(.16,1,.3,1),
+             border-color .3s;
+}
+.pk-goal-card.scroll-hidden{ opacity:0; transform:translateY(22px); }
+.pk-goal-card.scroll-show:nth-child(1){ transition-delay:.0s;  }
+.pk-goal-card.scroll-show:nth-child(2){ transition-delay:.1s;  }
+.pk-goal-card.scroll-show:nth-child(3){ transition-delay:.2s;  }
+.pk-goal-card.scroll-show:nth-child(4){ transition-delay:.3s;  }
+.pk-goal-card.scroll-show:nth-child(5){ transition-delay:.4s;  }
+.pk-goal-card.scroll-show:nth-child(6){ transition-delay:.5s;  }
+
+/* ── 6. 절차 스텝 스태거 ── */
+.pk-how-step{
+  transition:opacity .9s cubic-bezier(.16,1,.3,1),
+             transform .9s cubic-bezier(.16,1,.3,1);
+}
+.pk-how-step.scroll-hidden{ opacity:0; transform:translateY(20px); }
+.pk-how-step.scroll-show:nth-child(1){ transition-delay:.0s;  }
+.pk-how-step.scroll-show:nth-child(2){ transition-delay:.14s; }
+.pk-how-step.scroll-show:nth-child(3){ transition-delay:.28s; }
+.pk-how-step.scroll-show:nth-child(4){ transition-delay:.42s; }
+
+/* ── 7. FAQ 아이템 스태거 ── */
+.pk-faq-item{
+  transition:opacity .85s cubic-bezier(.16,1,.3,1),
+             transform .85s cubic-bezier(.16,1,.3,1);
+}
+.pk-faq-item.scroll-hidden{ opacity:0; transform:translateY(14px); }
+.pk-faq-item.scroll-show:nth-child(1){ transition-delay:.0s;  }
+.pk-faq-item.scroll-show:nth-child(2){ transition-delay:.08s; }
+.pk-faq-item.scroll-show:nth-child(3){ transition-delay:.16s; }
+.pk-faq-item.scroll-show:nth-child(4){ transition-delay:.24s; }
+.pk-faq-item.scroll-show:nth-child(5){ transition-delay:.32s; }
+
+/* ── 8. CTA ── */
+.pk-cta-title{
+  transition:opacity .95s cubic-bezier(.16,1,.3,1),
+             transform .95s cubic-bezier(.16,1,.3,1);
+}
+.pk-cta-sub{
+  transition:opacity .9s .14s cubic-bezier(.16,1,.3,1),
+             transform .9s .14s cubic-bezier(.16,1,.3,1);
+}
+.pk-cta-btn{
+  transition:opacity .85s .28s cubic-bezier(.16,1,.3,1),
+             transform .85s .28s cubic-bezier(.16,1,.3,1),
+             background .2s;
+}
+
+/* ── 9. 라벨·타이틀·설명 ── */
+.pk-lbl{
+  transition:opacity .85s cubic-bezier(.16,1,.3,1),
+             transform .85s cubic-bezier(.16,1,.3,1);
+}
+.pk-title{
+  transition:opacity .95s .1s cubic-bezier(.16,1,.3,1),
+             transform .95s .1s cubic-bezier(.16,1,.3,1);
+}
+.pk-desc{
+  transition:opacity .9s .2s cubic-bezier(.16,1,.3,1),
+             transform .9s .2s cubic-bezier(.16,1,.3,1);
+}
+
+/* ── 10. how 연결선 페이드 ── */
+.pk-how-steps::before{
+  transition:opacity 1s .5s;
+  opacity:0;
+}
+.pk-how-steps.line-show::before{
+  opacity:1;
+}
+
+</style>
+
+<script>
+(function(){
+
+  /* ── IntersectionObserver ── */
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(!e.isIntersecting) return;
+      e.target.classList.remove('scroll-hidden');
+      e.target.classList.add('scroll-show');
+      io.unobserve(e.target);
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -20px 0px' });
+
+  function reg(sel){
+    document.querySelectorAll(sel).forEach(function(el){
+      el.classList.add('scroll-hidden');
+      io.observe(el);
+    });
+  }
+
+  function regDelay(sel, delay){
+    document.querySelectorAll(sel).forEach(function(el){
+      el.classList.add('scroll-hidden');
+      el.style.transitionDelay = delay + 's';
+      io.observe(el);
+    });
+  }
+
+  /* ── 절차 연결선 observer ── */
+  function initHowLine(){
+    var steps = document.querySelector('.pk-how-steps');
+    if(!steps) return;
+    var lineIO = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(!e.isIntersecting) return;
+        e.target.classList.add('line-show');
+        lineIO.unobserve(e.target);
+      });
+    }, { threshold: 0.3 });
+    lineIO.observe(steps);
+  }
+
+  /* ── FAQ 토글 (기존 onclick 유지 + 애니메이션) ── */
+  function initFaqAnim(){
+    document.querySelectorAll('.pk-faq-a').forEach(function(a){
+      a.style.transition = 'opacity .35s, transform .35s';
+      a.style.transformOrigin = 'top';
+    });
+  }
+
+  /* ── 부드러운 앵커 스크롤 ── */
+  function initSmoothScroll(){
+    document.querySelectorAll('a[href^="#"]').forEach(function(a){
+      a.addEventListener('click', function(e){
+        var target = document.querySelector(this.getAttribute('href'));
+        if(!target) return;
+        e.preventDefault();
+        window.scrollTo({
+          top: target.getBoundingClientRect().top + window.scrollY - 80,
+          behavior: 'smooth'
+        });
+      });
+    });
+  }
+
+  /* ── 전체 초기화 ── */
+  function init(){
+
+    /* 라벨·타이틀·설명 */
+    reg('.pk-lbl');
+    reg('.pk-title');
+    reg('.pk-desc');
+
+    /* 제도 개요 */
+    reg('.pk-what-item');
+    reg('.pk-what-visual');
+
+    /* 목표 카드 */
+    reg('.pk-goal-card');
+
+    /* 절차 스텝 */
+    reg('.pk-how-step');
+
+    /* FAQ */
+    reg('.pk-faq-item');
+
+    /* CTA */
+    reg('.pk-cta-title');
+    reg('.pk-cta-sub');
+    reg('.pk-cta-btn');
+
+    /* 연결선·FAQ 애니 */
+    initHowLine();
+    initFaqAnim();
+    initSmoothScroll();
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+})();
+</script>

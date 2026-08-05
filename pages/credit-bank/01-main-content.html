@@ -1,0 +1,222 @@
+<!-- 학점은행제 페이지 v3 | 아임웹 /28 코드 위젯에 붙여넣기 -->
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+<style>
+.pk{width:100%;background:#fff;font-family:'Noto Sans KR',sans-serif;box-sizing:border-box;}
+
+/* 히어로 */
+.pk-hero{background:#1a2d4a;padding:100px 6% 90px;position:relative;overflow:hidden;text-align:center;}
+.pk-hero::before{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(0deg,transparent,transparent 47px,rgba(255,255,255,.025) 47px,rgba(255,255,255,.025) 48px),repeating-linear-gradient(90deg,transparent,transparent 47px,rgba(255,255,255,.025) 47px,rgba(255,255,255,.025) 48px);pointer-events:none;}
+.pk-hero-lbl{display:inline-flex;align-items:center;gap:8px;background:rgba(107,157,189,.18);border:1px solid rgba(107,157,189,.35);color:#afd0e8;padding:10px 20px;border-radius:100px;font-size:14px;font-weight:500;margin-bottom:2rem;}
+.pk-hero h1{font-size:clamp(3rem,5.5vw,4.8rem);font-weight:900;letter-spacing:-.04em;line-height:1.2;color:#fff;margin:0 0 1.5rem;}
+.pk-hero h1 em{font-family:'Playfair Display',serif;font-style:italic;color:#a0cde0;}
+.pk-hero-sub{font-size:clamp(16px,2vw,20px);color:rgba(255,255,255,.6);line-height:1.9;margin:0;}
+
+/* 섹션 공통 */
+.pk-sec{padding:100px 6%;box-sizing:border-box;}
+.pk-sec-in{max-width:1100px;margin:0 auto;}
+.pk-lbl{font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#4a7fa5;margin-bottom:.9rem;display:flex;align-items:center;gap:8px;}
+.pk-lbl::before{content:'';display:block;width:28px;height:2px;background:#4a7fa5;border-radius:2px;}
+
+/* 섹션 제목 — p 태그로 아임웹 h2 간섭 차단 */
+.pk-title,p.pk-title{
+  font-size:clamp(2.6rem,4vw,3.6rem) !important;
+  font-weight:900 !important;
+  letter-spacing:-.04em !important;
+  line-height:1.2 !important;
+  color:#1a2d4a !important;
+  margin:0 0 1rem !important;
+  font-family:'Noto Sans KR',sans-serif !important;
+}
+.pk-title em,p.pk-title em{
+  font-family:'Playfair Display',serif !important;
+  font-style:italic !important;
+  color:#4a7fa5 !important;
+  font-weight:700 !important;
+}
+.pk-desc{font-size:17px;color:#6b7f93;line-height:1.9;margin:0 0 3.5rem;max-width:640px;}
+
+/* 제도 개요 */
+.pk-what{background:#f7f9fb;}
+.pk-what-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;}
+.pk-what-visual{background:linear-gradient(135deg,#1a2d4a 0%,#4a7fa5 100%);border-radius:24px;padding:3rem;display:flex;flex-direction:column;gap:1.5rem;}
+.pk-badge-row{display:flex;gap:1rem;flex-wrap:wrap;}
+.pk-badge{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:12px;padding:1.1rem 1.25rem;flex:1;min-width:100px;text-align:center;}
+.pk-badge-num{font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:700;color:#fff;display:block;line-height:1;}
+.pk-badge-txt{font-size:13px;color:rgba(255,255,255,.6);margin-top:5px;}
+.pk-arrow{text-align:center;font-size:30px;color:rgba(255,255,255,.4);}
+.pk-result{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:12px;padding:1.4rem 1.5rem;text-align:center;}
+.pk-result-txt{font-size:17px;font-weight:700;color:#fff;}
+.pk-result-sub{font-size:14px;color:rgba(255,255,255,.55);margin-top:5px;}
+.pk-what-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:1.5rem;}
+.pk-what-item{display:flex;gap:1rem;align-items:flex-start;}
+.pk-what-dot{width:36px;height:36px;border-radius:50%;background:#ddeaf4;color:#4a7fa5;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;flex-shrink:0;margin-top:2px;}
+.pk-what-item-title{font-size:19px;font-weight:700;color:#1a2d4a;margin:0 0 5px;}
+.pk-what-item-desc{font-size:15px;color:#6b7f93;line-height:1.85;margin:0;}
+
+/* 목표 카드 */
+.pk-goals{background:#fff;}
+.pk-goals-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;}
+.pk-goal-card{border-radius:18px;padding:2.25rem;border:1px solid rgba(74,127,165,.12);transition:border-color .3s,transform .3s;}
+.pk-goal-card:hover{border-color:rgba(74,127,165,.4);transform:translateY(-4px);}
+.pk-goal-ico{font-size:40px;margin-bottom:1.1rem;}
+.pk-goal-title{font-size:20px;font-weight:900;color:#1a2d4a;margin:0 0 .75rem;letter-spacing:-.02em;}
+.pk-goal-desc{font-size:15px;color:#6b7f93;line-height:1.9;margin:0 0 1.25rem;}
+.pk-goal-tags{display:flex;flex-wrap:wrap;gap:6px;}
+.pk-goal-tag{font-size:12px;font-weight:600;color:#4a7fa5;background:#ddeaf4;padding:4px 12px;border-radius:100px;}
+
+/* 절차 */
+.pk-how{background:#f7f9fb;}
+.pk-how-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;margin-top:3.5rem;position:relative;}
+.pk-how-steps::before{content:'';position:absolute;top:36px;left:12%;right:12%;height:1px;background:linear-gradient(90deg,transparent,rgba(74,127,165,.3),transparent);}
+.pk-how-step{text-align:center;position:relative;z-index:1;}
+.pk-how-num{width:72px;height:72px;border-radius:50%;background:#fff;border:2px solid rgba(74,127,165,.25);display:flex;align-items:center;justify-content:center;margin:0 auto 1.4rem;font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:#4a7fa5;transition:all .3s;}
+.pk-how-step:hover .pk-how-num{background:#4a7fa5;color:#fff;border-color:#4a7fa5;}
+.pk-how-title{font-size:17px;font-weight:700;color:#1a2d4a;margin:0 0 .6rem;}
+.pk-how-desc{font-size:14px;color:#6b7f93;line-height:1.8;margin:0;}
+
+/* FAQ */
+.pk-faq{background:#fff;}
+.pk-faq-list{display:flex;flex-direction:column;gap:1rem;margin-top:3rem;}
+.pk-faq-item{border:1px solid rgba(74,127,165,.15);border-radius:14px;overflow:hidden;}
+.pk-faq-q{padding:1.6rem 1.75rem;font-size:17px;font-weight:700;color:#1a2d4a;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:1rem;transition:background .2s;}
+.pk-faq-q:hover{background:#f7f9fb;}
+.pk-faq-q::after{content:'＋';font-size:22px;color:#4a7fa5;flex-shrink:0;transition:transform .3s;}
+.pk-faq-item.open .pk-faq-q::after{transform:rotate(45deg);}
+.pk-faq-a{font-size:16px;color:#6b7f93;line-height:1.9;padding:0 1.75rem 1.75rem;display:none;}
+.pk-faq-item.open .pk-faq-a{display:block;}
+
+/* CTA */
+.pk-cta{background:#1a2d4a;padding:90px 6%;text-align:center;}
+.pk-cta-title,p.pk-cta-title{font-size:clamp(2.2rem,3.8vw,3.2rem) !important;font-weight:900 !important;letter-spacing:-.04em !important;color:#fff !important;margin:0 0 1rem !important;font-family:'Noto Sans KR',sans-serif !important;}
+.pk-cta-title em,p.pk-cta-title em{font-family:'Playfair Display',serif !important;font-style:italic !important;color:#7ab8d8 !important;}
+.pk-cta-sub{font-size:clamp(15px,1.8vw,18px);color:rgba(255,255,255,.55);margin:0 0 2.5rem;}
+.pk-cta-btn{background:#4a7fa5;color:#fff !important;padding:20px 48px;border-radius:10px;font-size:clamp(15px,1.8vw,18px);font-weight:700;text-decoration:none;display:inline-block;transition:background .2s,transform .15s;}
+.pk-cta-btn:hover{background:#6b9dbd;transform:translateY(-2px);}
+
+@media(max-width:900px){
+  .pk-what-grid{grid-template-columns:1fr;}
+  .pk-goals-grid{grid-template-columns:1fr 1fr;}
+  .pk-how-steps{grid-template-columns:repeat(2,1fr);}
+  .pk-how-steps::before{display:none;}
+}
+@media(max-width:560px){
+  .pk-hero{padding:70px 5% 60px;}
+  .pk-sec{padding:70px 5%;}
+  .pk-goals-grid{grid-template-columns:1fr;}
+  .pk-how-steps{grid-template-columns:1fr;}
+}
+</style>
+
+<div class="pk">
+
+  <!-- 히어로 -->
+  <div class="pk-hero">
+    <div class="pk-hero-lbl">학점은행제 완벽 가이드</div>
+    <h1>학점은행제,<br><em>이렇게 활용하세요</em></h1>
+    <p class="pk-hero-sub">학교 밖에서도 학점을 취득하고 학위·자격증을 딸 수 있는 제도.<br>복잡하게 느껴지는 학점은행제를 쉽게 설명해 드립니다.</p>
+  </div>
+
+  <!-- 제도 개요 -->
+  <div class="pk-sec pk-what">
+    <div class="pk-sec-in">
+      <div class="pk-what-grid">
+        <div>
+          <div class="pk-lbl">What is it?</div>
+          <p class="pk-title">학점은행제란<br><em>무엇인가요?</em></p>
+          <ul class="pk-what-list">
+            <li class="pk-what-item">
+              <div class="pk-what-dot">1</div>
+              <div>
+                <p class="pk-what-item-title">학교 밖에서 학점 취득</p>
+                <p class="pk-what-item-desc">학교에 다니지 않아도 온라인 강의, 자격증, 독학사 등 다양한 방법으로 학점을 쌓을 수 있는 국가 공인 제도입니다.</p>
+              </div>
+            </li>
+            <li class="pk-what-item">
+              <div class="pk-what-dot">2</div>
+              <div>
+                <p class="pk-what-item-title">정식 학위 수여</p>
+                <p class="pk-what-item-desc">일정 학점을 채우면 교육부 장관 명의의 정식 전문학사·학사 학위를 받을 수 있습니다. 일반 대학 졸업과 동등하게 인정됩니다.</p>
+              </div>
+            </li>
+            <li class="pk-what-item">
+              <div class="pk-what-dot">3</div>
+              <div>
+                <p class="pk-what-item-title">직장인·주부도 가능</p>
+                <p class="pk-what-item-desc">온라인으로 진행되는 과목이 대부분이라 시간·장소 제약 없이 자신의 페이스에 맞게 학습할 수 있습니다.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="pk-what-visual">
+          <div class="pk-badge-row">
+            <div class="pk-badge"><span class="pk-badge-num">80</span><p class="pk-badge-txt">전문학사 취득 학점</p></div>
+            <div class="pk-badge"><span class="pk-badge-num">140</span><p class="pk-badge-txt">학사 취득 학점</p></div>
+          </div>
+          <div class="pk-arrow">↓</div>
+          <div class="pk-result">
+            <p class="pk-result-txt">🎓 교육부 장관 명의 학위 취득</p>
+            <p class="pk-result-sub">일반 대학 졸업과 동일하게 인정</p>
+          </div>
+          <div class="pk-arrow">↕</div>
+          <div class="pk-badge-row">
+            <div class="pk-badge"><span class="pk-badge-num">온라인</span><p class="pk-badge-txt">수업 방식</p></div>
+            <div class="pk-badge"><span class="pk-badge-num">자격증, 독학사</span><p class="pk-badge-txt">학점 인정</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 목표 -->
+  <div class="pk-sec pk-goals">
+    <div class="pk-sec-in">
+      <div class="pk-lbl">Goals</div>
+      <p class="pk-title">이런 목표를<br><em>달성할 수 있어요</em></p>
+      <p class="pk-desc">학점은행제를 통해 취득할 수 있는 대표적인 목표들입니다.</p>
+      <div class="pk-goals-grid">
+        <div class="pk-goal-card"><div class="pk-goal-ico">🎓</div><p class="pk-goal-title">전문학사 / 학사 학위</p><p class="pk-goal-desc">80학점(전문학사) 또는 140학점(학사)을 채우면 교육부 장관 명의 정식 학위를 취득할 수 있습니다.</p><div class="pk-goal-tags"><span class="pk-goal-tag">전문학사 80학점</span><span class="pk-goal-tag">학사 140학점</span></div></div>
+        <div class="pk-goal-card"><div class="pk-goal-ico">🧑‍⚕️</div><p class="pk-goal-title">사회복지사 2급</p><p class="pk-goal-desc">전공 16과목을 이수하고 실습을 완료하면 사회복지사 2급 자격증을 얻을 수 있습니다.</p><div class="pk-goal-tags"><span class="pk-goal-tag">필수 17과목</span><span class="pk-goal-tag">실습 포함</span></div></div>
+        <div class="pk-goal-card"><div class="pk-goal-ico">👶</div><p class="pk-goal-title">보육교사 2급</p><p class="pk-goal-desc">보육 관련 16과목과 보육 실습을 이수하면 보육교사 2급 자격증을 취득할 수 있습니다.</p><div class="pk-goal-tags"><span class="pk-goal-tag">전공+대면 17과목</span><span class="pk-goal-tag">보육 실습</span></div></div>
+        <div class="pk-goal-card"><div class="pk-goal-ico">⚙️</div><p class="pk-goal-title">기사 / 산업기사 응시자격</p><p class="pk-goal-desc">전공 관련 학점을 채워 기사·산업기사 시험 응시자격을 빠르게 확보할 수 있습니다.</p><div class="pk-goal-tags"><span class="pk-goal-tag">전공 학점 확보</span><span class="pk-goal-tag">응시자격 취득</span></div></div>
+        <div class="pk-goal-card"><div class="pk-goal-ico">🏫</div><p class="pk-goal-title">편입 / 대학원 진학</p><p class="pk-goal-desc">학점은행제로 취득한 고득점 학점을 편입 또는 대학원 지원 시 활용할 수 있습니다.</p><div class="pk-goal-tags"><span class="pk-goal-tag">편입 학점</span><span class="pk-goal-tag">대학원 준비</span></div></div>
+        <div class="pk-goal-card"><div class="pk-goal-ico">📌</div><p class="pk-goal-title">한국어교원 / 평생교육사</p><p class="pk-goal-desc">특정 자격 요건을 학점은행제로 충족하여 다양한 자격증을 취득할 수 있습니다.</p><div class="pk-goal-tags"><span class="pk-goal-tag">한국어교원</span><span class="pk-goal-tag">평생교육사</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 절차 -->
+  <div class="pk-sec pk-how">
+    <div class="pk-sec-in">
+      <div class="pk-lbl">Process</div>
+      <p class="pk-title">학점은행제<br><em>진행 절차</em></p>
+      <div class="pk-how-steps">
+        <div class="pk-how-step"><div class="pk-how-num">1</div><p class="pk-how-title">학습자 등록</p><p class="pk-how-desc">국가평생교육진흥원에 학습자 등록 후 학점 취득을 시작합니다.</p></div>
+        <div class="pk-how-step"><div class="pk-how-num">2</div><p class="pk-how-title">학점 취득</p><p class="pk-how-desc">온라인 강의, 자격증, 독학사 등 다양한 방법으로 학점을 쌓습니다.</p></div>
+        <div class="pk-how-step"><div class="pk-how-num">3</div><p class="pk-how-title">학점 인정 신청</p><p class="pk-how-desc">취득한 학점을 국가평생교육진흥원에 인정 신청합니다.</p></div>
+        <div class="pk-how-step"><div class="pk-how-num">4</div><p class="pk-how-title">학위·자격 취득</p><p class="pk-how-desc">목표 학점 충족 후 학위 수여 또는 자격증 취득을 완료합니다.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="pk-sec pk-faq">
+    <div class="pk-sec-in">
+      <div class="pk-lbl">FAQ</div>
+      <p class="pk-title">자주 묻는<br><em>질문들</em></p>
+      <div class="pk-faq-list">
+        <div class="pk-faq-item"><div class="pk-faq-q" onclick="this.parentElement.classList.toggle('open')">학점은행제 학위가 일반 대학 학위와 다른가요?</div><div class="pk-faq-a">아닙니다. 학점은행제로 취득하는 학위는 교육부 장관 명의의 정식 학위로, 일반 대학 졸업 학위와 동등하게 인정됩니다. 취업·진학·자격증 응시 시 동일하게 활용 가능합니다.</div></div>
+        <div class="pk-faq-item"><div class="pk-faq-q" onclick="this.parentElement.classList.toggle('open')">직장을 다니면서도 가능한가요?</div><div class="pk-faq-a">네, 가능합니다. 대부분의 과목이 온라인으로 진행되어 시간·장소 제약 없이 학습할 수 있습니다. 많은 수강생분들이 직장을 다니면서 학위와 자격증을 취득하고 있습니다.</div></div>
+        <div class="pk-faq-item"><div class="pk-faq-q" onclick="this.parentElement.classList.toggle('open')">최단 기간이 얼마나 되나요?</div><div class="pk-faq-a">목표와 현재 보유 학점에 따라 다릅니다. 기존에 보유하신 학점이나 자격증이 있다면 더 빠르게 취득할 수 있습니다. 정확한 기간은 무료 상담을 통해 개인별 맞춤 플랜으로 안내해 드립니다.</div></div>
+        <div class="pk-faq-item"><div class="pk-faq-q" onclick="this.parentElement.classList.toggle('open')">이전에 대학에서 취득한 학점도 인정되나요?</div><div class="pk-faq-a">네, 이전 대학에서 취득한 학점을 학점은행제에 인정받을 수 있습니다. 전적 대학 성적증명서를 통해 학점 인정을 신청할 수 있으며, 이를 통해 취득 기간을 크게 단축할 수 있습니다.</div></div>
+        <div class="pk-faq-item"><div class="pk-faq-q" onclick="this.parentElement.classList.toggle('open')">비용은 얼마나 드나요?</div><div class="pk-faq-a">수강 비용은 선택하는 교육기관과 과목 수에 따라 다릅니다. 에듀솔루션의 상담 비용은 100% 무료이며, 목표에 맞는 최적의 비용 계획도 함께 안내해 드립니다.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="pk-cta">
+    <p class="pk-cta-title">궁금한 점이 있으신가요?<br><em>무료로 상담받으세요</em></p>
+    <p class="pk-cta-sub">전담 담당자가 개인 상황에 맞게 자세히 설명해 드립니다.</p>
+    <a href="https://edu-solution.co.kr/#es-form" class="pk-cta-btn">1:1 무료 상담 신청 →</a>
+  </div>
+</div>

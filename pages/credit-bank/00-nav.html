@@ -1,0 +1,56 @@
+<!-- 섹션0 NAV | 아임웹 코드 위젯 -->
+<!-- 로고: assets/logo.png (원본 파일로 교체 완료).
+     아임웹에 다시 붙여넣을 때는 이 파일을 미디어 라이브러리에 업로드한 뒤
+     나오는 URL로 아래 img src를 바꾸거나, base64로 인코딩해서 넣으면 됩니다. -->
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+.es0{width:100%;background:rgba(255,255,255,.96);backdrop-filter:blur(10px);border-bottom:1px solid rgba(14,31,61,.09);box-sizing:border-box;font-family:'Noto Sans KR',sans-serif;position:sticky;top:0;z-index:9999;}
+.es0-in{max-width:1200px;margin:0 auto;padding:0 5%;height:80px;display:flex;align-items:center;justify-content:space-between;gap:1.5rem;}
+.es0-logo{display:flex;align-items:center;text-decoration:none;flex-shrink:0;}
+.es0-logo img{height:64px;width:auto;display:block;}
+.es0-nav{display:flex;align-items:center;list-style:none;margin:0;padding:0;}
+.es0-nav li a{display:flex;align-items:center;height:80px;padding:0 22px;font-size:15px;color:#4a5568;text-decoration:none;font-weight:500;white-space:nowrap;border-bottom:2.5px solid transparent;transition:color .2s,border-color .2s;box-sizing:border-box;}
+.es0-nav li a:hover{color:#1a2d4a;border-bottom-color:#4a7fa5;}
+.es0-cta{background:#1a2d4a;color:#ffffff !important;padding:13px 24px;border-radius:8px;font-size:15px;font-weight:700;text-decoration:none !important;white-space:nowrap;flex-shrink:0;transition:background .2s;display:inline-block;line-height:1;}
+.es0-cta:hover{background:#4a7fa5;color:#ffffff !important;}
+/* 햄버거 버튼 */
+.es0-ham{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px;background:none;border:none;}
+.es0-ham span{display:block;width:24px;height:2px;background:#1a2d4a;border-radius:2px;transition:all .3s;}
+/* 모바일 드롭다운 메뉴 */
+.es0-mob{display:none;position:absolute;top:80px;left:0;right:0;background:#fff;border-bottom:1px solid rgba(14,31,61,.09);z-index:9998;box-shadow:0 8px 24px rgba(0,0,0,.08);}
+.es0-mob.open{display:block;}
+.es0-mob a{display:block;padding:16px 6%;font-size:16px;color:#1a2d4a;text-decoration:none;font-weight:500;border-bottom:1px solid rgba(14,31,61,.06);}
+.es0-mob a:last-child{border-bottom:none;}
+.es0-mob a:hover{background:#f7f9fb;}
+.es0-mob-cta{background:#1a2d4a !important;color:#fff !important;margin:1rem 6%;border-radius:8px;text-align:center;font-weight:700 !important;}
+@media(max-width:768px){
+  .es0-nav{display:none;}
+  .es0-ham{display:flex;}
+  .es0-cta{display:none;}
+  .es0-in{height:68px;}
+  .es0-logo img{height:52px;}
+  .es0-mob{top:68px;}
+}
+</style>
+<div class="es0" style="position:sticky;top:0;z-index:9999;">
+  <div class="es0-in">
+    <a href="/" class="es0-logo"><img src="../../assets/logo.png" alt="EDUSOLUTION"></a>
+    <ul class="es0-nav">
+      <li><a href="https://edu-solution.co.kr/27">팀 에듀솔루션</a></li>
+      <li><a href="https://edu-solution.co.kr/28">학점은행제</a></li>
+      <li><a href="https://edu-solution.co.kr/29">교육정보</a></li>
+      <li><a href="https://edu-solution.co.kr/30">수강생 후기</a></li>
+    </ul>
+    <button class="es0-ham" onclick="document.getElementById('es0mob').classList.toggle('open')" aria-label="메뉴">
+      <span></span><span></span><span></span>
+    </button>
+    <a href="https://edu-solution.co.kr/#es-form" class="es0-cta">1:1 무료 상담</a>
+  </div>
+  <div class="es0-mob" id="es0mob">
+    <a href="https://edu-solution.co.kr/27">팀 에듀솔루션</a>
+    <a href="https://edu-solution.co.kr/28">학점은행제</a>
+    <a href="https://edu-solution.co.kr/29">교육정보</a>
+    <a href="https://edu-solution.co.kr/30">수강생 후기</a>
+    <a href="https://edu-solution.co.kr/#es-form" class="es0-mob-cta">1:1 무료 상담</a>
+  </div>
+</div>
