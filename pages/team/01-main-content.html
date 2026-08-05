@@ -1,0 +1,152 @@
+<!-- 팀 에듀솔루션 페이지 v4 | 아임웹 /27 코드 위젯에 붙여넣기 -->
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+<style>
+.pt{width:100%;background:#fff;font-family:'Noto Sans KR',sans-serif;box-sizing:border-box;}
+.pt-hero{background:#1a2d4a;padding:100px 6% 90px;position:relative;overflow:hidden;text-align:center;}
+.pt-hero::before{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(0deg,transparent,transparent 47px,rgba(255,255,255,.025) 47px,rgba(255,255,255,.025) 48px),repeating-linear-gradient(90deg,transparent,transparent 47px,rgba(255,255,255,.025) 47px,rgba(255,255,255,.025) 48px);pointer-events:none;}
+.pt-hero-lbl{display:inline-flex;align-items:center;gap:8px;background:rgba(107,157,189,.18);border:1px solid rgba(107,157,189,.35);color:#afd0e8;padding:10px 20px;border-radius:100px;font-size:14px;font-weight:500;margin-bottom:2rem;}
+.pt-hero h1{font-size:clamp(3rem,5.5vw,4.8rem);font-weight:900;letter-spacing:-.04em;line-height:1.2;color:#fff;margin:0 0 1.5rem;}
+.pt-hero h1 em{font-family:'Playfair Display',serif;font-style:italic;color:#a0cde0;}
+.pt-hero-sub{font-size:clamp(16px,2vw,20px);color:rgba(255,255,255,.6);line-height:1.9;margin:0;}
+.pt-values{padding:100px 6%;background:#f7f9fb;}
+.pt-values-in{max-width:1100px;margin:0 auto;}
+.pt-sec-lbl{font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#4a7fa5;margin-bottom:.9rem;display:flex;align-items:center;gap:8px;}
+.pt-sec-lbl::before{content:'';display:block;width:28px;height:2px;background:#4a7fa5;border-radius:2px;}
+.pt-sec-title,p.pt-sec-title{font-size:clamp(2.6rem,4vw,3.6rem) !important;font-weight:900 !important;letter-spacing:-.04em !important;line-height:1.2 !important;color:#1a2d4a !important;margin:0 0 3.5rem !important;font-family:'Noto Sans KR',sans-serif !important;}
+.pt-sec-title em,p.pt-sec-title em{font-family:'Playfair Display',serif !important;font-style:italic !important;color:#4a7fa5 !important;font-weight:700 !important;}
+.pt-val-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;}
+.pt-val-card{background:#fff;border-radius:20px;padding:2.75rem 2.25rem;border:1px solid rgba(74,127,165,.12);position:relative;overflow:hidden;transition:transform .3s,box-shadow .3s;}
+.pt-val-card:hover{transform:translateY(-5px);box-shadow:0 16px 48px rgba(74,127,165,.12);}
+.pt-val-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:#4a7fa5;transform:scaleX(0);transform-origin:left;transition:transform .4s;}
+.pt-val-card:hover::after{transform:scaleX(1);}
+.pt-val-num{font-family:'Playfair Display',serif;font-size:4rem;font-weight:700;color:#ddeaf4;line-height:1;margin-bottom:1.25rem;}
+.pt-val-title{font-size:clamp(18px,1.8vw,22px);font-weight:900;color:#1a2d4a;margin:0 0 .9rem;letter-spacing:-.02em;}
+.pt-val-body{font-size:clamp(14px,1.5vw,16px);color:#6b7f93;line-height:1.95;margin:0;}
+.pt-members{padding:100px 6%;background:#fff;}
+.pt-members-in{max-width:1100px;margin:0 auto;}
+.pt-mem-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;margin-top:3.5rem;}
+.pt-mem-card{border-radius:20px;overflow:hidden;border:1px solid rgba(74,127,165,.12);transition:transform .3s,box-shadow .3s;}
+.pt-mem-card:hover{transform:translateY(-6px);box-shadow:0 20px 56px rgba(74,127,165,.14);}
+.pt-mem-photo{width:100%;height:320px;overflow:hidden;position:relative;}
+.pt-mem-photo img{width:100%;height:100%;object-fit:cover;object-position:center top;transition:transform .4s;}
+.pt-mem-card:hover .pt-mem-photo img{transform:scale(1.05);}
+.pt-mem-body{padding:2rem 1.75rem;}
+.pt-mem-name{font-size:clamp(18px,1.8vw,22px);font-weight:900;color:#1a2d4a;margin:0 0 4px;letter-spacing:-.02em;}
+.pt-mem-role{font-size:14px;font-weight:600;color:#4a7fa5;margin:0 0 1rem;letter-spacing:.04em;text-transform:uppercase;}
+.pt-mem-desc{font-size:clamp(14px,1.5vw,16px);color:#6b7f93;line-height:1.95;margin:0 0 1.5rem;}
+.pt-mem-tags{display:flex;flex-wrap:wrap;gap:6px;}
+.pt-mem-tag{font-size:13px;font-weight:600;color:#4a7fa5;background:#ddeaf4;padding:5px 13px;border-radius:100px;}
+.pt-cta{background:#1a2d4a;padding:90px 6%;text-align:center;}
+.pt-cta-title,p.pt-cta-title{font-size:clamp(2.2rem,3.8vw,3.2rem) !important;font-weight:900 !important;letter-spacing:-.04em !important;color:#fff !important;margin:0 0 1rem !important;font-family:'Noto Sans KR',sans-serif !important;}
+.pt-cta-title em,p.pt-cta-title em{font-family:'Playfair Display',serif !important;font-style:italic !important;color:#7ab8d8 !important;}
+.pt-cta p{font-size:clamp(15px,1.8vw,18px);color:rgba(255,255,255,.55);margin:0 0 2.5rem;}
+.pt-cta-btn{background:#4a7fa5;color:#fff !important;padding:20px 48px;border-radius:10px;font-size:clamp(15px,1.8vw,18px);font-weight:700;text-decoration:none;display:inline-block;transition:background .2s,transform .15s;}
+.pt-cta-btn:hover{background:#6b9dbd;transform:translateY(-2px);}
+@media(max-width:900px){.pt-val-grid,.pt-mem-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:560px){
+  .pt-hero{padding:70px 5% 60px;}
+  .pt-values,.pt-members{padding:70px 5%;}
+  .pt-val-grid,.pt-mem-grid{grid-template-columns:1fr;}
+  .pt-mem-body{padding:1.5rem;}
+}
+</style>
+
+<div class="pt">
+  <div class="pt-hero">
+    <div class="pt-hero-lbl">학점은행제 전문 플래너 팀</div>
+    <h1>성적, 기간, 행정까지<br><em>직접 책임지는 팀</em></h1>
+    <p class="pt-hero-sub">에듀솔루션의 전문가들이 여러분의 목표 달성을<br>처음부터 끝까지 함께합니다.</p>
+  </div>
+
+  <div class="pt-values">
+    <div class="pt-values-in">
+      <div class="pt-sec-lbl">Why Us</div>
+      <p class="pt-sec-title">에듀솔루션만의<br><em>3가지 강점</em></p>
+      <div class="pt-val-grid">
+        <div class="pt-val-card">
+          <div class="pt-val-num">01</div>
+          <p class="pt-val-title">끝까지 바뀌지 않는 담당자</p>
+          <p class="pt-val-body">처음 배정된 전담 담당자가 수료까지 동일하게 관리합니다. 중간에 담당자가 바뀌거나 인수인계로 인한 혼선이 없습니다.</p>
+        </div>
+        <div class="pt-val-card">
+          <div class="pt-val-num">02</div>
+          <p class="pt-val-title">성적·기간·행정 일괄 관리</p>
+          <p class="pt-val-body">단순 정보 제공이 아닙니다. 출석·과제·시험 일정을 직접 체크하고, 행정 서류까지 대행하여 학습에만 집중하실 수 있도록 합니다.</p>
+        </div>
+        <div class="pt-val-card">
+          <div class="pt-val-num">03</div>
+          <p class="pt-val-title">최단 기간 맞춤 설계</p>
+          <p class="pt-val-body">기존 보유 학점과 자격증을 최대한 활용해 불필요한 과목 없이 목표까지의 최단 경로를 설계합니다.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pt-members">
+    <div class="pt-members-in">
+      <div class="pt-sec-lbl">Our Team</div>
+      <p class="pt-sec-title">담당자를<br><em>직접 소개합니다</em></p>
+      <div class="pt-mem-grid">
+
+        <!-- 상희경 담당자 -->
+        <div class="pt-mem-card">
+          <div class="pt-mem-photo">
+            <img src="../../assets/team-sanghuigyeong.jpg" alt="상희경 담당자">
+          </div>
+          <div class="pt-mem-body">
+            <p class="pt-mem-name">상희경 담당자</p>
+            <p class="pt-mem-role">편입 · 대학원 전문 플래너</p>
+            <p class="pt-mem-desc">유튜브 <strong>희경쌤</strong> 채널을 운영하며 학점은행제를 쉽고 정확하게 알려드리고 있습니다. 2,000명 이상의 수강생이 목표를 달성하도록 도왔으며, 편입 및 대학원 진학에 특화된 전문 플래너입니다.</p>
+            <div class="pt-mem-tags">
+              <span class="pt-mem-tag">편입</span>
+              <span class="pt-mem-tag">대학원 진학</span>
+              <span class="pt-mem-tag">유튜브 희경쌤</span>
+              <span class="pt-mem-tag">2,000+ 수강생</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 이정민 담당자 -->
+        <div class="pt-mem-card">
+          <div class="pt-mem-photo">
+            <img src="../../assets/team-leejeongmin.jpg" alt="이정민 담당자">
+          </div>
+          <div class="pt-mem-body">
+            <p class="pt-mem-name">이정민 담당자</p>
+            <p class="pt-mem-role">학위 · 편입 전문 플래너</p>
+            <p class="pt-mem-desc">전문학사·학사 학위 취득 및 편입 학점 설계를 전문으로 합니다. 빠르고 정확한 답변으로 수강생들의 신뢰를 얻고 있으며, 어떤 질문도 놓치지 않고 즉시 처리합니다.</p>
+            <div class="pt-mem-tags">
+              <span class="pt-mem-tag">학위 취득</span>
+              <span class="pt-mem-tag">편입</span>
+              <span class="pt-mem-tag">빠른 답변</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 성서아 담당자 -->
+        <div class="pt-mem-card">
+          <div class="pt-mem-photo">
+            <img src="../../assets/team-seongseoa.jpg" alt="성서아 담당자">
+          </div>
+          <div class="pt-mem-body">
+            <p class="pt-mem-name">성서아 담당자</p>
+            <p class="pt-mem-role">자격증 · 대학원 전문 플래너</p>
+            <p class="pt-mem-desc">기사·산업기사 응시자격 취득, 국가자격증, 대학원 진학 준비까지 폭넓게 지원합니다. 친절하고 정확한 상담으로 처음 접하는 분들도 부담 없이 시작하실 수 있습니다.</p>
+            <div class="pt-mem-tags">
+              <span class="pt-mem-tag">기사·산업기사</span>
+              <span class="pt-mem-tag">국가자격증</span>
+              <span class="pt-mem-tag">대학원 준비</span>
+              <span class="pt-mem-tag">친절 상담</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="pt-cta">
+    <p class="pt-cta-title">지금 바로<br><em>무료 상담받으세요</em></p>
+    <p>전담 담당자가 직접 연락드립니다.</p>
+    <a href="https://edu-solution.co.kr/#es-form" class="pt-cta-btn">1:1 무료 상담 신청 →</a>
+  </div>
+</div>
