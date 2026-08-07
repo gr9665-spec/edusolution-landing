@@ -1,0 +1,389 @@
+<!-- 교육정보 페이지 | 아임웹 코드 위젯에 붙여넣기 -->
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+<style>
+.pe{width:100%;background:#fff;font-family:'Noto Sans KR',sans-serif;box-sizing:border-box;}
+
+/* 히어로 */
+.pe-hero{background:#1a2d4a;padding:100px 6% 90px;position:relative;overflow:hidden;text-align:center;}
+.pe-hero::before{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(0deg,transparent,transparent 47px,rgba(255,255,255,.025) 47px,rgba(255,255,255,.025) 48px),repeating-linear-gradient(90deg,transparent,transparent 47px,rgba(255,255,255,.025) 47px,rgba(255,255,255,.025) 48px);pointer-events:none;}
+.pe-hero-lbl{display:inline-flex;align-items:center;gap:8px;background:rgba(107,157,189,.18);border:1px solid rgba(107,157,189,.35);color:#afd0e8;padding:10px 20px;border-radius:100px;font-size:14px;font-weight:500;margin-bottom:2rem;}
+.pe-hero h1{font-size:clamp(3rem,5.5vw,4.8rem);font-weight:900;letter-spacing:-.04em;line-height:1.2;color:#fff;margin:0 0 1.5rem;}
+.pe-hero h1 em{font-family:'Playfair Display',serif;font-style:italic;color:#a0cde0;}
+.pe-hero-sub{font-size:clamp(16px,2vw,20px);color:rgba(255,255,255,.6);line-height:1.9;margin:0;}
+
+/* 섹션 공통 */
+.pe-sec{padding:100px 6%;box-sizing:border-box;}
+.pe-sec-in{max-width:1100px;margin:0 auto;}
+.pe-lbl{font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#4a7fa5;margin-bottom:.9rem;display:flex;align-items:center;gap:8px;}
+.pe-lbl::before{content:'';display:block;width:28px;height:2px;background:#4a7fa5;border-radius:2px;}
+.pe-sec-title,p.pe-sec-title{font-size:clamp(2.6rem,4vw,3.6rem) !important;font-weight:900 !important;letter-spacing:-.04em !important;line-height:1.2 !important;color:#1a2d4a !important;margin:0 0 1rem !important;font-family:'Noto Sans KR',sans-serif !important;}
+.pe-sec-title em,p.pe-sec-title em{font-family:'Playfair Display',serif !important;font-style:italic !important;color:#4a7fa5 !important;font-weight:700 !important;}
+.pe-sec-sub{font-size:17px;color:#6b7f93;line-height:1.9;margin:0 0 3.5rem;}
+
+/* ── 카드뉴스 그리드 ── */
+.pe-cards{display:flex;flex-direction:column;gap:3rem;}
+
+/* 카드 1개 = 카드뉴스 1장 */
+.pe-card{border-radius:24px;overflow:hidden;border:1px solid rgba(74,127,165,.12);background:#fff;box-shadow:0 4px 32px rgba(14,31,61,.06);transition:transform .3s,box-shadow .3s;}
+.pe-card:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(74,127,165,.12);}
+
+/* 카드 상단 컬러 헤더 */
+.pe-card-header{padding:2.5rem 2.5rem 2rem;position:relative;overflow:hidden;}
+.pe-card-header::before{content:'';position:absolute;right:-30px;top:-30px;width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,.08);}
+.pe-card-header::after{content:'';position:absolute;right:40px;top:30px;width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,.06);}
+.pe-card-ico{font-size:44px;margin-bottom:1.1rem;position:relative;z-index:1;}
+.pe-card-tag{display:inline-flex;align-items:center;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.28);color:#fff;padding:5px 14px;border-radius:100px;font-size:12px;font-weight:700;letter-spacing:.04em;margin-bottom:.9rem;position:relative;z-index:1;}
+.pe-card-title{font-size:clamp(1.6rem,2.5vw,2.2rem);font-weight:900;color:#fff;letter-spacing:-.03em;line-height:1.25;margin:0;position:relative;z-index:1;}
+.pe-card-sub{font-size:15px;color:rgba(255,255,255,.75);margin:.6rem 0 0;position:relative;z-index:1;}
+
+/* 카드 컬러 테마 */
+.pe-card-navy .pe-card-header{background:linear-gradient(135deg,#1a2d4a 0%,#2d4a7a 100%);}
+.pe-card-blue .pe-card-header{background:linear-gradient(135deg,#2d5a8a 0%,#4a7fa5 100%);}
+.pe-card-teal .pe-card-header{background:linear-gradient(135deg,#1a4a5a 0%,#2d7a8a 100%);}
+.pe-card-slate .pe-card-header{background:linear-gradient(135deg,#2d3a5a 0%,#4a5a8a 100%);}
+.pe-card-ocean .pe-card-header{background:linear-gradient(135deg,#1a3a5a 0%,#2d6a8a 100%);}
+.pe-card-deep .pe-card-header{background:linear-gradient(135deg,#1a2a4a 0%,#3a5a7a 100%);}
+
+/* 카드 바디 */
+.pe-card-body{padding:2.5rem;}
+.pe-card-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;}
+.pe-card-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;}
+
+/* 인포 블록 */
+.pe-info{background:#f7f9fb;border-radius:14px;padding:1.4rem 1.5rem;}
+.pe-info-label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#4a7fa5;margin-bottom:.5rem;}
+.pe-info-value{font-size:clamp(15px,1.6vw,17px);font-weight:700;color:#1a2d4a;line-height:1.6;}
+.pe-info-value small{font-size:13px;font-weight:400;color:#6b7f93;display:block;margin-top:2px;}
+
+/* 단계 리스트 */
+.pe-steps{display:flex;flex-direction:column;gap:.9rem;margin-top:1.5rem;}
+.pe-step{display:flex;align-items:flex-start;gap:12px;}
+.pe-step-num{width:28px;height:28px;border-radius:50%;background:#1a2d4a;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.pe-step-text{font-size:15px;color:#3a4a5a;line-height:1.7;}
+.pe-step-text strong{color:#1a2d4a;font-weight:700;}
+
+/* 태그 뱃지 */
+.pe-tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:1.5rem;}
+.pe-tag{font-size:13px;font-weight:600;color:#4a7fa5;background:#ddeaf4;padding:6px 14px;border-radius:100px;}
+.pe-tag-warn{color:#8a4a1a;background:#f4e8dd;}
+.pe-tag-ok{color:#1a5a3a;background:#ddf4e8;}
+
+/* 구분선 */
+.pe-divider{height:1px;background:rgba(74,127,165,.1);margin:1.75rem 0;}
+
+/* 포인트 박스 */
+.pe-point{background:linear-gradient(135deg,#ddeaf4,#eef5fa);border-radius:14px;padding:1.4rem 1.75rem;margin-top:1.5rem;display:flex;align-items:flex-start;gap:12px;}
+.pe-point-ico{font-size:20px;flex-shrink:0;margin-top:2px;}
+.pe-point-text{font-size:15px;color:#1a2d4a;line-height:1.8;}
+.pe-point-text strong{color:#4a7fa5;font-weight:700;}
+
+/* 비교표 */
+.pe-table{width:100%;border-collapse:collapse;margin-top:1.5rem;}
+.pe-table th{background:#1a2d4a;color:#fff;font-size:14px;font-weight:700;padding:12px 16px;text-align:left;}
+.pe-table th:first-child{border-radius:10px 0 0 0;}
+.pe-table th:last-child{border-radius:0 10px 0 0;}
+.pe-table td{font-size:14px;color:#3a4a5a;padding:12px 16px;border-bottom:1px solid rgba(74,127,165,.1);vertical-align:top;line-height:1.7;}
+.pe-table tr:last-child td{border-bottom:none;}
+.pe-table tr:nth-child(even) td{background:#f7f9fb;}
+
+/* CTA */
+.pe-cta{background:#1a2d4a;padding:90px 6%;text-align:center;}
+.pe-cta-title,p.pe-cta-title{font-size:clamp(2.2rem,3.8vw,3.2rem) !important;font-weight:900 !important;letter-spacing:-.04em !important;color:#fff !important;margin:0 0 1rem !important;font-family:'Noto Sans KR',sans-serif !important;}
+.pe-cta-title em,p.pe-cta-title em{font-family:'Playfair Display',serif !important;font-style:italic !important;color:#7ab8d8 !important;}
+.pe-cta-sub{font-size:clamp(15px,1.8vw,18px);color:rgba(255,255,255,.55);margin:0 0 2.5rem;}
+.pe-cta-btn{background:#4a7fa5;color:#fff !important;padding:20px 48px;border-radius:10px;font-size:clamp(15px,1.8vw,18px);font-weight:700;text-decoration:none;display:inline-block;transition:background .2s,transform .15s;}
+.pe-cta-btn:hover{background:#6b9dbd;transform:translateY(-2px);}
+
+@media(max-width:900px){
+  .pe-card-grid,.pe-card-grid-3{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:560px){
+  .pe-hero{padding:70px 5% 60px;}
+  .pe-sec{padding:70px 5%;}
+  .pe-card-grid,.pe-card-grid-3{grid-template-columns:1fr;}
+  .pe-card-body{padding:1.75rem 1.5rem;}
+  .pe-card-header{padding:2rem 1.75rem 1.75rem;}
+  .pe-table{font-size:13px;}
+  .pe-table th,.pe-table td{padding:10px 12px;}
+}
+</style>
+
+<div class="pe">
+
+  <!-- 히어로 -->
+  <div class="pe-hero">
+    <div class="pe-hero-lbl">학점은행제 교육정보</div>
+    <h1>목표별로<br><em>알아보세요</em></h1>
+    <p class="pe-hero-sub">학위 취득부터 자격증, 편입, 대학원까지<br>각 목표에 필요한 조건과 과정을 한눈에 정리했습니다.</p>
+  </div>
+
+  <!-- 카드뉴스 본문 -->
+  <div class="pe-sec">
+    <div class="pe-sec-in">
+      <div class="pe-lbl">Education Info</div>
+      <p class="pe-sec-title">목표별<br><em>상세 안내</em></p>
+      <p class="pe-sec-sub">원하는 목표를 클릭해서 확인하세요. 전담 담당자가 개인 상황에 맞게 최적의 플랜을 설계해 드립니다.</p>
+
+      <div class="pe-cards">
+
+        <!-- ① 학위 취득 -->
+        <div class="pe-card pe-card-navy">
+          <div class="pe-card-header">
+            <div class="pe-card-ico">🎓</div>
+            <div class="pe-card-tag">DEGREE</div>
+            <p class="pe-card-title">학위 취득<br>전문학사 · 학사 · 타전공</p>
+            <p class="pe-card-sub">교육부 장관 명의 정식 학위 — 일반 대학과 동등하게 인정</p>
+          </div>
+          <div class="pe-card-body">
+            <div class="pe-card-grid-3">
+              <div class="pe-info">
+                <div class="pe-info-label">전문학사</div>
+                <div class="pe-info-value">80학점 이상<small>전공 45 + 교양 15 이상</small></div>
+              </div>
+              <div class="pe-info">
+                <div class="pe-info-label">학사</div>
+                <div class="pe-info-value">140학점 이상<small>전공 60 + 교양 30 이상</small></div>
+              </div>
+              <div class="pe-info">
+                <div class="pe-info-label">타전공 학위</div>
+                <div class="pe-info-value">전공만 변경<small>기존 학위 보유자 가능</small></div>
+              </div>
+            </div>
+            <div class="pe-divider"></div>
+            <p style="font-size:16px;font-weight:700;color:#1a2d4a;margin:0 0 .9rem;">학점 인정 방법</p>
+            <div class="pe-card-grid">
+              <div>
+                <div class="pe-steps">
+                  <div class="pe-step"><div class="pe-step-num">1</div><div class="pe-step-text"><strong>학점은행제 평가인정 강의</strong> — 온라인 수강으로 가장 많은 학점 취득</div></div>
+                  <div class="pe-step"><div class="pe-step-num">2</div><div class="pe-step-text"><strong>자격증 학점 인정</strong> — 보유 자격증 종류에 따라 학점 인정</div></div>
+                </div>
+              </div>
+              <div>
+                <div class="pe-steps">
+                  <div class="pe-step"><div class="pe-step-num">3</div><div class="pe-step-text"><strong>전적대학 학점 인정</strong> — 이전 대학에서 이수한 학점 연계 가능</div></div>
+                  <div class="pe-step"><div class="pe-step-num">4</div><div class="pe-step-text"><strong>독학사 시험 합격</strong> — 단계별 시험 합격으로 학점 취득</div></div>
+                </div>
+              </div>
+            </div>
+            <div class="pe-point">
+              <div class="pe-point-ico">💡</div>
+              <div class="pe-point-text">기존에 대학을 다닌 적이 있거나 자격증을 보유하고 있다면 <strong>최단 기간</strong>으로 학위를 딸 수 있어요. 상담을 통해 개인 상황에 맞는 학점 계획을 짜드립니다.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ② 사회복지사 2급 -->
+        <div class="pe-card pe-card-blue">
+          <div class="pe-card-header">
+            <div class="pe-card-ico">🧑‍⚕️</div>
+            <div class="pe-card-tag">SOCIAL WORKER</div>
+            <p class="pe-card-title">사회복지사 2급</p>
+            <p class="pe-card-sub">국가자격증 — 복지관·요양원·상담소 취업 필수 자격</p>
+          </div>
+          <div class="pe-card-body">
+            <div class="pe-card-grid">
+              <div class="pe-info">
+                <div class="pe-info-label">필수 이수 과목</div>
+                <div class="pe-info-value">17과목 이상<small>사회복지학 전공 교과목</small></div>
+              </div>
+              <div class="pe-info">
+                <div class="pe-info-label">실습 시간</div>
+                <div class="pe-info-value">160시간<small>현장 실습 필수 이수</small></div>
+              </div>
+            </div>
+            <div class="pe-divider"></div>
+            <p style="font-size:16px;font-weight:700;color:#1a2d4a;margin:0 0 .9rem;">적용 법률에 따른 구분</p>
+            <table class="pe-table">
+              <tr><th>구분</th><th>적용 대상</th><th>이수 과목 수</th></tr>
+              <tr><td>구법 적용</td><td>2020년 이전 학점 취득 시작자</td><td>필수 10 + 선택 4</td></tr>
+              <tr><td>신법 적용</td><td>2020년 이후 학점 취득 시작자</td><td>필수 10 + 선택 7</td></tr>
+            </table>
+            <div class="pe-tags" style="margin-top:1.5rem;">
+              <span class="pe-tag">인간행동과사회환경</span>
+              <span class="pe-tag">사회복지실천론</span>
+              <span class="pe-tag">사회복지정책론</span>
+              <span class="pe-tag">사회복지법제</span>
+              <span class="pe-tag">사회복지행정론</span>
+              <span class="pe-tag">+더보기</span>
+            </div>
+            <div class="pe-point">
+              <div class="pe-point-ico">⚠️</div>
+              <div class="pe-point-text">구법·신법 적용 여부에 따라 커리큘럼이 달라집니다. <strong>잘못 설계하면 자격증을 받지 못할 수 있어</strong> 반드시 전문가와 상담 후 시작하세요.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ③ 보육교사 2급 -->
+        <div class="pe-card pe-card-teal">
+          <div class="pe-card-header">
+            <div class="pe-card-ico">👶</div>
+            <div class="pe-card-tag">CHILDCARE TEACHER</div>
+            <p class="pe-card-title">보육교사 2급</p>
+            <p class="pe-card-sub">국가자격증 — 어린이집 취업 필수 자격</p>
+          </div>
+          <div class="pe-card-body">
+            <div class="pe-card-grid">
+              <div class="pe-info">
+                <div class="pe-info-label">이수 과목</div>
+                <div class="pe-info-value">17과목<small>이론 8과목 + 대면 8과목 + 실습 1과목</small></div>
+              </div>
+              <div class="pe-info">
+                <div class="pe-info-label">보육 실습</div>
+                <div class="pe-info-value">6주 240시간<small>인가 어린이집 실습</small></div>
+              </div>
+            </div>
+            <div class="pe-divider"></div>
+            <p style="font-size:16px;font-weight:700;color:#1a2d4a;margin:0 0 .9rem;">필수 이수 영역</p>
+            <div class="pe-card-grid-3">
+              <div class="pe-info">
+                <div class="pe-info-label">보육기초</div>
+                <div class="pe-info-value">3과목<small>보육학개론 등</small></div>
+              </div>
+              <div class="pe-info">
+                <div class="pe-info-label">발달 및 지도</div>
+                <div class="pe-info-value">3과목<small>아동발달 등</small></div>
+              </div>
+              <div class="pe-info">
+                <div class="pe-info-label">보육과정</div>
+                <div class="pe-info-value">4과목<small>놀이지도 등</small></div>
+              </div>
+            </div>
+            <div class="pe-point">
+              <div class="pe-point-ico">💡</div>
+              <div class="pe-point-text">대면 과목 8개는 <strong>각 과목당 대면 1회 참석 필수</strong>로, 일정 조율이 중요합니다. 에듀솔루션에서 실습 기관 연계까지 함께 도와드립니다.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ④ 기사·산업기사 응시자격 -->
+        <div class="pe-card pe-card-slate">
+          <div class="pe-card-header">
+            <div class="pe-card-ico">⚙️</div>
+            <div class="pe-card-tag">ENGINEER LICENSE</div>
+            <p class="pe-card-title">기사 · 산업기사<br>응시자격 취득</p>
+            <p class="pe-card-sub">전공 학점으로 시험 응시자격 확보 — 큐넷 접수 가능</p>
+          </div>
+          <div class="pe-card-body">
+            <div class="pe-card-grid">
+              <div class="pe-info">
+                <div class="pe-info-label">기사 응시자격</div>
+                <div class="pe-info-value">106학점 이수<small>4년제 학사 또는 전공 학점 취득</small></div>
+              </div>
+              <div class="pe-info">
+                <div class="pe-info-label">산업기사 응시자격</div>
+                <div class="pe-info-value">41학점 이수<small>2년제 전문학사 또는 전공 학점 취득</small></div>
+              </div>
+            </div>
+            <div class="pe-divider"></div>
+            <p style="font-size:16px;font-weight:700;color:#1a2d4a;margin:0 0 .9rem;">학점은행제로 자격 취득 흐름</p>
+            <div class="pe-steps">
+              <div class="pe-step"><div class="pe-step-num">1</div><div class="pe-step-text">목표 기사 종목 확인 → <strong>관련 전공 분야 파악</strong></div></div>
+              <div class="pe-step"><div class="pe-step-num">2</div><div class="pe-step-text">학점은행제로 <strong>해당 전공 학점 취득</strong> (기사: 106학점 이상)</div></div>
+              <div class="pe-step"><div class="pe-step-num">3</div><div class="pe-step-text"><strong>학점 인정 신청</strong> 완료 후 큐넷 응시자격 확인</div></div>
+              <div class="pe-step"><div class="pe-step-num">4</div><div class="pe-step-text">기사·산업기사 <strong>시험 응시 및 합격</strong></div></div>
+            </div>
+            <div class="pe-tags" style="margin-top:1.5rem;">
+              <span class="pe-tag">전기기사</span>
+              <span class="pe-tag">정보처리기사</span>
+              <span class="pe-tag">건축기사</span>
+              <span class="pe-tag">토목기사</span>
+              <span class="pe-tag">화학분석기사</span>
+              <span class="pe-tag">산업안전기사</span>
+              <span class="pe-tag">+100여 종목</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ⑤ 편입 지원자격 -->
+        <div class="pe-card pe-card-ocean">
+          <div class="pe-card-header">
+            <div class="pe-card-ico">🏫</div>
+            <div class="pe-card-tag">TRANSFER</div>
+            <p class="pe-card-title">편입 지원자격</p>
+            <p class="pe-card-sub">학점은행제 학점으로 대학 편입 지원 가능</p>
+          </div>
+          <div class="pe-card-body">
+            <div class="pe-card-grid">
+              <div class="pe-info">
+                <div class="pe-info-label">일반편입 조건</div>
+                <div class="pe-info-value">2년제 수료 또는<br>70학점 이상<small>대학마다 상이하므로 확인 필수</small></div>
+              </div>
+              <div class="pe-info">
+                <div class="pe-info-label">학사편입 조건</div>
+                <div class="pe-info-value">학사 학위 소지자<small>학점은행제 학사 학위로 가능</small></div>
+              </div>
+            </div>
+            <div class="pe-divider"></div>
+            <p style="font-size:16px;font-weight:700;color:#1a2d4a;margin:0 0 .9rem;">편입 준비 전략</p>
+            <div class="pe-steps">
+              <div class="pe-step"><div class="pe-step-num">1</div><div class="pe-step-text">목표 대학 편입 요강 확인 → <strong>필요 학점·조건 파악</strong></div></div>
+              <div class="pe-step"><div class="pe-step-num">2</div><div class="pe-step-text">학점은행제로 <strong>빠르게 필요 학점 충족</strong> (보통 4~8개월)</div></div>
+              <div class="pe-step"><div class="pe-step-num">3</div><div class="pe-step-text">편입 영어·수학 등 <strong>전형 과목 병행 준비</strong></div></div>
+              <div class="pe-step"><div class="pe-step-num">4</div><div class="pe-step-text">원서 접수 일정에 맞게 <strong>학점 인정 신청 완료</strong></div></div>
+            </div>
+            <div class="pe-point">
+              <div class="pe-point-ico">💡</div>
+              <div class="pe-point-text">편입 원서 접수 마감 전에 학점 인정이 완료돼야 합니다. <strong>역산 스케줄 관리</strong>가 핵심이에요. 에듀솔루션에서 일정을 함께 챙겨드립니다.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ⑥ 대학원 지원자격 -->
+        <div class="pe-card pe-card-deep">
+          <div class="pe-card-header">
+            <div class="pe-card-ico">📚</div>
+            <div class="pe-card-tag">GRAD SCHOOL</div>
+            <p class="pe-card-title">대학원<br>지원자격</p>
+            <p class="pe-card-sub">학점은행제 학사 학위로 대학원 지원 가능</p>
+          </div>
+          <div class="pe-card-body">
+            <div class="pe-card-grid">
+              <div class="pe-info">
+                <div class="pe-info-label">기본 조건</div>
+                <div class="pe-info-value">학사 학위 소지<small>학점은행제 학위도 동일 인정</small></div>
+              </div>
+              <div class="pe-info">
+                <div class="pe-info-label">주요 목적</div>
+                <div class="pe-info-value">교원 임용 준비<small>중등·특수·유아 교사 자격 취득</small></div>
+              </div>
+            </div>
+            <div class="pe-divider"></div>
+            <p style="font-size:16px;font-weight:700;color:#1a2d4a;margin:0 0 .9rem;">주요 지원 가능 대학원 분야</p>
+            <div class="pe-card-grid-3">
+              <div class="pe-info">
+                <div class="pe-info-label">교육대학원</div>
+                <div class="pe-info-value">교원자격 취득<small>임용 시험 응시 목적</small></div>
+              </div>
+              <div class="pe-info">
+                <div class="pe-info-label">일반대학원</div>
+                <div class="pe-info-value">석사 학위 취득<small>연구·전문직 진출</small></div>
+              </div>
+              <div class="pe-info">
+                <div class="pe-info-label">특수대학원</div>
+                <div class="pe-info-value">실무 심화<small>경영·행정·상담 등</small></div>
+              </div>
+            </div>
+            <div class="pe-steps" style="margin-top:1.5rem;">
+              <div class="pe-step"><div class="pe-step-num">1</div><div class="pe-step-text">학점은행제로 <strong>학사 학위 취득</strong> (140학점)</div></div>
+              <div class="pe-step"><div class="pe-step-num">2</div><div class="pe-step-text">목표 대학원 전형 확인 → <strong>전공·학점 기준 파악</strong></div></div>
+              <div class="pe-step"><div class="pe-step-num">3</div><div class="pe-step-text">대학원 <strong>입학 원서 접수 및 면접 준비</strong></div></div>
+            </div>
+            <div class="pe-point">
+              <div class="pe-point-ico">💡</div>
+              <div class="pe-point-text">학점은행제 학사 학위는 교육부 장관 명의로, <strong>일반 대학 졸업과 동등하게 대학원 지원이 가능</strong>합니다. 전공·학점 기준은 대학원마다 다르니 상담을 통해 확인하세요.</div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /pe-cards -->
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="pe-cta">
+    <p class="pe-cta-title">내 목표에 맞는 플랜<br><em>지금 바로 확인하세요</em></p>
+    <p class="pe-cta-sub">전담 담당자가 개인 상황을 분석해 최적의 과정을 설계해 드립니다.</p>
+    <a href="https://edu-solution.co.kr/#es-form" class="pe-cta-btn">1:1 무료 상담 신청 →</a>
+  </div>
+
+</div>
