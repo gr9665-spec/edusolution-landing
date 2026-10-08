@@ -6,7 +6,7 @@ set -e
 cd "$(dirname "$0")"
 
 SITE="https://edu-solution.co.kr"
-OG_IMAGE="$SITE/assets/logo.png"
+OG_IMAGE="$SITE/assets/og-image.png"
 
 # make_head <title> <description> <url-path>
 make_head() {
@@ -28,7 +28,9 @@ make_head() {
 <meta property="og:description" content="$desc">
 <meta property="og:url" content="$SITE$path">
 <meta property="og:image" content="$OG_IMAGE">
-<meta name="twitter:card" content="summary">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="648">
+<meta name="twitter:card" content="summary_large_image">
 EOF
   cat head-extra.html
   printf '</head>\n<body>\n'
