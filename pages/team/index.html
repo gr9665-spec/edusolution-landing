@@ -127,7 +127,7 @@ gtag('config', 'AW-16886735349');
 .pt-val-body{font-size:clamp(14px,1.5vw,16px);color:#6b7f93;line-height:1.95;margin:0;}
 .pt-members{padding:100px 6%;background:#fff;}
 .pt-members-in{max-width:1100px;margin:0 auto;}
-.pt-mem-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;margin-top:3.5rem;}
+.pt-mem-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;margin-top:3.5rem;}
 .pt-mem-card{border-radius:20px;overflow:hidden;border:1px solid rgba(74,127,165,.12);transition:transform .3s,box-shadow .3s;}
 .pt-mem-card:hover{transform:translateY(-6px);box-shadow:0 20px 56px rgba(74,127,165,.14);}
 .pt-mem-photo{width:100%;height:320px;overflow:hidden;position:relative;}
@@ -145,6 +145,7 @@ gtag('config', 'AW-16886735349');
 .pt-cta p{font-size:clamp(15px,1.8vw,18px);color:rgba(255,255,255,.55);margin:0 0 2.5rem;}
 .pt-cta-btn{background:#4a7fa5;color:#fff !important;padding:20px 48px;border-radius:10px;font-size:clamp(15px,1.8vw,18px);font-weight:700;text-decoration:none;display:inline-block;transition:background .2s,transform .15s;}
 .pt-cta-btn:hover{background:#6b9dbd;transform:translateY(-2px);}
+@media(max-width:1100px){.pt-mem-grid{grid-template-columns:1fr 1fr;gap:2rem;}}
 @media(max-width:900px){.pt-val-grid,.pt-mem-grid{grid-template-columns:1fr 1fr;}}
 @media(max-width:560px){
   .pt-hero{padding:70px 5% 60px;}
@@ -240,6 +241,24 @@ gtag('config', 'AW-16886735349');
               <span class="pt-mem-tag">국가자격증</span>
               <span class="pt-mem-tag">대학원 준비</span>
               <span class="pt-mem-tag">친절 상담</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 홍시현 담당자 -->
+        <div class="pt-mem-card">
+          <div class="pt-mem-photo">
+            <img src="../../assets/team-hongsihyeon.jpg" alt="홍시현 담당자">
+          </div>
+          <div class="pt-mem-body">
+            <p class="pt-mem-name">홍시현 담당자</p>
+            <p class="pt-mem-role">학위 · 편입 전문 플래너</p>
+            <p class="pt-mem-desc">건국, 동국, 숭실, 항공대까지 학점은행제를 통한 인서울대학 편입 4관왕 출신, 베테랑 학습플래너 <strong>시현쌤</strong>입니다. 편입부터 대학원, 기사·산업기사 자격증까지 가장 정확하고 안전한 길로 설계해드립니다.</p>
+            <div class="pt-mem-tags">
+              <span class="pt-mem-tag">인서울 편입 4관왕</span>
+              <span class="pt-mem-tag">편입</span>
+              <span class="pt-mem-tag">대학원</span>
+              <span class="pt-mem-tag">기사·산업기사</span>
             </div>
           </div>
         </div>
@@ -939,6 +958,7 @@ gtag('config', 'AW-16886735349');
 .pt-mem-card.scroll-show:nth-child(1){ transition-delay:.0s;  }
 .pt-mem-card.scroll-show:nth-child(2){ transition-delay:.15s; }
 .pt-mem-card.scroll-show:nth-child(3){ transition-delay:.30s; }
+.pt-mem-card.scroll-show:nth-child(4){ transition-delay:.45s; }
 
 /* ── 5. 멤버 카드 사진 줌 호버 ── */
 .pt-mem-card .pt-mem-photo img{

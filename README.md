@@ -65,5 +65,5 @@ python -m http.server 8777
 
 ### pages/team/ 참고
 
-- 담당자 사진 3장(`assets/team-sanghuigyeong.jpg`, `team-leejeongmin.jpg`, `team-seongseoa.jpg`)은 원본에서 가로 800px로 줄여 저장했습니다. 원본은 `Desktop/잡동/담당자 이미지/`에 있고, 홍시현 담당자 사진도 그 폴더에 있지만 아직 페이지에는 넣지 않았습니다.
+- 담당자 4명(상희경·이정민·성서아·홍시현)의 사진은 `assets/team-*.jpg`에 원본에서 가로 800px로 줄여 저장했습니다. 원본은 `Desktop/잡동/담당자 이미지/`에 있습니다. 담당자를 추가할 때는 `.pt-mem-card` 블록을 복사하고, `02-animations.html`의 `nth-child` 지연값과 `.pt-mem-grid` 열 수를 같이 조정하세요.
 - 네비게이션 · 카카오톡 플로팅 버튼 · 30초 자가진단 팝업은 메인 페이지(`sections/00, 09, 10`)와 동일한 코드를 재사용했습니다.
