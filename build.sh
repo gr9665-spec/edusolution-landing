@@ -60,8 +60,8 @@ done
 
 # 메인
 build_page index.html "assets/logo.png" \
-  "에듀솔루션 | 학점은행제 1:1 전담 플래너 상담" \
-  "학점은행제 학위 취득, 사회복지사·보육교사 2급, 기사·산업기사 응시자격, 편입까지. 전담 담당자가 내 상황에 맞는 학습 플랜을 설계해 드립니다." \
+  "학점은행제 전문 플래너 | 에듀솔루션 edusolution" \
+  "학점은행제 전문 플래너 팀이 학위 취득 목표에 맞는 수강 플랜을 1:1로 설계해 드립니다. 사회복지사, 보육교사, 편입 준비 등 다양한 목적에 맞춰 빠르고 정확하게 안내해 드리니 지금 바로 무료 상담을 신청해보세요!" \
   "/" \
   sections/00-nav.html sections/01-hero-image.html sections/02-hero-navy-features.html \
   sections/03-service-grid.html sections/04-caution-compare.html sections/05-reviews.html \

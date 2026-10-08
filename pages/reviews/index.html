@@ -15,12 +15,19 @@
 <meta property="og:url" content="https://edu-solution.co.kr/pages/reviews/">
 <meta property="og:image" content="https://edu-solution.co.kr/assets/logo.png">
 <meta name="twitter:card" content="summary">
-<!-- 모든 페이지 <head>에 들어가는 추가 코드 (build.sh가 삽입) -->
-<!-- 아임웹 관리자 > 설정 > 트래킹/스크립트 삽입 에 있던 코드를 아래에 붙여넣으세요.
-     - 구글 광고/GA 태그(gtag.js): sections/06-consult-form.html 의 전환 추적 gtag('event','conversion',...) 이 동작하려면 필요
-     - 네이버 서치어드바이저 소유확인 <meta name="naver-site-verification" ...>
-     - 구글 서치콘솔 소유확인 <meta name="google-site-verification" ...>
-     붙여넣은 뒤 `bash build.sh` 실행. -->
+<!-- 모든 페이지 <head>에 들어가는 추가 코드 (build.sh가 삽입). 아임웹 SEO > 공통 코드 삽입(Header Code 상단)과 구글 광고 태그를 옮긴 것 -->
+<meta name="naver-site-verification" content="be31964efef177cd894419c2eacc249c84000529" />
+<meta name="google-site-verification" content="BNU8IXRtJGxpFou3dK7sN-UoeqDNEo19_LwR-paehMI" />
+<meta name="google-site-verification" content="TYH6o5G26cSisn6rOQkIOEsIuH_T_OofowDU8StS0Qo" />
+<meta name="naver-site-verification" content="290e51c0b8f40769f123e71eb622fe13612b8228" />
+<!-- 구글 광고 전환 추적 (sections/06-consult-form.html 의 gtag('event','conversion') 이 이 태그를 사용) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-16886735349"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'AW-16886735349');
+</script>
 </head>
 <body>
 <!-- 섹션0 NAV | 아임웹 코드 위젯 -->
