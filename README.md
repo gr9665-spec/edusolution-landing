@@ -63,9 +63,7 @@ python -m http.server 8777
 | 교육정보 (아임웹 `/29`) | [pages/education-info/](pages/education-info/) | 히어로 + 목표별 카드뉴스 6개(학위취득/사회복지사2급/보육교사2급/기사·산업기사/편입/대학원) + CTA |
 | 수강생 후기 (아임웹 `/30` 대체) | [pages/reviews/](pages/reviews/) | 아임웹 코드 이전이 아니라 **새로 제작**. 기존 메인의 후기 6개 + 목표별 필터(전체/학위/자격증/편입) + 공통 키워드 4개 + CTA |
 
-### pages/team/ 확인 필요 항목
+### pages/team/ 참고
 
-- **담당자 사진 3장**이 비어 있습니다 (`assets/team-sanghuigyeong.jpg`, `assets/team-leejeongmin.jpg`, `assets/team-seongseoa.jpg`).
-  로고 때와 마찬가지로 원본이 매우 긴 base64 텍스트로 채팅에 붙여넣어 주셨는데, 그대로 옮겨 적으면 사진이 깨질 위험이 있어 자리만 비워뒀습니다.
-  실제 사진 파일(상희경/이정민/성서아 담당자)이 컴퓨터에 있으시면 경로를 알려주세요 — 로고 때처럼 정확히 찾아서 넣어드리겠습니다.
+- 담당자 사진 3장(`assets/team-sanghuigyeong.jpg`, `team-leejeongmin.jpg`, `team-seongseoa.jpg`)은 원본에서 가로 800px로 줄여 저장했습니다. 원본은 `Desktop/잡동/담당자 이미지/`에 있고, 홍시현 담당자 사진도 그 폴더에 있지만 아직 페이지에는 넣지 않았습니다.
 - 네비게이션 · 카카오톡 플로팅 버튼 · 30초 자가진단 팝업은 메인 페이지(`sections/00, 09, 10`)와 동일한 코드를 재사용했습니다.
