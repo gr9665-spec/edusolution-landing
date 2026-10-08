@@ -1,0 +1,536 @@
+<!-- 플로팅 트리거 뱃지 (카카오 버튼 바로 위) -->
+<button class="esd-fab" id="esd-fab-btn" type="button">
+  <span class="esd-fab-icon-wrap"><span class="esd-fab-icon">📝</span></span>
+  <span class="esd-fab-text">30초<br>자가진단</span>
+</button>
+
+<!-- 팝업 모달 -->
+<div class="esd-modal-overlay" id="esd-modal-overlay">
+  <div class="esd-modal-box">
+    <button class="esd-modal-close" id="esd-modal-close" type="button">✕</button>
+
+    <p class="esd-label">Quick Check</p>
+    <p class="esd-title">나에게 맞는 과정,<br><em>30초면 확인돼요</em></p>
+    <p class="esd-sub">간단한 선택만으로 가장 가까운 학습 방향을 알려드릴게요.</p>
+
+    <div class="esd-progress"><span class="esd-progress-bar" id="esd-bar"></span></div>
+    <p class="esd-step-label" id="esd-step-label">STEP 1 / 2</p>
+
+    <div class="esd-step-panel" id="esd-step1">
+      <p class="esd-q">최종 학력이 어떻게 되시나요?</p>
+      <div class="esd-options">
+        <button class="esd-opt" data-edu="고등학교 졸업">고등학교 졸업</button>
+        <button class="esd-opt" data-edu="2/3년제 졸업">2/3년제 졸업</button>
+        <button class="esd-opt" data-edu="4년제 졸업">4년제 졸업</button>
+        <button class="esd-opt" data-edu="대학교 중퇴 / 제적">대학교 중퇴 / 제적</button>
+      </div>
+    </div>
+
+    <div class="esd-step-panel" id="esd-step2" style="display:none;">
+      <p class="esd-q">가장 이루고 싶은 목표는 무엇인가요?</p>
+      <div class="esd-options">
+        <button class="esd-opt" data-goal="학위 취득">학위 취득 (전문학사·학사)</button>
+        <button class="esd-opt" data-goal="사회복지사 2급">사회복지사 2급</button>
+        <button class="esd-opt" data-goal="보육교사 2급">보육교사 2급</button>
+        <button class="esd-opt" data-goal="기사·산업기사 응시자격">기사·산업기사 응시자격</button>
+        <button class="esd-opt" data-goal="편입">편입</button>
+        <button class="esd-opt" data-goal="대학원 진학">대학원 진학</button>
+        <button class="esd-opt" data-goal="기타">기타</button>
+      </div>
+      <button class="esd-back" id="esd-back-btn" type="button">← 이전으로</button>
+    </div>
+
+    <div class="esd-step-panel" id="esd-result" style="display:none;">
+      <div class="esd-result-icon">🎯</div>
+      <p class="esd-result-msg" id="esd-result-msg"></p>
+      <p class="esd-result-sub" id="esd-result-sub"></p>
+
+      <div class="esd-roadmap" id="esd-roadmap"></div>
+
+      <div class="esd-checklist-box">
+        <p class="esd-checklist-title">📋 상담 전에 미리 확인해보면 좋아요</p>
+        <ul class="esd-checklist" id="esd-checklist"></ul>
+      </div>
+
+      <p class="esd-cta-lead">정확한 학점 계산과 일정은 1:1 상담에서 바로 확인할 수 있어요</p>
+      <div class="esd-result-cta">
+        <a href="http://pf.kakao.com/_PxdxhHn/chat" target="_blank" class="esd-cta esd-cta-kakao">💬 카카오톡으로 무료 상담받기</a>
+        <a href="#es-form" class="esd-cta esd-cta-form" id="esd-form-link">상담 폼 작성하기 →</a>
+      </div>
+      <button class="esd-retry" id="esd-retry-btn" type="button">다시 진단하기</button>
+    </div>
+  </div>
+</div>
+
+<style>
+/* ── 플로팅 트리거 뱃지 ── */
+.esd-fab{
+  position:fixed;
+  right:20px;
+  bottom:106px;
+  z-index:9998;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  background:#4a7fa5;
+  color:#fff;
+  border:none;
+  border-radius:50px;
+  padding:14px 20px 14px 14px;
+  box-shadow:0 6px 20px rgba(74,127,165,.32);
+  cursor:pointer;
+  font-family:inherit;
+  transition:transform .25s, box-shadow .25s;
+}
+.esd-fab:hover{
+  transform:translateY(-3px);
+  box-shadow:0 10px 24px rgba(74,127,165,.4);
+}
+.esd-fab-icon-wrap{
+  width:36px;
+  height:36px;
+  background:#fff;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+}
+.esd-fab-icon{ font-size:18px; }
+.esd-fab-text{
+  font-size:13px !important;
+  font-weight:700 !important;
+  line-height:1.25 !important;
+  color:#fff !important;
+  text-align:left;
+  white-space:nowrap;
+}
+
+@media (max-width:768px){
+  .esd-fab{ right:14px; bottom:86px; padding:12px 16px 12px 12px; }
+  .esd-fab-icon-wrap{ width:32px; height:32px; }
+  .esd-fab-text{ font-size:12px !important; }
+}
+@media (max-width:380px){
+  .esd-fab-text{ display:none; }
+  .esd-fab{ padding:14px; border-radius:50%; }
+}
+
+/* ── 모달 ── */
+.esd-modal-overlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(20,30,45,.55);
+  z-index:10000;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  box-sizing:border-box;
+  overflow-y:auto;
+}
+.esd-modal-overlay.open{ display:flex; }
+.esd-modal-box{
+  position:relative;
+  background:#fff;
+  border-radius:22px;
+  padding:40px 32px 36px;
+  max-width:480px;
+  width:100%;
+  max-height:88vh;
+  overflow-y:auto;
+  box-shadow:0 20px 60px rgba(0,0,0,.25);
+  text-align:left;
+  margin:auto;
+}
+.esd-modal-close{
+  position:absolute;
+  top:16px;
+  right:16px;
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  background:#f0f3f6;
+  border:none;
+  color:#6b7f93;
+  font-size:16px;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.esd-modal-close:hover{ background:#e3e9ef; color:#1a2d4a; }
+
+.esd-label{
+  font-size:14px !important;
+  font-weight:700 !important;
+  letter-spacing:.12em !important;
+  text-transform:uppercase !important;
+  color:#4a7fa5 !important;
+  margin:0 0 14px 0 !important;
+}
+.esd-title{
+  font-size:1.9rem !important;
+  line-height:1.4 !important;
+  font-weight:800 !important;
+  color:#1a2d4a !important;
+  margin:0 0 12px 0 !important;
+}
+.esd-title em{ font-style:normal; color:#4a7fa5; }
+.esd-sub{
+  font-size:16px !important;
+  line-height:1.6 !important;
+  color:#6b7f93 !important;
+  margin:0 0 28px 0 !important;
+}
+
+.esd-progress{
+  width:100%;
+  height:6px;
+  background:#e8edf2;
+  border-radius:6px;
+  overflow:hidden;
+  margin-bottom:14px;
+}
+.esd-progress-bar{
+  display:block;
+  height:100%;
+  width:0%;
+  background:#4a7fa5;
+  border-radius:6px;
+  transition:width .35s ease;
+}
+.esd-step-label{
+  font-size:13px !important;
+  font-weight:700 !important;
+  letter-spacing:.08em !important;
+  color:#9fb0c2 !important;
+  margin:0 0 20px 0 !important;
+  text-align:center;
+}
+.esd-q{
+  font-size:19px;
+  font-weight:800;
+  color:#1a2d4a;
+  margin:0 0 20px 0;
+  text-align:center;
+}
+.esd-options{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+.esd-opt{
+  background:#f7f9fb;
+  border:1.5px solid #e3e9ef;
+  border-radius:12px;
+  padding:14px 12px;
+  font-size:15px;
+  font-weight:600;
+  color:#3c4a5c;
+  cursor:pointer;
+  font-family:inherit;
+  transition:all .2s;
+  text-align:center;
+}
+.esd-opt:hover{
+  border-color:#4a7fa5;
+  background:#eef5fa;
+  color:#1a2d4a;
+}
+.esd-back{
+  margin-top:18px;
+  background:none;
+  border:none;
+  color:#9fb0c2;
+  font-size:14px;
+  font-weight:600;
+  cursor:pointer;
+  font-family:inherit;
+  display:block;
+  text-align:center;
+  width:100%;
+}
+.esd-back:hover{ color:#4a7fa5; }
+
+#esd-result{ text-align:center; }
+.esd-result-icon{ font-size:38px; margin-bottom:12px; }
+.esd-result-msg{
+  font-size:18px;
+  font-weight:800;
+  color:#1a2d4a;
+  line-height:1.5;
+  margin:0 0 8px 0;
+}
+.esd-result-sub{
+  font-size:14px;
+  color:#6b7f93;
+  line-height:1.6;
+  margin:0 0 22px 0;
+}
+
+.esd-roadmap{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:2px;
+  flex-wrap:wrap;
+  background:#f7f9fb;
+  border-radius:14px;
+  padding:18px 10px 14px;
+  margin-bottom:20px;
+}
+.esd-rm-step{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:5px;
+  width:70px;
+}
+.esd-rm-dot{
+  width:30px;
+  height:30px;
+  border-radius:50%;
+  background:#4a7fa5;
+  color:#fff;
+  font-size:13px;
+  font-weight:800;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+}
+.esd-rm-text{
+  font-size:11px;
+  font-weight:600;
+  color:#3c4a5c;
+  text-align:center;
+  line-height:1.3;
+}
+.esd-rm-arrow{
+  font-size:15px;
+  color:#a9c6da;
+  padding:0 1px;
+}
+
+.esd-checklist-box{
+  background:#fbfdff;
+  border:1px solid #dde9f1;
+  border-radius:14px;
+  padding:18px 18px;
+  margin-bottom:20px;
+  text-align:left;
+}
+.esd-checklist-title{
+  font-size:14px;
+  font-weight:800;
+  color:#1a2d4a;
+  margin:0 0 10px 0;
+}
+.esd-checklist{
+  margin:0;
+  padding:0;
+  list-style:none;
+}
+.esd-checklist li{
+  position:relative;
+  padding-left:20px;
+  margin-bottom:9px;
+  font-size:14px;
+  line-height:1.5;
+  color:#3c4a5c;
+}
+.esd-checklist li:last-child{ margin-bottom:0; }
+.esd-checklist li::before{
+  content:"✓";
+  position:absolute;
+  left:0;
+  top:0;
+  color:#4a7fa5;
+  font-weight:700;
+  font-size:12px;
+}
+.esd-cta-lead{
+  font-size:12px;
+  color:#9fb0c2;
+  text-align:center;
+  margin:0 0 12px 0;
+}
+.esd-result-cta{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  margin-bottom:16px;
+}
+.esd-cta{
+  display:block !important;
+  text-decoration:none !important;
+  padding:15px !important;
+  border-radius:12px !important;
+  font-size:16px !important;
+  font-weight:700 !important;
+  transition:transform .2s;
+  border:none !important;
+}
+.esd-cta-kakao{ background-color:#FEE500 !important; color:#391B1B !important; }
+.esd-cta-form{ background-color:#1a2d4a !important; color:#ffffff !important; }
+.esd-cta:hover{ transform:translateY(-2px); }
+.esd-cta-kakao:visited{ color:#391B1B !important; }
+.esd-cta-form:visited{ color:#ffffff !important; }
+.esd-retry{
+  background:none;
+  border:none;
+  color:#9fb0c2;
+  font-size:13px;
+  font-weight:600;
+  cursor:pointer;
+  font-family:inherit;
+}
+.esd-retry:hover{ color:#4a7fa5; }
+
+@media (max-width:600px){
+  .esd-modal-box{ padding:32px 22px 28px; }
+  .esd-title{ font-size:1.6rem !important; }
+  .esd-options{ grid-template-columns:1fr; }
+}
+</style>
+
+<script>
+(function(){
+  var eduChoice = '';
+  var goalChoice = '';
+
+  var goalData = {
+    '학위 취득': {
+      msg: '맞춤 학습 설계로 최소 시간에 학위를 받을 수 있도록 안내해드릴게요.',
+      stage2: '전공 학점 설계',
+      checklist: ['보유 학점이 전공 필수 요건에 맞는지 확인', '연간 이수 가능 학점 한도 확인', '졸업 논문·실습 여부 확인']
+    },
+    '사회복지사 2급': {
+      msg: '사회복지사 2급 자격증과 학위를 함께 준비할 수 있는 과목 조합을 알려드릴게요.',
+      stage2: '사회복지 과목 설계',
+      checklist: ['사회복지 현장실습 가능 기관 확인', '필수 이수 과목 누락 여부 확인', '학위와 자격증 동시 취득 가능 여부 확인']
+    },
+    '보육교사 2급': {
+      msg: '보육교사 2급 취득을 위한 필수 과목과 실습 일정을 한눈에 정리해드릴게요.',
+      stage2: '보육교사 과목 설계',
+      checklist: ['보육실습 기관 배정 여부 확인', '필수 이수 과목 순서 확인', '자격증 발급 절차 확인']
+    },
+    '기사·산업기사 응시자격': {
+      msg: '응시자격을 가장 빠르게 충족하는 학점 조합을 설계해드릴게요.',
+      stage2: '응시자격 학점 설계',
+      checklist: ['응시자격에 필요한 전공 학점 충족 여부 확인', '실기·필기 시험 일정 확인', '관련 학과 인정 여부 확인']
+    },
+    '편입': {
+      msg: '지금까지 인정된 학점으로 편입 가능한 전략부터 확인해보세요.',
+      stage2: '편입 학점 매칭',
+      checklist: ['현재 인정 학점이 목표 대학 편입 조건에 맞는지 확인', 'GPA 관리 전략 확인', '편입 시험·면접 일정 확인']
+    },
+    '대학원 진학': {
+      msg: '대학원 진학에 필요한 학점과 일정을 미리 준비할 수 있도록 도와드릴게요.',
+      stage2: '대학원 진학 학점 설계',
+      checklist: ['대학원 지원 자격(학위) 충족 여부 확인', '연구계획서 준비 일정 확인', '추천서·면접 준비 확인']
+    },
+    '기타': {
+      msg: '어떤 목표든, 1:1 상담으로 가장 정확한 방향을 잡아드릴게요.',
+      stage2: '맞춤 학점 설계',
+      checklist: ['목표에 맞는 과정 확인', '필요한 학점·자격 요건 확인', '진행 일정 계획 수립']
+    }
+  };
+  var eduMsg = {
+    '고등학교 졸업': '처음 시작이라도 걱정 마세요, 기초부터 설계해드립니다.',
+    '2/3년제 졸업': '이미 들은 학점을 최대한 인정받는 방향으로 설계해드립니다.',
+    '4년제 졸업': '추가 학위나 자격증도 효율적으로 준비할 수 있어요.',
+    '대학교 중퇴 / 제적': '기존 학점을 활용해 빠르게 다시 시작할 수 있도록 도와드립니다.'
+  };
+  var goalToFormValue = {
+    '학위 취득': '학위 취득 (전문학사/학사)',
+    '기사·산업기사 응시자격': '기사/산업기사 응시자격'
+  };
+
+  var overlay = document.getElementById('esd-modal-overlay');
+  var step1 = document.getElementById('esd-step1');
+  var step2 = document.getElementById('esd-step2');
+  var result = document.getElementById('esd-result');
+  var bar = document.getElementById('esd-bar');
+  var stepLabel = document.getElementById('esd-step-label');
+
+  /* 모달 열기/닫기 */
+  document.getElementById('esd-fab-btn').addEventListener('click', function(){
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  });
+  function closeModal(){
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.getElementById('esd-modal-close').addEventListener('click', closeModal);
+  overlay.addEventListener('click', function(e){
+    if (e.target === overlay) closeModal();
+  });
+
+  document.querySelectorAll('#esd-step1 .esd-opt').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      eduChoice = btn.getAttribute('data-edu');
+      step1.style.display = 'none';
+      step2.style.display = 'block';
+      bar.style.width = '50%';
+      stepLabel.textContent = 'STEP 2 / 2';
+    });
+  });
+
+  document.querySelectorAll('#esd-step2 .esd-opt').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      goalChoice = btn.getAttribute('data-goal');
+      step2.style.display = 'none';
+      result.style.display = 'block';
+      bar.style.width = '100%';
+      stepLabel.style.display = 'none';
+
+      var data = goalData[goalChoice] || goalData['기타'];
+      document.getElementById('esd-result-msg').textContent = data.msg;
+      document.getElementById('esd-result-sub').textContent = eduMsg[eduChoice] || '';
+
+      var rmStages = ['무료 상담', data.stage2, '학점 이수', '취득'];
+      var rmHtml = '';
+      rmStages.forEach(function(label, i){
+        rmHtml += '<div class="esd-rm-step"><span class="esd-rm-dot">' + (i+1) + '</span><span class="esd-rm-text">' + label + '</span></div>';
+        if (i < rmStages.length - 1) rmHtml += '<span class="esd-rm-arrow">→</span>';
+      });
+      document.getElementById('esd-roadmap').innerHTML = rmHtml;
+
+      var clHtml = '';
+      data.checklist.forEach(function(item){
+        clHtml += '<li>' + item + '</li>';
+      });
+      document.getElementById('esd-checklist').innerHTML = clHtml;
+    });
+  });
+
+  document.getElementById('esd-back-btn').addEventListener('click', function(){
+    step2.style.display = 'none';
+    step1.style.display = 'block';
+    bar.style.width = '0%';
+    stepLabel.style.display = 'block';
+    stepLabel.textContent = 'STEP 1 / 2';
+  });
+
+  document.getElementById('esd-retry-btn').addEventListener('click', function(){
+    eduChoice = ''; goalChoice = '';
+    result.style.display = 'none';
+    step1.style.display = 'block';
+    bar.style.width = '0%';
+    stepLabel.style.display = 'block';
+    stepLabel.textContent = 'STEP 1 / 2';
+  });
+
+  /* 상담 폼으로 이동: 모달 닫고, 값 채운 뒤, 기존 스무스스크롤 스크립트가 이동을 처리함 */
+  document.getElementById('esd-form-link').addEventListener('click', function(){
+    var eduSel = document.getElementById('es6-edu');
+    var goalSel = document.getElementById('es6-goal');
+    if (eduSel && eduChoice) eduSel.value = eduChoice;
+    if (goalSel && goalChoice) goalSel.value = goalToFormValue[goalChoice] || goalChoice;
+    closeModal();
+  });
+})();
+</script>

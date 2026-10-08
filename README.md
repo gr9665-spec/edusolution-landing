@@ -53,6 +53,7 @@
 | 팀 에듀솔루션 (아임웹 `/27`) | [pages/team/](pages/team/) | 히어로 + 강점 3개 + 담당자 소개 3명 + CTA |
 | 학점은행제 (아임웹 `/28`) | [pages/credit-bank/](pages/credit-bank/) | 히어로 + 제도 개요 + 목표 6개 + 진행 절차 + FAQ + CTA |
 | 교육정보 (아임웹 `/29`) | [pages/education-info/](pages/education-info/) | 히어로 + 목표별 카드뉴스 6개(학위취득/사회복지사2급/보육교사2급/기사·산업기사/편입/대학원) + CTA |
+| 수강생 후기 (아임웹 `/30` 대체) | [pages/reviews/](pages/reviews/) | 아임웹 코드 이전이 아니라 **새로 제작**. 기존 메인의 후기 6개 + 목표별 필터(전체/학위/자격증/편입) + 공통 키워드 4개 + CTA |
 
 ### pages/team/ 확인 필요 항목
 

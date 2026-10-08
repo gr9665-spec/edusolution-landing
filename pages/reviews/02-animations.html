@@ -1,0 +1,86 @@
+<!-- =============================================
+   에듀솔루션 | 수강생 후기 페이지 애니메이션 + 목표별 필터
+   ※ 수강생 후기 페이지 최하단에 추가
+================================================ -->
+<style>
+.pr-hero-lbl{animation:badgePop .8s .1s cubic-bezier(.34,1.56,.64,1) both;}
+@keyframes badgePop{from{opacity:0;transform:scale(.82);}to{opacity:1;transform:scale(1);}}
+.pr-hero h1{animation:heroUp 1.1s .22s cubic-bezier(.16,1,.3,1) both;}
+@keyframes heroUp{from{opacity:0;transform:translateY(40px);}to{opacity:1;transform:none;}}
+.pr-hero-sub{animation:fadeUp .95s .42s cubic-bezier(.16,1,.3,1) both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:none;}}
+
+.scroll-hidden{opacity:0;transform:translateY(22px);transition:opacity .95s cubic-bezier(.16,1,.3,1),transform .95s cubic-bezier(.16,1,.3,1);}
+.scroll-show{opacity:1 !important;transform:none !important;}
+
+.pr-lbl{transition:opacity .85s cubic-bezier(.16,1,.3,1),transform .85s cubic-bezier(.16,1,.3,1);}
+.pr-title{transition:opacity .95s .1s cubic-bezier(.16,1,.3,1),transform .95s .1s cubic-bezier(.16,1,.3,1);}
+.pr-desc{transition:opacity .9s .2s cubic-bezier(.16,1,.3,1),transform .9s .2s cubic-bezier(.16,1,.3,1);}
+.pr-card,.pr-why-card{transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1),border-color .3s,box-shadow .3s;}
+.pr-card.scroll-hidden,.pr-why-card.scroll-hidden{opacity:0;transform:translateY(24px);}
+.pr-cta-title{transition:opacity .95s cubic-bezier(.16,1,.3,1),transform .95s cubic-bezier(.16,1,.3,1);}
+.pr-cta-sub{transition:opacity .9s .14s cubic-bezier(.16,1,.3,1),transform .9s .14s cubic-bezier(.16,1,.3,1);}
+.pr-cta-btn{transition:opacity .85s .28s cubic-bezier(.16,1,.3,1),transform .85s .28s cubic-bezier(.16,1,.3,1),background .2s;}
+</style>
+
+<script>
+(function(){
+
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(!e.isIntersecting) return;
+      e.target.classList.remove('scroll-hidden');
+      e.target.classList.add('scroll-show');
+      io.unobserve(e.target);
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -20px 0px' });
+
+  function reg(sel, step){
+    document.querySelectorAll(sel).forEach(function(el, i){
+      el.classList.add('scroll-hidden');
+      if(step) el.style.transitionDelay = ((i % 3) * step) + 's';
+      io.observe(el);
+    });
+  }
+
+  function initFilter(){
+    var chips = document.querySelectorAll('#pr-filter .pr-chip');
+    var cards = document.querySelectorAll('#pr-grid .pr-card');
+    chips.forEach(function(chip){
+      chip.addEventListener('click', function(){
+        var f = chip.getAttribute('data-filter');
+        chips.forEach(function(c){ c.classList.remove('on'); });
+        chip.classList.add('on');
+        cards.forEach(function(card){
+          var cats = (card.getAttribute('data-cat') || '').split(' ');
+          var show = f === 'all' || cats.indexOf(f) !== -1;
+          card.classList.toggle('pr-hide', !show);
+          if(show){
+            card.classList.remove('scroll-hidden');
+            card.classList.add('scroll-show');
+          }
+        });
+      });
+    });
+  }
+
+  function init(){
+    reg('.pr-lbl');
+    reg('.pr-title');
+    reg('.pr-desc');
+    reg('.pr-card', .1);
+    reg('.pr-why-card', .1);
+    reg('.pr-cta-title');
+    reg('.pr-cta-sub');
+    reg('.pr-cta-btn');
+    initFilter();
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+})();
+</script>

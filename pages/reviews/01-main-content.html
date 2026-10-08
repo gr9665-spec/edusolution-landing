@@ -1,0 +1,209 @@
+<!-- 수강생 후기 페이지 | 새로 제작 (아임웹 /30 대체) -->
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+<style>
+.pr{width:100%;background:#fff;font-family:'Noto Sans KR',sans-serif;box-sizing:border-box;}
+
+/* 히어로 */
+.pr-hero{background:#1a2d4a;padding:100px 6% 90px;position:relative;overflow:hidden;text-align:center;}
+.pr-hero::before{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(0deg,transparent,transparent 47px,rgba(255,255,255,.025) 47px,rgba(255,255,255,.025) 48px),repeating-linear-gradient(90deg,transparent,transparent 47px,rgba(255,255,255,.025) 47px,rgba(255,255,255,.025) 48px);pointer-events:none;}
+.pr-hero-lbl{display:inline-flex;align-items:center;gap:8px;background:rgba(107,157,189,.18);border:1px solid rgba(107,157,189,.35);color:#afd0e8;padding:10px 20px;border-radius:100px;font-size:14px;font-weight:500;margin-bottom:2rem;position:relative;}
+.pr-hero h1{font-size:clamp(3rem,5.5vw,4.8rem);font-weight:900;letter-spacing:-.04em;line-height:1.2;color:#fff;margin:0 0 1.5rem;position:relative;}
+.pr-hero h1 em{font-family:'Playfair Display',serif;font-style:italic;color:#a0cde0;}
+.pr-hero-sub{font-size:clamp(16px,2vw,20px);color:rgba(255,255,255,.6);line-height:1.9;margin:0;position:relative;}
+
+/* 섹션 공통 */
+.pr-sec{padding:100px 6%;box-sizing:border-box;}
+.pr-sec-in{max-width:1100px;margin:0 auto;}
+.pr-lbl{font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#4a7fa5;margin-bottom:.9rem;display:flex;align-items:center;gap:8px;}
+.pr-lbl::before{content:'';display:block;width:28px;height:2px;background:#4a7fa5;border-radius:2px;}
+.pr-title,p.pr-title{font-size:clamp(2.4rem,4vw,3.4rem) !important;font-weight:900 !important;letter-spacing:-.04em !important;line-height:1.2 !important;color:#1a2d4a !important;margin:0 0 1rem !important;font-family:'Noto Sans KR',sans-serif !important;}
+.pr-title em,p.pr-title em{font-family:'Playfair Display',serif !important;font-style:italic !important;color:#4a7fa5 !important;font-weight:700 !important;}
+.pr-desc{font-size:17px;color:#6b7f93;line-height:1.9;margin:0 0 2.5rem;max-width:640px;}
+
+/* 후기 목록 */
+.pr-reviews{background:#f4f7fb;}
+.pr-filter{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:2.5rem;}
+.pr-chip{background:#fff;border:1px solid rgba(74,127,165,.25);color:#4a7fa5;font-family:'Noto Sans KR',sans-serif;font-size:15px;font-weight:700;padding:11px 22px;border-radius:100px;cursor:pointer;transition:all .2s;}
+.pr-chip:hover{border-color:#4a7fa5;}
+.pr-chip.on{background:#1a2d4a;border-color:#1a2d4a;color:#fff;}
+.pr-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.75rem;}
+.pr-card{background:#fff;border-radius:22px;padding:2.5rem 2.5rem 2rem;border:1px solid rgba(74,127,165,.1);position:relative;overflow:hidden;transition:border-color .3s,transform .3s,box-shadow .3s;display:flex;flex-direction:column;}
+.pr-card:hover{border-color:rgba(74,127,165,.3);transform:translateY(-6px);box-shadow:0 20px 56px rgba(74,127,165,.12);}
+.pr-card.pr-hide{display:none;}
+.pr-quote-bg{position:absolute;top:-18px;left:16px;font-family:'Playfair Display',serif;font-size:200px;line-height:1;color:rgba(74,127,165,.06);pointer-events:none;user-select:none;}
+.pr-stars{display:flex;gap:4px;margin-bottom:1.4rem;position:relative;z-index:1;}
+.pr-star{width:20px;height:20px;background:#f5a623;clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);flex-shrink:0;}
+.pr-headline{font-size:clamp(16px,1.8vw,20px);font-weight:900;color:#1a2d4a;line-height:1.5;margin:0 0 1.25rem;position:relative;z-index:1;letter-spacing:-.02em;}
+.pr-headline mark{background:none;color:#4a7fa5;}
+.pr-text{font-size:15px;line-height:2;color:#4a5a6a;margin:0 0 auto;position:relative;z-index:1;padding-bottom:1.75rem;}
+.pr-text strong{color:#1a2d4a;font-weight:700;}
+.pr-div{height:1px;background:rgba(74,127,165,.1);margin-bottom:1.5rem;}
+.pr-foot{display:flex;align-items:center;gap:14px;position:relative;z-index:1;}
+.pr-av{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#ddeaf4,#b8d4ea);color:#1a2d4a;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:900;flex-shrink:0;border:2px solid rgba(74,127,165,.2);}
+.pr-name{font-size:16px;font-weight:700;color:#1a2d4a;margin:0 0 3px;}
+.pr-meta{font-size:13px;color:#8a9ab0;margin:0;}
+.pr-badge{margin-left:auto;flex-shrink:0;background:#1a2d4a;color:#a0cde0;font-size:12px;font-weight:700;padding:6px 13px;border-radius:7px;white-space:nowrap;}
+
+/* 후기 속 공통 키워드 */
+.pr-why{background:#fff;}
+.pr-why-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;margin-top:3rem;}
+.pr-why-card{border-radius:18px;padding:2rem 1.75rem;border:1px solid rgba(74,127,165,.12);transition:border-color .3s,transform .3s;}
+.pr-why-card:hover{border-color:rgba(74,127,165,.4);transform:translateY(-4px);}
+.pr-why-ico{font-size:36px;margin-bottom:1rem;}
+.pr-why-title{font-size:18px;font-weight:900;color:#1a2d4a;margin:0 0 .6rem;letter-spacing:-.02em;}
+.pr-why-desc{font-size:14px;color:#6b7f93;line-height:1.85;margin:0;}
+
+/* CTA */
+.pr-cta{background:#1a2d4a;padding:90px 6%;text-align:center;}
+.pr-cta-title{font-size:clamp(2.2rem,4vw,3.2rem);font-weight:900;letter-spacing:-.04em;line-height:1.25;color:#fff;margin:0 0 1rem;}
+.pr-cta-title em{font-family:'Playfair Display',serif;font-style:italic;color:#a0cde0;}
+.pr-cta-sub{font-size:17px;color:rgba(255,255,255,.55);line-height:1.9;margin:0 0 2.25rem;}
+.pr-cta-btn{display:inline-block;background:#4a7fa5;color:#fff !important;padding:18px 48px;border-radius:10px;font-size:17px;font-weight:700;text-decoration:none;transition:background .2s,transform .15s;}
+.pr-cta-btn:hover{background:#6b9dbd;transform:translateY(-2px);}
+
+@media(max-width:900px){.pr-grid{grid-template-columns:1fr 1fr;}.pr-why-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:540px){.pr-grid,.pr-why-grid{grid-template-columns:1fr;}.pr-sec{padding:60px 5%;}.pr-hero{padding:70px 5% 60px;}.pr-card{padding:2rem 1.75rem 1.5rem;}}
+</style>
+
+<div class="pr">
+
+  <div class="pr-hero">
+    <div class="pr-hero-lbl">⭐ 수강생 후기</div>
+    <h1>먼저 해낸 분들의<br><em>솔직한 이야기</em></h1>
+    <p class="pr-hero-sub">팀 에듀솔루션과 함께 과정을 마친 수강생분들의 후기입니다.<br>목표별로 골라서 확인해 보세요.</p>
+  </div>
+
+  <div class="pr-sec pr-reviews">
+    <div class="pr-sec-in">
+      <div class="pr-lbl">Our Review</div>
+      <p class="pr-title">목표별 <em>수강생 후기</em></p>
+      <p class="pr-desc">학위, 자격증, 편입 — 나와 비슷한 목표의 후기를 먼저 확인해 보세요.</p>
+
+      <div class="pr-filter" id="pr-filter">
+        <button class="pr-chip on" type="button" data-filter="all">전체</button>
+        <button class="pr-chip" type="button" data-filter="degree">학위 취득</button>
+        <button class="pr-chip" type="button" data-filter="license">자격증</button>
+        <button class="pr-chip" type="button" data-filter="transfer">편입</button>
+      </div>
+
+      <div class="pr-grid" id="pr-grid">
+
+        <div class="pr-card" data-cat="degree">
+          <div class="pr-quote-bg">"</div>
+          <div class="pr-stars"><div class="pr-star"></div><div class="pr-star"></div><div class="pr-star"></div><div class="pr-star"></div><div class="pr-star"></div></div>
+          <p class="pr-headline">"과제 하나도 <mark>놓치지 않고</mark><br>성적이 훨씬 잘 나왔어요!"</p>
+          <p class="pr-text">과제 마감일마다 미리 알려주셔서 하나도 놓치지 않았어요. 혼자 했으면 분명 까먹었을 텐데, <strong>담당자 덕분에 성적이 생각보다 훨씬 잘 나왔습니다.</strong></p>
+          <div class="pr-div"></div>
+          <div class="pr-foot">
+            <div class="pr-av">김</div>
+            <div><p class="pr-name">김○○ 님 (30대)</p><p class="pr-meta">직장인 / 학사 학위 취득</p></div>
+            <span class="pr-badge">학사 학위</span>
+          </div>
+        </div>
+
+        <div class="pr-card" data-cat="license">
+          <div class="pr-quote-bg">"</div>
+          <div class="pr-stars"><div class="pr-star"></div><div class="pr-star"></div><div class="pr-star"></div><div class="pr-star"></div><div class="pr-star"></div></div>
+          <p class="pr-headline">"서류 걱정 없이<br><mark>공부에만 집중</mark>할 수 있었어요."</p>
+          <p class="pr-text">서류 어디다 제출하는지 몰라서 걱정했는데 담당자분이 전부 처리해 주셨어요. <strong>저는 그냥 공부만 하면 됐습니다. 이게 진짜 큰 장점이에요.</strong></p>
+          <div class="pr-div"></div>
+          <div class="pr-foot">
+            <div class="pr-av">이</div>
+            <div><p class="pr-name">이○○ 님 (40대)</p><p class="pr-meta">주부 / 사회복지사 2급 취득</p></div>
+            <span class="pr-badge">사복 2급</span>
+          </div>
+        </div>
+
+        <div class="pr-card" data-cat="license">
+          <div class="pr-quote-bg">"</div>
+          <div class="pr-stars"><div class="pr-star"></div><div class="pr-star"></div><div class="pr-star"></div><div class="pr-star"></div><div class="pr-star"></div></div>
+          <p class="pr-headline">"생각보다 <mark>훨씬 빠르게</mark><br>기사 응시자격 갖췄어요!"</p>
+          <p class="pr-text">제 자격증 이력을 보고 딱 맞게 계산해 주셨어요. <strong>생각보다 훨씬 빠르게 기사 응시자격을 갖출 수 있었습니다.</strong></p>
+          <div class="pr-div"></div>
+          <div class="pr-foot">
+            <div class="pr-av">박</div>
+            <div><p class="pr-name">박○○ 님 (20대)</p><p class="pr-meta">취준생 / 기사 응시자격 취득</p></div>
+            <span class="pr-badge">기사 자격</span>
+          </div>
+        </div>
+
+        <div class="pr-card" data-cat="degree">
+          <div class="pr-quote-bg">"</div>
+          <div class="pr-stars"><div class="pr-star"></div><div class="pr-star"></div><div class="pr-star"></div><div class="pr-star"></div><div class="pr-star"></div></div>
+          <p class="pr-headline">"끝까지 <mark>같은 담당자</mark>가<br>책임지고 함께했어요."</p>
+          <p class="pr-text">다른 곳은 처음에만 연락 잘 되고 수강 시작하면 느려지던데, <strong>여기는 끝까지 담당자가 동일했고 응답도 빠릿빠릿했어요.</strong></p>
+          <div class="pr-div"></div>
+          <div class="pr-foot">
+            <div class="pr-av">최</div>
+            <div><p class="pr-name">최○○ 님 (30대)</p><p class="pr-meta">직장인 / 전문학사 취득</p></div>
+            <span class="pr-badge">전문학사</span>
+          </div>
+        </div>
+
+        <div class="pr-card" data-cat="degree license">
+          <div class="pr-quote-bg">"</div>
+          <div class="pr-stars"><div class="pr-star"></div><div class="pr-star"></div><div class="pr-star"></div><div class="pr-star"></div><div class="pr-star"></div></div>
+          <p class="pr-headline">"학사 + 보육교사 2급<br><mark>동시에 다 됐어요!</mark>"</p>
+          <p class="pr-text">학사 학위랑 보육교사 2급 동시에 준비했는데 수강 순서까지 전부 설계해 주셔서 겹치지 않고 효율적으로 진행됐어요. <strong>혼자였으면 절대 못 했을 것 같아요.</strong></p>
+          <div class="pr-div"></div>
+          <div class="pr-foot">
+            <div class="pr-av">정</div>
+            <div><p class="pr-name">정○○ 님 (30대)</p><p class="pr-meta">경력단절 / 학사+보육교사 동시</p></div>
+            <span class="pr-badge">학사+보육교사</span>
+          </div>
+        </div>
+
+        <div class="pr-card" data-cat="transfer">
+          <div class="pr-quote-bg">"</div>
+          <div class="pr-stars"><div class="pr-star"></div><div class="pr-star"></div><div class="pr-star"></div><div class="pr-star"></div><div class="pr-star"></div></div>
+          <p class="pr-headline">"첫 상담에서 <mark>전 과정이</mark><br>다 나왔어요."</p>
+          <p class="pr-text">여러 군데 상담받아봤는데 에듀솔루션이 제일 구체적으로 답해줬어요. <strong>몇 학기에 뭘 들어야 하는지까지 처음 상담에서 다 나왔습니다.</strong></p>
+          <div class="pr-div"></div>
+          <div class="pr-foot">
+            <div class="pr-av">윤</div>
+            <div><p class="pr-name">윤○○ 님 (20대)</p><p class="pr-meta">대학생 / 편입 학점 설계</p></div>
+            <span class="pr-badge">편입 학점</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="pr-sec pr-why">
+    <div class="pr-sec-in">
+      <div class="pr-lbl">Why Edusolution</div>
+      <p class="pr-title">후기에서 <em>공통으로 나온 말</em></p>
+      <p class="pr-desc">수강생분들이 가장 많이 이야기해 주신 네 가지입니다.</p>
+      <div class="pr-why-grid">
+        <div class="pr-why-card">
+          <div class="pr-why-ico">📅</div>
+          <p class="pr-why-title">과제 일정 관리</p>
+          <p class="pr-why-desc">마감일마다 먼저 알려드려서 놓치는 과제 없이 진행할 수 있어요.</p>
+        </div>
+        <div class="pr-why-card">
+          <div class="pr-why-ico">📄</div>
+          <p class="pr-why-title">서류·행정 대행</p>
+          <p class="pr-why-desc">복잡한 서류와 신청 절차는 담당자가 챙기고, 수강생은 공부에 집중해요.</p>
+        </div>
+        <div class="pr-why-card">
+          <div class="pr-why-ico">🧭</div>
+          <p class="pr-why-title">맞춤 학습 설계</p>
+          <p class="pr-why-desc">보유 학점과 자격증을 바탕으로 학기별 수강 계획까지 처음 상담에서 설계해요.</p>
+        </div>
+        <div class="pr-why-card">
+          <div class="pr-why-ico">🤝</div>
+          <p class="pr-why-title">끝까지 같은 담당자</p>
+          <p class="pr-why-desc">상담부터 졸업까지 한 명의 담당자가 책임지고 함께합니다.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pr-cta">
+    <p class="pr-cta-title">다음 후기의 주인공은<br><em>당신</em>일 차례예요</p>
+    <p class="pr-cta-sub">전담 담당자가 내 상황에 맞는 최적의 플랜을 설계해 드립니다.</p>
+    <a href="https://edu-solution.co.kr/#es-form" class="pr-cta-btn">1:1 무료 상담 신청 →</a>
+  </div>
+
+</div>

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>에듀솔루션 - 학점은행제 로컬 미리보기</title>
+<title>수강생 후기 | 에듀솔루션</title>
 </head>
 <body>
 <!-- 섹션0 NAV | 아임웹 코드 위젯 -->
@@ -64,227 +64,214 @@
 </div>
 
 
-<!-- 학점은행제 페이지 v3 | 아임웹 /28 코드 위젯에 붙여넣기 -->
+<!-- 수강생 후기 페이지 | 새로 제작 (아임웹 /30 대체) -->
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
 <style>
-.pk{width:100%;background:#fff;font-family:'Noto Sans KR',sans-serif;box-sizing:border-box;}
+.pr{width:100%;background:#fff;font-family:'Noto Sans KR',sans-serif;box-sizing:border-box;}
 
 /* 히어로 */
-.pk-hero{background:#1a2d4a;padding:100px 6% 90px;position:relative;overflow:hidden;text-align:center;}
-.pk-hero::before{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(0deg,transparent,transparent 47px,rgba(255,255,255,.025) 47px,rgba(255,255,255,.025) 48px),repeating-linear-gradient(90deg,transparent,transparent 47px,rgba(255,255,255,.025) 47px,rgba(255,255,255,.025) 48px);pointer-events:none;}
-.pk-hero-lbl{display:inline-flex;align-items:center;gap:8px;background:rgba(107,157,189,.18);border:1px solid rgba(107,157,189,.35);color:#afd0e8;padding:10px 20px;border-radius:100px;font-size:14px;font-weight:500;margin-bottom:2rem;}
-.pk-hero h1{font-size:clamp(3rem,5.5vw,4.8rem);font-weight:900;letter-spacing:-.04em;line-height:1.2;color:#fff;margin:0 0 1.5rem;}
-.pk-hero h1 em{font-family:'Playfair Display',serif;font-style:italic;color:#a0cde0;}
-.pk-hero-sub{font-size:clamp(16px,2vw,20px);color:rgba(255,255,255,.6);line-height:1.9;margin:0;}
+.pr-hero{background:#1a2d4a;padding:100px 6% 90px;position:relative;overflow:hidden;text-align:center;}
+.pr-hero::before{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(0deg,transparent,transparent 47px,rgba(255,255,255,.025) 47px,rgba(255,255,255,.025) 48px),repeating-linear-gradient(90deg,transparent,transparent 47px,rgba(255,255,255,.025) 47px,rgba(255,255,255,.025) 48px);pointer-events:none;}
+.pr-hero-lbl{display:inline-flex;align-items:center;gap:8px;background:rgba(107,157,189,.18);border:1px solid rgba(107,157,189,.35);color:#afd0e8;padding:10px 20px;border-radius:100px;font-size:14px;font-weight:500;margin-bottom:2rem;position:relative;}
+.pr-hero h1{font-size:clamp(3rem,5.5vw,4.8rem);font-weight:900;letter-spacing:-.04em;line-height:1.2;color:#fff;margin:0 0 1.5rem;position:relative;}
+.pr-hero h1 em{font-family:'Playfair Display',serif;font-style:italic;color:#a0cde0;}
+.pr-hero-sub{font-size:clamp(16px,2vw,20px);color:rgba(255,255,255,.6);line-height:1.9;margin:0;position:relative;}
 
 /* 섹션 공통 */
-.pk-sec{padding:100px 6%;box-sizing:border-box;}
-.pk-sec-in{max-width:1100px;margin:0 auto;}
-.pk-lbl{font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#4a7fa5;margin-bottom:.9rem;display:flex;align-items:center;gap:8px;}
-.pk-lbl::before{content:'';display:block;width:28px;height:2px;background:#4a7fa5;border-radius:2px;}
+.pr-sec{padding:100px 6%;box-sizing:border-box;}
+.pr-sec-in{max-width:1100px;margin:0 auto;}
+.pr-lbl{font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#4a7fa5;margin-bottom:.9rem;display:flex;align-items:center;gap:8px;}
+.pr-lbl::before{content:'';display:block;width:28px;height:2px;background:#4a7fa5;border-radius:2px;}
+.pr-title,p.pr-title{font-size:clamp(2.4rem,4vw,3.4rem) !important;font-weight:900 !important;letter-spacing:-.04em !important;line-height:1.2 !important;color:#1a2d4a !important;margin:0 0 1rem !important;font-family:'Noto Sans KR',sans-serif !important;}
+.pr-title em,p.pr-title em{font-family:'Playfair Display',serif !important;font-style:italic !important;color:#4a7fa5 !important;font-weight:700 !important;}
+.pr-desc{font-size:17px;color:#6b7f93;line-height:1.9;margin:0 0 2.5rem;max-width:640px;}
 
-/* 섹션 제목 — p 태그로 아임웹 h2 간섭 차단 */
-.pk-title,p.pk-title{
-  font-size:clamp(2.6rem,4vw,3.6rem) !important;
-  font-weight:900 !important;
-  letter-spacing:-.04em !important;
-  line-height:1.2 !important;
-  color:#1a2d4a !important;
-  margin:0 0 1rem !important;
-  font-family:'Noto Sans KR',sans-serif !important;
-}
-.pk-title em,p.pk-title em{
-  font-family:'Playfair Display',serif !important;
-  font-style:italic !important;
-  color:#4a7fa5 !important;
-  font-weight:700 !important;
-}
-.pk-desc{font-size:17px;color:#6b7f93;line-height:1.9;margin:0 0 3.5rem;max-width:640px;}
+/* 후기 목록 */
+.pr-reviews{background:#f4f7fb;}
+.pr-filter{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:2.5rem;}
+.pr-chip{background:#fff;border:1px solid rgba(74,127,165,.25);color:#4a7fa5;font-family:'Noto Sans KR',sans-serif;font-size:15px;font-weight:700;padding:11px 22px;border-radius:100px;cursor:pointer;transition:all .2s;}
+.pr-chip:hover{border-color:#4a7fa5;}
+.pr-chip.on{background:#1a2d4a;border-color:#1a2d4a;color:#fff;}
+.pr-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.75rem;}
+.pr-card{background:#fff;border-radius:22px;padding:2.5rem 2.5rem 2rem;border:1px solid rgba(74,127,165,.1);position:relative;overflow:hidden;transition:border-color .3s,transform .3s,box-shadow .3s;display:flex;flex-direction:column;}
+.pr-card:hover{border-color:rgba(74,127,165,.3);transform:translateY(-6px);box-shadow:0 20px 56px rgba(74,127,165,.12);}
+.pr-card.pr-hide{display:none;}
+.pr-quote-bg{position:absolute;top:-18px;left:16px;font-family:'Playfair Display',serif;font-size:200px;line-height:1;color:rgba(74,127,165,.06);pointer-events:none;user-select:none;}
+.pr-stars{display:flex;gap:4px;margin-bottom:1.4rem;position:relative;z-index:1;}
+.pr-star{width:20px;height:20px;background:#f5a623;clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);flex-shrink:0;}
+.pr-headline{font-size:clamp(16px,1.8vw,20px);font-weight:900;color:#1a2d4a;line-height:1.5;margin:0 0 1.25rem;position:relative;z-index:1;letter-spacing:-.02em;}
+.pr-headline mark{background:none;color:#4a7fa5;}
+.pr-text{font-size:15px;line-height:2;color:#4a5a6a;margin:0 0 auto;position:relative;z-index:1;padding-bottom:1.75rem;}
+.pr-text strong{color:#1a2d4a;font-weight:700;}
+.pr-div{height:1px;background:rgba(74,127,165,.1);margin-bottom:1.5rem;}
+.pr-foot{display:flex;align-items:center;gap:14px;position:relative;z-index:1;}
+.pr-av{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#ddeaf4,#b8d4ea);color:#1a2d4a;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:900;flex-shrink:0;border:2px solid rgba(74,127,165,.2);}
+.pr-name{font-size:16px;font-weight:700;color:#1a2d4a;margin:0 0 3px;}
+.pr-meta{font-size:13px;color:#8a9ab0;margin:0;}
+.pr-badge{margin-left:auto;flex-shrink:0;background:#1a2d4a;color:#a0cde0;font-size:12px;font-weight:700;padding:6px 13px;border-radius:7px;white-space:nowrap;}
 
-/* 제도 개요 */
-.pk-what{background:#f7f9fb;}
-.pk-what-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;}
-.pk-what-visual{background:linear-gradient(135deg,#1a2d4a 0%,#4a7fa5 100%);border-radius:24px;padding:3rem;display:flex;flex-direction:column;gap:1.5rem;}
-.pk-badge-row{display:flex;gap:1rem;flex-wrap:wrap;}
-.pk-badge{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:12px;padding:1.1rem 1.25rem;flex:1;min-width:100px;text-align:center;}
-.pk-badge-num{font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:700;color:#fff;display:block;line-height:1;}
-.pk-badge-txt{font-size:13px;color:rgba(255,255,255,.6);margin-top:5px;}
-.pk-arrow{text-align:center;font-size:30px;color:rgba(255,255,255,.4);}
-.pk-result{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:12px;padding:1.4rem 1.5rem;text-align:center;}
-.pk-result-txt{font-size:17px;font-weight:700;color:#fff;}
-.pk-result-sub{font-size:14px;color:rgba(255,255,255,.55);margin-top:5px;}
-.pk-what-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:1.5rem;}
-.pk-what-item{display:flex;gap:1rem;align-items:flex-start;}
-.pk-what-dot{width:36px;height:36px;border-radius:50%;background:#ddeaf4;color:#4a7fa5;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;flex-shrink:0;margin-top:2px;}
-.pk-what-item-title{font-size:19px;font-weight:700;color:#1a2d4a;margin:0 0 5px;}
-.pk-what-item-desc{font-size:15px;color:#6b7f93;line-height:1.85;margin:0;}
-
-/* 목표 카드 */
-.pk-goals{background:#fff;}
-.pk-goals-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;}
-.pk-goal-card{border-radius:18px;padding:2.25rem;border:1px solid rgba(74,127,165,.12);transition:border-color .3s,transform .3s;}
-.pk-goal-card:hover{border-color:rgba(74,127,165,.4);transform:translateY(-4px);}
-.pk-goal-ico{font-size:40px;margin-bottom:1.1rem;}
-.pk-goal-title{font-size:20px;font-weight:900;color:#1a2d4a;margin:0 0 .75rem;letter-spacing:-.02em;}
-.pk-goal-desc{font-size:15px;color:#6b7f93;line-height:1.9;margin:0 0 1.25rem;}
-.pk-goal-tags{display:flex;flex-wrap:wrap;gap:6px;}
-.pk-goal-tag{font-size:12px;font-weight:600;color:#4a7fa5;background:#ddeaf4;padding:4px 12px;border-radius:100px;}
-
-/* 절차 */
-.pk-how{background:#f7f9fb;}
-.pk-how-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;margin-top:3.5rem;position:relative;}
-.pk-how-steps::before{content:'';position:absolute;top:36px;left:12%;right:12%;height:1px;background:linear-gradient(90deg,transparent,rgba(74,127,165,.3),transparent);}
-.pk-how-step{text-align:center;position:relative;z-index:1;}
-.pk-how-num{width:72px;height:72px;border-radius:50%;background:#fff;border:2px solid rgba(74,127,165,.25);display:flex;align-items:center;justify-content:center;margin:0 auto 1.4rem;font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:#4a7fa5;transition:all .3s;}
-.pk-how-step:hover .pk-how-num{background:#4a7fa5;color:#fff;border-color:#4a7fa5;}
-.pk-how-title{font-size:17px;font-weight:700;color:#1a2d4a;margin:0 0 .6rem;}
-.pk-how-desc{font-size:14px;color:#6b7f93;line-height:1.8;margin:0;}
-
-/* FAQ */
-.pk-faq{background:#fff;}
-.pk-faq-list{display:flex;flex-direction:column;gap:1rem;margin-top:3rem;}
-.pk-faq-item{border:1px solid rgba(74,127,165,.15);border-radius:14px;overflow:hidden;}
-.pk-faq-q{padding:1.6rem 1.75rem;font-size:17px;font-weight:700;color:#1a2d4a;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:1rem;transition:background .2s;}
-.pk-faq-q:hover{background:#f7f9fb;}
-.pk-faq-q::after{content:'＋';font-size:22px;color:#4a7fa5;flex-shrink:0;transition:transform .3s;}
-.pk-faq-item.open .pk-faq-q::after{transform:rotate(45deg);}
-.pk-faq-a{font-size:16px;color:#6b7f93;line-height:1.9;padding:0 1.75rem 1.75rem;display:none;}
-.pk-faq-item.open .pk-faq-a{display:block;}
+/* 후기 속 공통 키워드 */
+.pr-why{background:#fff;}
+.pr-why-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;margin-top:3rem;}
+.pr-why-card{border-radius:18px;padding:2rem 1.75rem;border:1px solid rgba(74,127,165,.12);transition:border-color .3s,transform .3s;}
+.pr-why-card:hover{border-color:rgba(74,127,165,.4);transform:translateY(-4px);}
+.pr-why-ico{font-size:36px;margin-bottom:1rem;}
+.pr-why-title{font-size:18px;font-weight:900;color:#1a2d4a;margin:0 0 .6rem;letter-spacing:-.02em;}
+.pr-why-desc{font-size:14px;color:#6b7f93;line-height:1.85;margin:0;}
 
 /* CTA */
-.pk-cta{background:#1a2d4a;padding:90px 6%;text-align:center;}
-.pk-cta-title,p.pk-cta-title{font-size:clamp(2.2rem,3.8vw,3.2rem) !important;font-weight:900 !important;letter-spacing:-.04em !important;color:#fff !important;margin:0 0 1rem !important;font-family:'Noto Sans KR',sans-serif !important;}
-.pk-cta-title em,p.pk-cta-title em{font-family:'Playfair Display',serif !important;font-style:italic !important;color:#7ab8d8 !important;}
-.pk-cta-sub{font-size:clamp(15px,1.8vw,18px);color:rgba(255,255,255,.55);margin:0 0 2.5rem;}
-.pk-cta-btn{background:#4a7fa5;color:#fff !important;padding:20px 48px;border-radius:10px;font-size:clamp(15px,1.8vw,18px);font-weight:700;text-decoration:none;display:inline-block;transition:background .2s,transform .15s;}
-.pk-cta-btn:hover{background:#6b9dbd;transform:translateY(-2px);}
+.pr-cta{background:#1a2d4a;padding:90px 6%;text-align:center;}
+.pr-cta-title{font-size:clamp(2.2rem,4vw,3.2rem);font-weight:900;letter-spacing:-.04em;line-height:1.25;color:#fff;margin:0 0 1rem;}
+.pr-cta-title em{font-family:'Playfair Display',serif;font-style:italic;color:#a0cde0;}
+.pr-cta-sub{font-size:17px;color:rgba(255,255,255,.55);line-height:1.9;margin:0 0 2.25rem;}
+.pr-cta-btn{display:inline-block;background:#4a7fa5;color:#fff !important;padding:18px 48px;border-radius:10px;font-size:17px;font-weight:700;text-decoration:none;transition:background .2s,transform .15s;}
+.pr-cta-btn:hover{background:#6b9dbd;transform:translateY(-2px);}
 
-@media(max-width:900px){
-  .pk-what-grid{grid-template-columns:1fr;}
-  .pk-goals-grid{grid-template-columns:1fr 1fr;}
-  .pk-how-steps{grid-template-columns:repeat(2,1fr);}
-  .pk-how-steps::before{display:none;}
-}
-@media(max-width:560px){
-  .pk-hero{padding:70px 5% 60px;}
-  .pk-sec{padding:70px 5%;}
-  .pk-goals-grid{grid-template-columns:1fr;}
-  .pk-how-steps{grid-template-columns:1fr;}
-}
+@media(max-width:900px){.pr-grid{grid-template-columns:1fr 1fr;}.pr-why-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:540px){.pr-grid,.pr-why-grid{grid-template-columns:1fr;}.pr-sec{padding:60px 5%;}.pr-hero{padding:70px 5% 60px;}.pr-card{padding:2rem 1.75rem 1.5rem;}}
 </style>
 
-<div class="pk">
+<div class="pr">
 
-  <!-- 히어로 -->
-  <div class="pk-hero">
-    <div class="pk-hero-lbl">학점은행제 완벽 가이드</div>
-    <h1>학점은행제,<br><em>이렇게 활용하세요</em></h1>
-    <p class="pk-hero-sub">학교 밖에서도 학점을 취득하고 학위·자격증을 딸 수 있는 제도.<br>복잡하게 느껴지는 학점은행제를 쉽게 설명해 드립니다.</p>
+  <div class="pr-hero">
+    <div class="pr-hero-lbl">⭐ 수강생 후기</div>
+    <h1>먼저 해낸 분들의<br><em>솔직한 이야기</em></h1>
+    <p class="pr-hero-sub">팀 에듀솔루션과 함께 과정을 마친 수강생분들의 후기입니다.<br>목표별로 골라서 확인해 보세요.</p>
   </div>
 
-  <!-- 제도 개요 -->
-  <div class="pk-sec pk-what">
-    <div class="pk-sec-in">
-      <div class="pk-what-grid">
-        <div>
-          <div class="pk-lbl">What is it?</div>
-          <p class="pk-title">학점은행제란<br><em>무엇인가요?</em></p>
-          <ul class="pk-what-list">
-            <li class="pk-what-item">
-              <div class="pk-what-dot">1</div>
-              <div>
-                <p class="pk-what-item-title">학교 밖에서 학점 취득</p>
-                <p class="pk-what-item-desc">학교에 다니지 않아도 온라인 강의, 자격증, 독학사 등 다양한 방법으로 학점을 쌓을 수 있는 국가 공인 제도입니다.</p>
-              </div>
-            </li>
-            <li class="pk-what-item">
-              <div class="pk-what-dot">2</div>
-              <div>
-                <p class="pk-what-item-title">정식 학위 수여</p>
-                <p class="pk-what-item-desc">일정 학점을 채우면 교육부 장관 명의의 정식 전문학사·학사 학위를 받을 수 있습니다. 일반 대학 졸업과 동등하게 인정됩니다.</p>
-              </div>
-            </li>
-            <li class="pk-what-item">
-              <div class="pk-what-dot">3</div>
-              <div>
-                <p class="pk-what-item-title">직장인·주부도 가능</p>
-                <p class="pk-what-item-desc">온라인으로 진행되는 과목이 대부분이라 시간·장소 제약 없이 자신의 페이스에 맞게 학습할 수 있습니다.</p>
-              </div>
-            </li>
-          </ul>
-        </div>
-        <div class="pk-what-visual">
-          <div class="pk-badge-row">
-            <div class="pk-badge"><span class="pk-badge-num">80</span><p class="pk-badge-txt">전문학사 취득 학점</p></div>
-            <div class="pk-badge"><span class="pk-badge-num">140</span><p class="pk-badge-txt">학사 취득 학점</p></div>
-          </div>
-          <div class="pk-arrow">↓</div>
-          <div class="pk-result">
-            <p class="pk-result-txt">🎓 교육부 장관 명의 학위 취득</p>
-            <p class="pk-result-sub">일반 대학 졸업과 동일하게 인정</p>
-          </div>
-          <div class="pk-arrow">↕</div>
-          <div class="pk-badge-row">
-            <div class="pk-badge"><span class="pk-badge-num">온라인</span><p class="pk-badge-txt">수업 방식</p></div>
-            <div class="pk-badge"><span class="pk-badge-num">자격증, 독학사</span><p class="pk-badge-txt">학점 인정</p></div>
+  <div class="pr-sec pr-reviews">
+    <div class="pr-sec-in">
+      <div class="pr-lbl">Our Review</div>
+      <p class="pr-title">목표별 <em>수강생 후기</em></p>
+      <p class="pr-desc">학위, 자격증, 편입 — 나와 비슷한 목표의 후기를 먼저 확인해 보세요.</p>
+
+      <div class="pr-filter" id="pr-filter">
+        <button class="pr-chip on" type="button" data-filter="all">전체</button>
+        <button class="pr-chip" type="button" data-filter="degree">학위 취득</button>
+        <button class="pr-chip" type="button" data-filter="license">자격증</button>
+        <button class="pr-chip" type="button" data-filter="transfer">편입</button>
+      </div>
+
+      <div class="pr-grid" id="pr-grid">
+
+        <div class="pr-card" data-cat="degree">
+          <div class="pr-quote-bg">"</div>
+          <div class="pr-stars"><div class="pr-star"></div><div class="pr-star"></div><div class="pr-star"></div><div class="pr-star"></div><div class="pr-star"></div></div>
+          <p class="pr-headline">"과제 하나도 <mark>놓치지 않고</mark><br>성적이 훨씬 잘 나왔어요!"</p>
+          <p class="pr-text">과제 마감일마다 미리 알려주셔서 하나도 놓치지 않았어요. 혼자 했으면 분명 까먹었을 텐데, <strong>담당자 덕분에 성적이 생각보다 훨씬 잘 나왔습니다.</strong></p>
+          <div class="pr-div"></div>
+          <div class="pr-foot">
+            <div class="pr-av">김</div>
+            <div><p class="pr-name">김○○ 님 (30대)</p><p class="pr-meta">직장인 / 학사 학위 취득</p></div>
+            <span class="pr-badge">학사 학위</span>
           </div>
         </div>
+
+        <div class="pr-card" data-cat="license">
+          <div class="pr-quote-bg">"</div>
+          <div class="pr-stars"><div class="pr-star"></div><div class="pr-star"></div><div class="pr-star"></div><div class="pr-star"></div><div class="pr-star"></div></div>
+          <p class="pr-headline">"서류 걱정 없이<br><mark>공부에만 집중</mark>할 수 있었어요."</p>
+          <p class="pr-text">서류 어디다 제출하는지 몰라서 걱정했는데 담당자분이 전부 처리해 주셨어요. <strong>저는 그냥 공부만 하면 됐습니다. 이게 진짜 큰 장점이에요.</strong></p>
+          <div class="pr-div"></div>
+          <div class="pr-foot">
+            <div class="pr-av">이</div>
+            <div><p class="pr-name">이○○ 님 (40대)</p><p class="pr-meta">주부 / 사회복지사 2급 취득</p></div>
+            <span class="pr-badge">사복 2급</span>
+          </div>
+        </div>
+
+        <div class="pr-card" data-cat="license">
+          <div class="pr-quote-bg">"</div>
+          <div class="pr-stars"><div class="pr-star"></div><div class="pr-star"></div><div class="pr-star"></div><div class="pr-star"></div><div class="pr-star"></div></div>
+          <p class="pr-headline">"생각보다 <mark>훨씬 빠르게</mark><br>기사 응시자격 갖췄어요!"</p>
+          <p class="pr-text">제 자격증 이력을 보고 딱 맞게 계산해 주셨어요. <strong>생각보다 훨씬 빠르게 기사 응시자격을 갖출 수 있었습니다.</strong></p>
+          <div class="pr-div"></div>
+          <div class="pr-foot">
+            <div class="pr-av">박</div>
+            <div><p class="pr-name">박○○ 님 (20대)</p><p class="pr-meta">취준생 / 기사 응시자격 취득</p></div>
+            <span class="pr-badge">기사 자격</span>
+          </div>
+        </div>
+
+        <div class="pr-card" data-cat="degree">
+          <div class="pr-quote-bg">"</div>
+          <div class="pr-stars"><div class="pr-star"></div><div class="pr-star"></div><div class="pr-star"></div><div class="pr-star"></div><div class="pr-star"></div></div>
+          <p class="pr-headline">"끝까지 <mark>같은 담당자</mark>가<br>책임지고 함께했어요."</p>
+          <p class="pr-text">다른 곳은 처음에만 연락 잘 되고 수강 시작하면 느려지던데, <strong>여기는 끝까지 담당자가 동일했고 응답도 빠릿빠릿했어요.</strong></p>
+          <div class="pr-div"></div>
+          <div class="pr-foot">
+            <div class="pr-av">최</div>
+            <div><p class="pr-name">최○○ 님 (30대)</p><p class="pr-meta">직장인 / 전문학사 취득</p></div>
+            <span class="pr-badge">전문학사</span>
+          </div>
+        </div>
+
+        <div class="pr-card" data-cat="degree license">
+          <div class="pr-quote-bg">"</div>
+          <div class="pr-stars"><div class="pr-star"></div><div class="pr-star"></div><div class="pr-star"></div><div class="pr-star"></div><div class="pr-star"></div></div>
+          <p class="pr-headline">"학사 + 보육교사 2급<br><mark>동시에 다 됐어요!</mark>"</p>
+          <p class="pr-text">학사 학위랑 보육교사 2급 동시에 준비했는데 수강 순서까지 전부 설계해 주셔서 겹치지 않고 효율적으로 진행됐어요. <strong>혼자였으면 절대 못 했을 것 같아요.</strong></p>
+          <div class="pr-div"></div>
+          <div class="pr-foot">
+            <div class="pr-av">정</div>
+            <div><p class="pr-name">정○○ 님 (30대)</p><p class="pr-meta">경력단절 / 학사+보육교사 동시</p></div>
+            <span class="pr-badge">학사+보육교사</span>
+          </div>
+        </div>
+
+        <div class="pr-card" data-cat="transfer">
+          <div class="pr-quote-bg">"</div>
+          <div class="pr-stars"><div class="pr-star"></div><div class="pr-star"></div><div class="pr-star"></div><div class="pr-star"></div><div class="pr-star"></div></div>
+          <p class="pr-headline">"첫 상담에서 <mark>전 과정이</mark><br>다 나왔어요."</p>
+          <p class="pr-text">여러 군데 상담받아봤는데 에듀솔루션이 제일 구체적으로 답해줬어요. <strong>몇 학기에 뭘 들어야 하는지까지 처음 상담에서 다 나왔습니다.</strong></p>
+          <div class="pr-div"></div>
+          <div class="pr-foot">
+            <div class="pr-av">윤</div>
+            <div><p class="pr-name">윤○○ 님 (20대)</p><p class="pr-meta">대학생 / 편입 학점 설계</p></div>
+            <span class="pr-badge">편입 학점</span>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
 
-  <!-- 목표 -->
-  <div class="pk-sec pk-goals">
-    <div class="pk-sec-in">
-      <div class="pk-lbl">Goals</div>
-      <p class="pk-title">이런 목표를<br><em>달성할 수 있어요</em></p>
-      <p class="pk-desc">학점은행제를 통해 취득할 수 있는 대표적인 목표들입니다.</p>
-      <div class="pk-goals-grid">
-        <div class="pk-goal-card"><div class="pk-goal-ico">🎓</div><p class="pk-goal-title">전문학사 / 학사 학위</p><p class="pk-goal-desc">80학점(전문학사) 또는 140학점(학사)을 채우면 교육부 장관 명의 정식 학위를 취득할 수 있습니다.</p><div class="pk-goal-tags"><span class="pk-goal-tag">전문학사 80학점</span><span class="pk-goal-tag">학사 140학점</span></div></div>
-        <div class="pk-goal-card"><div class="pk-goal-ico">🧑‍⚕️</div><p class="pk-goal-title">사회복지사 2급</p><p class="pk-goal-desc">전공 16과목을 이수하고 실습을 완료하면 사회복지사 2급 자격증을 얻을 수 있습니다.</p><div class="pk-goal-tags"><span class="pk-goal-tag">필수 17과목</span><span class="pk-goal-tag">실습 포함</span></div></div>
-        <div class="pk-goal-card"><div class="pk-goal-ico">👶</div><p class="pk-goal-title">보육교사 2급</p><p class="pk-goal-desc">보육 관련 16과목과 보육 실습을 이수하면 보육교사 2급 자격증을 취득할 수 있습니다.</p><div class="pk-goal-tags"><span class="pk-goal-tag">전공+대면 17과목</span><span class="pk-goal-tag">보육 실습</span></div></div>
-        <div class="pk-goal-card"><div class="pk-goal-ico">⚙️</div><p class="pk-goal-title">기사 / 산업기사 응시자격</p><p class="pk-goal-desc">전공 관련 학점을 채워 기사·산업기사 시험 응시자격을 빠르게 확보할 수 있습니다.</p><div class="pk-goal-tags"><span class="pk-goal-tag">전공 학점 확보</span><span class="pk-goal-tag">응시자격 취득</span></div></div>
-        <div class="pk-goal-card"><div class="pk-goal-ico">🏫</div><p class="pk-goal-title">편입 / 대학원 진학</p><p class="pk-goal-desc">학점은행제로 취득한 고득점 학점을 편입 또는 대학원 지원 시 활용할 수 있습니다.</p><div class="pk-goal-tags"><span class="pk-goal-tag">편입 학점</span><span class="pk-goal-tag">대학원 준비</span></div></div>
-        <div class="pk-goal-card"><div class="pk-goal-ico">📌</div><p class="pk-goal-title">한국어교원 / 평생교육사</p><p class="pk-goal-desc">특정 자격 요건을 학점은행제로 충족하여 다양한 자격증을 취득할 수 있습니다.</p><div class="pk-goal-tags"><span class="pk-goal-tag">한국어교원</span><span class="pk-goal-tag">평생교육사</span></div></div>
+  <div class="pr-sec pr-why">
+    <div class="pr-sec-in">
+      <div class="pr-lbl">Why Edusolution</div>
+      <p class="pr-title">후기에서 <em>공통으로 나온 말</em></p>
+      <p class="pr-desc">수강생분들이 가장 많이 이야기해 주신 네 가지입니다.</p>
+      <div class="pr-why-grid">
+        <div class="pr-why-card">
+          <div class="pr-why-ico">📅</div>
+          <p class="pr-why-title">과제 일정 관리</p>
+          <p class="pr-why-desc">마감일마다 먼저 알려드려서 놓치는 과제 없이 진행할 수 있어요.</p>
+        </div>
+        <div class="pr-why-card">
+          <div class="pr-why-ico">📄</div>
+          <p class="pr-why-title">서류·행정 대행</p>
+          <p class="pr-why-desc">복잡한 서류와 신청 절차는 담당자가 챙기고, 수강생은 공부에 집중해요.</p>
+        </div>
+        <div class="pr-why-card">
+          <div class="pr-why-ico">🧭</div>
+          <p class="pr-why-title">맞춤 학습 설계</p>
+          <p class="pr-why-desc">보유 학점과 자격증을 바탕으로 학기별 수강 계획까지 처음 상담에서 설계해요.</p>
+        </div>
+        <div class="pr-why-card">
+          <div class="pr-why-ico">🤝</div>
+          <p class="pr-why-title">끝까지 같은 담당자</p>
+          <p class="pr-why-desc">상담부터 졸업까지 한 명의 담당자가 책임지고 함께합니다.</p>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- 절차 -->
-  <div class="pk-sec pk-how">
-    <div class="pk-sec-in">
-      <div class="pk-lbl">Process</div>
-      <p class="pk-title">학점은행제<br><em>진행 절차</em></p>
-      <div class="pk-how-steps">
-        <div class="pk-how-step"><div class="pk-how-num">1</div><p class="pk-how-title">학습자 등록</p><p class="pk-how-desc">국가평생교육진흥원에 학습자 등록 후 학점 취득을 시작합니다.</p></div>
-        <div class="pk-how-step"><div class="pk-how-num">2</div><p class="pk-how-title">학점 취득</p><p class="pk-how-desc">온라인 강의, 자격증, 독학사 등 다양한 방법으로 학점을 쌓습니다.</p></div>
-        <div class="pk-how-step"><div class="pk-how-num">3</div><p class="pk-how-title">학점 인정 신청</p><p class="pk-how-desc">취득한 학점을 국가평생교육진흥원에 인정 신청합니다.</p></div>
-        <div class="pk-how-step"><div class="pk-how-num">4</div><p class="pk-how-title">학위·자격 취득</p><p class="pk-how-desc">목표 학점 충족 후 학위 수여 또는 자격증 취득을 완료합니다.</p></div>
-      </div>
-    </div>
+  <div class="pr-cta">
+    <p class="pr-cta-title">다음 후기의 주인공은<br><em>당신</em>일 차례예요</p>
+    <p class="pr-cta-sub">전담 담당자가 내 상황에 맞는 최적의 플랜을 설계해 드립니다.</p>
+    <a href="https://edu-solution.co.kr/#es-form" class="pr-cta-btn">1:1 무료 상담 신청 →</a>
   </div>
 
-  <!-- FAQ -->
-  <div class="pk-sec pk-faq">
-    <div class="pk-sec-in">
-      <div class="pk-lbl">FAQ</div>
-      <p class="pk-title">자주 묻는<br><em>질문들</em></p>
-      <div class="pk-faq-list">
-        <div class="pk-faq-item"><div class="pk-faq-q" onclick="this.parentElement.classList.toggle('open')">학점은행제 학위가 일반 대학 학위와 다른가요?</div><div class="pk-faq-a">아닙니다. 학점은행제로 취득하는 학위는 교육부 장관 명의의 정식 학위로, 일반 대학 졸업 학위와 동등하게 인정됩니다. 취업·진학·자격증 응시 시 동일하게 활용 가능합니다.</div></div>
-        <div class="pk-faq-item"><div class="pk-faq-q" onclick="this.parentElement.classList.toggle('open')">직장을 다니면서도 가능한가요?</div><div class="pk-faq-a">네, 가능합니다. 대부분의 과목이 온라인으로 진행되어 시간·장소 제약 없이 학습할 수 있습니다. 많은 수강생분들이 직장을 다니면서 학위와 자격증을 취득하고 있습니다.</div></div>
-        <div class="pk-faq-item"><div class="pk-faq-q" onclick="this.parentElement.classList.toggle('open')">최단 기간이 얼마나 되나요?</div><div class="pk-faq-a">목표와 현재 보유 학점에 따라 다릅니다. 기존에 보유하신 학점이나 자격증이 있다면 더 빠르게 취득할 수 있습니다. 정확한 기간은 무료 상담을 통해 개인별 맞춤 플랜으로 안내해 드립니다.</div></div>
-        <div class="pk-faq-item"><div class="pk-faq-q" onclick="this.parentElement.classList.toggle('open')">이전에 대학에서 취득한 학점도 인정되나요?</div><div class="pk-faq-a">네, 이전 대학에서 취득한 학점을 학점은행제에 인정받을 수 있습니다. 전적 대학 성적증명서를 통해 학점 인정을 신청할 수 있으며, 이를 통해 취득 기간을 크게 단축할 수 있습니다.</div></div>
-        <div class="pk-faq-item"><div class="pk-faq-q" onclick="this.parentElement.classList.toggle('open')">비용은 얼마나 드나요?</div><div class="pk-faq-a">수강 비용은 선택하는 교육기관과 과목 수에 따라 다릅니다. 에듀솔루션의 상담 비용은 100% 무료이며, 목표에 맞는 최적의 비용 계획도 함께 안내해 드립니다.</div></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- CTA -->
-  <div class="pk-cta">
-    <p class="pk-cta-title">궁금한 점이 있으신가요?<br><em>무료로 상담받으세요</em></p>
-    <p class="pk-cta-sub">전담 담당자가 개인 상황에 맞게 자세히 설명해 드립니다.</p>
-    <a href="https://edu-solution.co.kr/#es-form" class="pk-cta-btn">1:1 무료 상담 신청 →</a>
-  </div>
 </div>
 
 
@@ -909,152 +896,33 @@
 
 
 <!-- =============================================
-   에듀솔루션 | 학점은행제 페이지 애니메이션
-   ※ 학점은행제 페이지 최하단에 추가
-   ※ 섹션 배경·패딩 모두 0
+   에듀솔루션 | 수강생 후기 페이지 애니메이션 + 목표별 필터
+   ※ 수강생 후기 페이지 최하단에 추가
 ================================================ -->
 <style>
+.pr-hero-lbl{animation:badgePop .8s .1s cubic-bezier(.34,1.56,.64,1) both;}
+@keyframes badgePop{from{opacity:0;transform:scale(.82);}to{opacity:1;transform:scale(1);}}
+.pr-hero h1{animation:heroUp 1.1s .22s cubic-bezier(.16,1,.3,1) both;}
+@keyframes heroUp{from{opacity:0;transform:translateY(40px);}to{opacity:1;transform:none;}}
+.pr-hero-sub{animation:fadeUp .95s .42s cubic-bezier(.16,1,.3,1) both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:none;}}
 
-/* ── 1. 히어로 ── */
-.pk-hero-lbl{
-  animation:badgePop .8s .1s cubic-bezier(.34,1.56,.64,1) both;
-}
-@keyframes badgePop{
-  from{ opacity:0; transform:scale(.82); }
-  to{   opacity:1; transform:scale(1); }
-}
-.pk-hero h1{
-  animation:heroUp 1.1s .22s cubic-bezier(.16,1,.3,1) both;
-}
-@keyframes heroUp{
-  from{ opacity:0; transform:translateY(40px); }
-  to{   opacity:1; transform:none; }
-}
-.pk-hero-sub{
-  animation:fadeUp .95s .42s cubic-bezier(.16,1,.3,1) both;
-}
-@keyframes fadeUp{
-  from{ opacity:0; transform:translateY(18px); }
-  to{   opacity:1; transform:none; }
-}
+.scroll-hidden{opacity:0;transform:translateY(22px);transition:opacity .95s cubic-bezier(.16,1,.3,1),transform .95s cubic-bezier(.16,1,.3,1);}
+.scroll-show{opacity:1 !important;transform:none !important;}
 
-/* ── 2. 스크롤 트리거 공통 ── */
-.scroll-hidden{
-  opacity:0;
-  transform:translateY(22px);
-  transition:
-    opacity   .95s cubic-bezier(.16,1,.3,1),
-    transform .95s cubic-bezier(.16,1,.3,1);
-}
-.scroll-show{
-  opacity:1 !important;
-  transform:none !important;
-}
-
-/* ── 3. 제도 개요 — what-item 왼쪽 슬라이드 ── */
-.pk-what-item{
-  transition:opacity .9s cubic-bezier(.16,1,.3,1),
-             transform .9s cubic-bezier(.16,1,.3,1);
-}
-.pk-what-item.scroll-hidden{
-  opacity:0;
-  transform:translateX(-20px);
-}
-.pk-what-item.scroll-show:nth-child(1){ transition-delay:.0s;  }
-.pk-what-item.scroll-show:nth-child(2){ transition-delay:.13s; }
-.pk-what-item.scroll-show:nth-child(3){ transition-delay:.26s; }
-
-/* ── 4. 비주얼 박스 ── */
-.pk-what-visual{
-  transition:opacity .95s .1s cubic-bezier(.16,1,.3,1),
-             transform .95s .1s cubic-bezier(.16,1,.3,1);
-}
-.pk-what-visual.scroll-hidden{
-  opacity:0;
-  transform:translateY(28px);
-}
-
-/* ── 5. 목표 카드 스태거 ── */
-.pk-goal-card{
-  transition:opacity .9s cubic-bezier(.16,1,.3,1),
-             transform .9s cubic-bezier(.16,1,.3,1),
-             border-color .3s;
-}
-.pk-goal-card.scroll-hidden{ opacity:0; transform:translateY(22px); }
-.pk-goal-card.scroll-show:nth-child(1){ transition-delay:.0s;  }
-.pk-goal-card.scroll-show:nth-child(2){ transition-delay:.1s;  }
-.pk-goal-card.scroll-show:nth-child(3){ transition-delay:.2s;  }
-.pk-goal-card.scroll-show:nth-child(4){ transition-delay:.3s;  }
-.pk-goal-card.scroll-show:nth-child(5){ transition-delay:.4s;  }
-.pk-goal-card.scroll-show:nth-child(6){ transition-delay:.5s;  }
-
-/* ── 6. 절차 스텝 스태거 ── */
-.pk-how-step{
-  transition:opacity .9s cubic-bezier(.16,1,.3,1),
-             transform .9s cubic-bezier(.16,1,.3,1);
-}
-.pk-how-step.scroll-hidden{ opacity:0; transform:translateY(20px); }
-.pk-how-step.scroll-show:nth-child(1){ transition-delay:.0s;  }
-.pk-how-step.scroll-show:nth-child(2){ transition-delay:.14s; }
-.pk-how-step.scroll-show:nth-child(3){ transition-delay:.28s; }
-.pk-how-step.scroll-show:nth-child(4){ transition-delay:.42s; }
-
-/* ── 7. FAQ 아이템 스태거 ── */
-.pk-faq-item{
-  transition:opacity .85s cubic-bezier(.16,1,.3,1),
-             transform .85s cubic-bezier(.16,1,.3,1);
-}
-.pk-faq-item.scroll-hidden{ opacity:0; transform:translateY(14px); }
-.pk-faq-item.scroll-show:nth-child(1){ transition-delay:.0s;  }
-.pk-faq-item.scroll-show:nth-child(2){ transition-delay:.08s; }
-.pk-faq-item.scroll-show:nth-child(3){ transition-delay:.16s; }
-.pk-faq-item.scroll-show:nth-child(4){ transition-delay:.24s; }
-.pk-faq-item.scroll-show:nth-child(5){ transition-delay:.32s; }
-
-/* ── 8. CTA ── */
-.pk-cta-title{
-  transition:opacity .95s cubic-bezier(.16,1,.3,1),
-             transform .95s cubic-bezier(.16,1,.3,1);
-}
-.pk-cta-sub{
-  transition:opacity .9s .14s cubic-bezier(.16,1,.3,1),
-             transform .9s .14s cubic-bezier(.16,1,.3,1);
-}
-.pk-cta-btn{
-  transition:opacity .85s .28s cubic-bezier(.16,1,.3,1),
-             transform .85s .28s cubic-bezier(.16,1,.3,1),
-             background .2s;
-}
-
-/* ── 9. 라벨·타이틀·설명 ── */
-.pk-lbl{
-  transition:opacity .85s cubic-bezier(.16,1,.3,1),
-             transform .85s cubic-bezier(.16,1,.3,1);
-}
-.pk-title{
-  transition:opacity .95s .1s cubic-bezier(.16,1,.3,1),
-             transform .95s .1s cubic-bezier(.16,1,.3,1);
-}
-.pk-desc{
-  transition:opacity .9s .2s cubic-bezier(.16,1,.3,1),
-             transform .9s .2s cubic-bezier(.16,1,.3,1);
-}
-
-/* ── 10. how 연결선 페이드 ── */
-.pk-how-steps::before{
-  transition:opacity 1s .5s;
-  opacity:0;
-}
-.pk-how-steps.line-show::before{
-  opacity:1;
-}
-
+.pr-lbl{transition:opacity .85s cubic-bezier(.16,1,.3,1),transform .85s cubic-bezier(.16,1,.3,1);}
+.pr-title{transition:opacity .95s .1s cubic-bezier(.16,1,.3,1),transform .95s .1s cubic-bezier(.16,1,.3,1);}
+.pr-desc{transition:opacity .9s .2s cubic-bezier(.16,1,.3,1),transform .9s .2s cubic-bezier(.16,1,.3,1);}
+.pr-card,.pr-why-card{transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1),border-color .3s,box-shadow .3s;}
+.pr-card.scroll-hidden,.pr-why-card.scroll-hidden{opacity:0;transform:translateY(24px);}
+.pr-cta-title{transition:opacity .95s cubic-bezier(.16,1,.3,1),transform .95s cubic-bezier(.16,1,.3,1);}
+.pr-cta-sub{transition:opacity .9s .14s cubic-bezier(.16,1,.3,1),transform .9s .14s cubic-bezier(.16,1,.3,1);}
+.pr-cta-btn{transition:opacity .85s .28s cubic-bezier(.16,1,.3,1),transform .85s .28s cubic-bezier(.16,1,.3,1),background .2s;}
 </style>
 
 <script>
 (function(){
 
-  /* ── IntersectionObserver ── */
   var io = new IntersectionObserver(function(entries){
     entries.forEach(function(e){
       if(!e.isIntersecting) return;
@@ -1064,88 +932,45 @@
     });
   }, { threshold: 0.1, rootMargin: '0px 0px -20px 0px' });
 
-  function reg(sel){
-    document.querySelectorAll(sel).forEach(function(el){
+  function reg(sel, step){
+    document.querySelectorAll(sel).forEach(function(el, i){
       el.classList.add('scroll-hidden');
+      if(step) el.style.transitionDelay = ((i % 3) * step) + 's';
       io.observe(el);
     });
   }
 
-  function regDelay(sel, delay){
-    document.querySelectorAll(sel).forEach(function(el){
-      el.classList.add('scroll-hidden');
-      el.style.transitionDelay = delay + 's';
-      io.observe(el);
-    });
-  }
-
-  /* ── 절차 연결선 observer ── */
-  function initHowLine(){
-    var steps = document.querySelector('.pk-how-steps');
-    if(!steps) return;
-    var lineIO = new IntersectionObserver(function(entries){
-      entries.forEach(function(e){
-        if(!e.isIntersecting) return;
-        e.target.classList.add('line-show');
-        lineIO.unobserve(e.target);
-      });
-    }, { threshold: 0.3 });
-    lineIO.observe(steps);
-  }
-
-  /* ── FAQ 토글 (기존 onclick 유지 + 애니메이션) ── */
-  function initFaqAnim(){
-    document.querySelectorAll('.pk-faq-a').forEach(function(a){
-      a.style.transition = 'opacity .35s, transform .35s';
-      a.style.transformOrigin = 'top';
-    });
-  }
-
-  /* ── 부드러운 앵커 스크롤 ── */
-  function initSmoothScroll(){
-    document.querySelectorAll('a[href^="#"]').forEach(function(a){
-      a.addEventListener('click', function(e){
-        var target = document.querySelector(this.getAttribute('href'));
-        if(!target) return;
-        e.preventDefault();
-        window.scrollTo({
-          top: target.getBoundingClientRect().top + window.scrollY - 80,
-          behavior: 'smooth'
+  function initFilter(){
+    var chips = document.querySelectorAll('#pr-filter .pr-chip');
+    var cards = document.querySelectorAll('#pr-grid .pr-card');
+    chips.forEach(function(chip){
+      chip.addEventListener('click', function(){
+        var f = chip.getAttribute('data-filter');
+        chips.forEach(function(c){ c.classList.remove('on'); });
+        chip.classList.add('on');
+        cards.forEach(function(card){
+          var cats = (card.getAttribute('data-cat') || '').split(' ');
+          var show = f === 'all' || cats.indexOf(f) !== -1;
+          card.classList.toggle('pr-hide', !show);
+          if(show){
+            card.classList.remove('scroll-hidden');
+            card.classList.add('scroll-show');
+          }
         });
       });
     });
   }
 
-  /* ── 전체 초기화 ── */
   function init(){
-
-    /* 라벨·타이틀·설명 */
-    reg('.pk-lbl');
-    reg('.pk-title');
-    reg('.pk-desc');
-
-    /* 제도 개요 */
-    reg('.pk-what-item');
-    reg('.pk-what-visual');
-
-    /* 목표 카드 */
-    reg('.pk-goal-card');
-
-    /* 절차 스텝 */
-    reg('.pk-how-step');
-
-    /* FAQ */
-    reg('.pk-faq-item');
-
-    /* CTA */
-    reg('.pk-cta-title');
-    reg('.pk-cta-sub');
-    reg('.pk-cta-btn');
-
-    /* 연결선·FAQ 애니 */
-    initHowLine();
-    initFaqAnim();
-    initSmoothScroll();
+    reg('.pr-lbl');
+    reg('.pr-title');
+    reg('.pr-desc');
+    reg('.pr-card', .1);
+    reg('.pr-why-card', .1);
+    reg('.pr-cta-title');
+    reg('.pr-cta-sub');
+    reg('.pr-cta-btn');
+    initFilter();
   }
 
   if(document.readyState === 'loading'){
