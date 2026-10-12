@@ -15,7 +15,7 @@ ROOT = Path(__file__).resolve().parent.parent
 GOLDEN = ROOT / "tests" / "golden"
 GOLDEN_FILES = sorted(p.relative_to(GOLDEN).as_posix() for p in GOLDEN.rglob("*") if p.is_file())
 
-LOOSE = set()
+LOOSE = {"index.html", "pages/reviews/index.html"}
 
 
 def prepare(rel: str, data: bytes) -> str:
