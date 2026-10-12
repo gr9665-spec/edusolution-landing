@@ -66,3 +66,56 @@ def reviews_featured(items: Sequence[Mapping]) -> str:
     if not cards:
         return ""
     return "\n\n" + "\n\n".join(cards) + "\n\n    "
+
+
+# =============================================================== 팀
+
+TEAM_EXTRAS_CSS = """<style>
+.pt-mem-career{list-style:none;margin:0 0 1.25rem;padding:0;}
+.pt-mem-career li{font-size:14px;color:#4a5a6a;line-height:1.8;padding-left:14px;position:relative;}
+.pt-mem-career li::before{content:'';position:absolute;left:0;top:.8em;width:5px;height:5px;border-radius:50%;background:#4a7fa5;}
+.pt-mem-cases{font-size:14px;color:#6b7f93;margin:0 0 1.25rem;line-height:1.8;}
+.pt-mem-cases a{color:#4a7fa5;font-weight:700;margin-right:8px;}
+</style>"""
+
+
+def team_cards(team: Sequence[Mapping], rel: str = "../../", cases_by_planner: Mapping = None) -> str:
+    cases_by_planner = cases_by_planner or {}
+    ind = "        "
+    cards = []
+    for m in team:
+        i1, i2, i3 = ind + "  ", ind + "    ", ind + "      "
+        lines = [
+            '%s<!-- %s -->' % (ind, esc(m["name"])),
+            '%s<div class="pt-mem-card">' % ind,
+            '%s<div class="pt-mem-photo">' % i1,
+            '%s<img src="%s%s" alt="%s">' % (i2, rel, esc(m["photo"]), esc(m["name"])),
+            '%s</div>' % i1,
+            '%s<div class="pt-mem-body">' % i1,
+            '%s<p class="pt-mem-name">%s</p>' % (i2, esc(m["name"])),
+            '%s<p class="pt-mem-role">%s</p>' % (i2, esc(m["role"])),
+            '%s<p class="pt-mem-desc">%s</p>' % (i2, m["bio"]),
+        ]
+        career = m.get("career") or []
+        if career:
+            lines.append('%s<ul class="pt-mem-career">' % i2)
+            lines += ['%s<li>%s</li>' % (i3, esc(c)) for c in career]
+            lines.append('%s</ul>' % i2)
+        linked = cases_by_planner.get(m["id"]) or []
+        if linked:
+            links = "".join('<a href="/pages/reviews/%s/">%s</a>' % (esc(c["slug"]), esc(c["title"])) for c in linked[:3])
+            lines.append('%s<p class="pt-mem-cases">합격 사례 · %s</p>' % (i2, links))
+        lines.append('%s<div class="pt-mem-tags">' % i2)
+        lines += ['%s<span class="pt-mem-tag">%s</span>' % (i3 + "  ", esc(t)) for t in m["tags"]]
+        lines += ['%s</div>' % i2, '%s</div>' % i1, '%s</div>' % ind]
+        cards.append("\n".join(lines))
+    if not cards:
+        return ""
+    return "\n\n" + "\n\n".join(cards) + "\n\n      "
+
+
+def team_extras(team: Sequence[Mapping], cases_by_planner: Mapping = None) -> str:
+    """경력 목록이나 합격 사례 링크가 하나라도 있을 때만 필요한 CSS."""
+    if any(m.get("career") for m in team) or any(cases_by_planner or {}):
+        return TEAM_EXTRAS_CSS
+    return ""

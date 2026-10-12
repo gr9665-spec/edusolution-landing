@@ -50,3 +50,30 @@ def test_featured_uses_main_prefix_and_skips_non_featured(root):
     items = [text_review(), text_review(id="r2", featured=False, person="이○○ 님")]
     html = render.reviews_featured(items)
     assert html.count('class="es5-card"') == 1 and "이○○" not in html and "data-cat" not in html
+
+
+# ---- 팀
+
+def member(**over):
+    item = {"id": "t1", "name": "홍길동 담당자", "role": "학위 · 편입 전문 플래너", "photo": "assets/p.jpg",
+            "bio": "소개 <strong>강조</strong>", "tags": ["편입", "대학원"]}
+    item.update(over)
+    return item
+
+
+def test_team_card_basic_markup_matches_existing_page_structure():
+    html = render.team_cards([member()])
+    assert "<!-- 홍길동 담당자 -->" in html
+    assert 'src="../../assets/p.jpg"' in html and "<strong>강조</strong>" in html
+    assert html.count('class="pt-mem-tag"') == 2
+    assert "pt-mem-career" not in html and "pt-mem-cases" not in html
+    assert render.team_extras([member()]) == ""
+
+
+def test_team_card_shows_career_and_case_links():
+    cases = {"t1": [{"slug": "a-2026", "title": "A대 합격"}, {"slug": "b-2026", "title": "B대 합격"}]}
+    html = render.team_cards([member(career=["경력 5년", "사회복지사 2급"])], cases_by_planner=cases)
+    assert html.count("<li>") == 2
+    assert 'href="/pages/reviews/a-2026/"' in html and "B대 합격" in html
+    assert "pt-mem-career" in render.team_extras([member(career=["경력"])])
+    assert render.team_extras([member()], cases) != ""

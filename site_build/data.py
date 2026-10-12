@@ -69,3 +69,20 @@ def validate_reviews(items: Sequence[Mapping], root: Path, team_ids=frozenset())
             if item["slug"] in slugs:
                 raise DataError("%s: slug '%s'이(가) 중복됩니다" % (where, item["slug"]))
             slugs.add(item["slug"])
+
+
+# ---------------------------------------------------------------- 팀 (team.json)
+
+def validate_team(items: Sequence[Mapping], root: Path) -> set:
+    ids = set()
+    for item in items:
+        where = "team.json[%s]" % item.get("id", "?")
+        _require(item, ["id", "name", "role", "photo", "bio", "tags"], where)
+        if item["id"] in ids:
+            raise DataError("%s: id가 중복됩니다" % where)
+        ids.add(item["id"])
+        _exists(root, item["photo"], where, "photo")
+        career = item.get("career", [])
+        if not isinstance(career, list) or not all(isinstance(c, str) and c for c in career):
+            raise DataError("%s: career는 비어 있지 않은 문자열 목록이어야 합니다" % where)
+    return ids

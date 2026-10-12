@@ -65,3 +65,22 @@ def test_duplicate_id_and_unknown_goal_and_unknown_kind(root):
 
 def test_featured_only_for_text_reviews(root):
     data.validate_reviews([text_review(featured=True)], root)
+
+
+# ---- 팀
+
+def team_member(**over):
+    item = {"id": "t1", "name": "홍길동 담당자", "role": "학위 · 편입 전문 플래너", "photo": "assets/p.jpg",
+            "bio": "소개", "tags": ["편입"]}
+    item.update(over)
+    return item
+
+
+def test_team_valid_returns_ids_and_checks_photo(root):
+    assert data.validate_team([team_member()], root) == {"t1"}
+    with pytest.raises(DataError, match="photo"):
+        data.validate_team([team_member(photo="assets/none.jpg")], root)
+    with pytest.raises(DataError, match="career"):
+        data.validate_team([team_member(career=["ok", ""])], root)
+    with pytest.raises(DataError, match="중복"):
+        data.validate_team([team_member(), team_member()], root)
