@@ -23,7 +23,7 @@
 
 ## 빌드와 로컬 미리보기
 
-`index.html`(루트와 `pages/*/`)은 직접 고치지 않고 `bash build.sh`로 생성합니다. 조각 파일(`sections/`, `pages/*/01-main-content.html` 등)을 고친 뒤에는 항상 다시 실행하세요.
+`index.html`(루트와 `pages/*/`)은 직접 고치지 않고 `python build.py`로 생성합니다. 조각 파일(`sections/`, `pages/*/01-main-content.html` 등)을 고친 뒤에는 항상 다시 실행하세요. 처음 한 번만 `pip install -r requirements.txt`로 의존성(Pillow, pytest)을 설치합니다.
 링크가 도메인 루트 기준(`/pages/...`)이라 `index.html`을 파일로 직접 열면 링크가 안 맞습니다. 저장소 루트에서 아래 명령으로 띄우고 http://localhost:8777/ 로 확인하세요.
 
 ```
