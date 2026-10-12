@@ -12,6 +12,10 @@ def load_site(root: Path):
     team_ids = data.validate_team(team, root)
     reviews = data.load(root, "reviews.json", [])
     data.validate_reviews(reviews, root, team_ids)
+    stats = data.load(root, "stats.json", [])
+    data.validate_stats(stats)
+    business = data.load(root, "business.json", {})
+    data.validate_business(business)
 
     cases = [r for r in reviews if r["kind"] == "case"]
     cases_by_planner = {}
@@ -25,6 +29,8 @@ def load_site(root: Path):
         "reviews_extras": render.reviews_extras(reviews, root),
         "team_cards": render.team_cards(team, "../../", cases_by_planner),
         "team_extras": render.team_extras(team, cases_by_planner),
+        "stats_strip": render.stats_strip(stats),
+        "site_footer": render.site_footer(business),
     }
     team_by_id = {m["id"]: m for m in team}
     return tokens, [case_page(c, team_by_id, root) for c in cases]

@@ -132,3 +132,25 @@ def test_extras_appear_only_when_needed(root):
 def test_url_path_quotes_unicode_and_spaces():
     assert render.url_path("assets/한 글.jpg") == "/assets/%ED%95%9C%20%EA%B8%80.jpg"
     assert render.url_path("/assets/a.jpg") == "/assets/a.jpg"
+
+
+# ---- 수치 띠·푸터
+
+def test_stats_strip_formats_numbers_and_shows_basis():
+    stats = [{"value": 1200, "suffix": "명+", "label": "누적 수강생", "asOf": "2026-10", "source": "자체 집계"},
+             {"value": 4.9, "label": "만족도", "asOf": "2026-10-12", "source": "설문 <120명>"}]
+    html = render.stats_strip(stats)
+    assert 'data-count="1200">1,200</span><span class="est-s">명+</span>' in html
+    assert 'data-count="4.9">4.9</span></p>' in html
+    assert "2026.10 기준 · 자체 집계" in html and "2026.10.12 기준 · 설문 &lt;120명&gt;" in html
+    assert render.stats_strip([]) == ""
+
+
+def test_footer_renders_required_and_optional_rows_and_escapes():
+    biz = {"company": "에듀 & 솔루션", "ceo": "홍길동", "regno": "000-00-00000", "address": "서울",
+           "reports": [{"label": "신고번호", "value": "제1호"}], "phone": "010-0000-0000"}
+    html = render.site_footer(biz)
+    for text in ("에듀 &amp; 솔루션", "홍길동", "000-00-00000", "신고번호", "제1호", "010-0000-0000", "서울"):
+        assert text in html
+    assert "이메일" not in html
+    assert render.site_footer({}) == ""

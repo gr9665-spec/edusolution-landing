@@ -79,6 +79,7 @@ def case_page(item: Mapping, team_by_id: Mapping, root: Path) -> ExtraPage:
         url_path="/pages/reviews/%s/" % slug,
         parts=[root / "sections" / "00-nav.html",
                Inline(case_html(item, team_by_id[item["planner"]], root)),
+               root / "sections" / "12-footer.html",
                root / "sections" / "09-kakao-float-button.html",
                root / "sections" / "10-diagnostic-popup.html"],
     )

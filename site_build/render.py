@@ -207,3 +207,83 @@ def team_extras(team: Sequence[Mapping], cases_by_planner: Mapping = None) -> st
     if any(m.get("career") for m in team) or any(cases_by_planner or {}):
         return TEAM_EXTRAS_CSS
     return ""
+
+
+# =============================================================== 메인: 실적 수치 띠, 푸터
+
+STATS_CSS = """<style>
+.est{width:100%;background:#fff;border-bottom:1px solid rgba(14,31,61,.09);font-family:'Noto Sans KR',sans-serif;box-sizing:border-box;}
+.est-in{max-width:1100px;margin:0 auto;padding:44px 6%;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2rem;text-align:center;}
+.est-main{margin:0 0 6px;font-size:clamp(2.4rem,4vw,3.4rem);font-weight:900;letter-spacing:-.03em;color:#1a2d4a;line-height:1.2;}
+.est-s{font-size:.55em;color:#4a7fa5;margin-left:3px;}
+.est-label{margin:0 0 4px;font-size:16px;font-weight:700;color:#1a2d4a;}
+.est-note{margin:0;font-size:12px;color:#8a9ab0;line-height:1.6;}
+</style>"""
+
+STATS_JS = """<script>
+(function(){
+  var els=document.querySelectorAll('.est-n[data-count]'); if(!els.length||!('IntersectionObserver' in window)) return;
+  if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  function fmt(v,dec){ return dec?v.toFixed(1):Math.floor(v).toLocaleString(); }
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(!e.isIntersecting) return; io.unobserve(e.target);
+      var el=e.target, target=parseFloat(el.getAttribute('data-count')), dec=String(target).indexOf('.')!==-1, t0=null;
+      function step(ts){ if(!t0) t0=ts; var p=Math.min((ts-t0)/1600,1), ease=1-Math.pow(1-p,4);
+        el.textContent=p<1?fmt(ease*target,dec):fmt(target,dec); if(p<1) requestAnimationFrame(step); }
+      requestAnimationFrame(step);
+    });
+  },{threshold:.5});
+  els.forEach(function(el){ io.observe(el); });
+})();
+</script>"""
+
+
+def _fmt_number(value) -> str:
+    if isinstance(value, float) and not value.is_integer():
+        return "%.1f" % value
+    return "{:,}".format(int(value))
+
+
+def stats_strip(stats: Sequence[Mapping]) -> str:
+    if not stats:
+        return ""
+    items = []
+    for s in stats:
+        suffix = '<span class="est-s">%s</span>' % esc(s["suffix"]) if s.get("suffix") else ""
+        items.append(
+            '    <div class="est-item">\n'
+            '      <p class="est-main"><span class="est-n" data-count="%s">%s</span>%s</p>\n'
+            '      <p class="est-label">%s</p>\n'
+            '      <p class="est-note">%s 기준 · %s</p>\n'
+            '    </div>' % (s["value"], _fmt_number(s["value"]), suffix, esc(s["label"]),
+                            esc(s["asOf"].replace("-", ".")), esc(s["source"])))
+    return (STATS_CSS + '\n<div class="est">\n  <div class="est-in">\n' + "\n".join(items) +
+            "\n  </div>\n</div>\n" + STATS_JS)
+
+
+FOOTER_CSS = """<style>
+.esf{width:100%;background:#13213a;font-family:'Noto Sans KR',sans-serif;box-sizing:border-box;}
+.esf-in{max-width:1100px;margin:0 auto;padding:44px 6% 120px;}
+.esf-name{margin:0 0 14px;font-size:17px;font-weight:900;color:#fff;}
+.esf-list{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px 22px;}
+.esf-list li{font-size:13px;line-height:1.8;color:rgba(255,255,255,.55);}
+.esf-list b{color:rgba(255,255,255,.8);font-weight:700;margin-right:6px;}
+.esf-copy{margin:18px 0 0;font-size:12px;color:rgba(255,255,255,.35);}
+</style>"""
+
+
+def site_footer(business: Mapping) -> str:
+    if not business:
+        return ""
+    rows = [("대표자", business["ceo"]), ("사업자등록번호", business["regno"])]
+    for rep in business.get("reports", []):
+        rows.append((rep["label"], rep["value"]))
+    for key, label in (("phone", "연락처"), ("email", "이메일")):
+        if business.get(key):
+            rows.append((label, business[key]))
+    rows.append(("주소", business["address"]))
+    lis = "\n".join('      <li><b>%s</b>%s</li>' % (esc(k), esc(v)) for k, v in rows)
+    return (FOOTER_CSS + '\n<footer class="esf">\n  <div class="esf-in">\n    <p class="esf-name">%s</p>\n'
+            '    <ul class="esf-list">\n%s\n    </ul>\n    <p class="esf-copy">&copy; %s. All rights reserved.</p>\n'
+            '  </div>\n</footer>' % (esc(business["company"]), lis, esc(business["company"])))

@@ -70,11 +70,13 @@ MAIN_DESC = (
 MAIN_FRAGMENTS = [
     "sections/00-nav.html",
     "sections/01-hero-image.html",
+    "sections/11-stats-strip.html",
     "sections/02-hero-navy-features.html",
     "sections/03-service-grid.html",
     "sections/04-caution-compare.html",
     "sections/05-reviews.html",
     "sections/06-consult-form.html",
+    "sections/12-footer.html",
     "sections/09-kakao-float-button.html",
     "sections/10-diagnostic-popup.html",
     "sections/08-form-label-fix.html",
@@ -196,6 +198,7 @@ def sub_parts(root: Path, folder: str) -> list:
     return [
         base / "00-nav.html",
         base / "01-main-content.html",
+        root / "sections" / "12-footer.html",
         root / "sections" / "09-kakao-float-button.html",
         root / "sections" / "10-diagnostic-popup.html",
         base / "02-animations.html",

@@ -131,3 +131,39 @@ def test_featured_is_rejected_for_cases(root):
 def test_case_missing_proof_image_is_rejected(root):
     with pytest.raises(DataError, match="proofImages"):
         data.validate_reviews([case(proofImages=["assets/none.jpg"])], root, {"t1"})
+
+
+# ---- 수치
+
+def stat(**over):
+    item = {"value": 1200, "label": "누적 수강생", "asOf": "2026-10", "source": "자체 집계"}
+    item.update(over)
+    return item
+
+
+def test_stats_require_source_and_as_of(root):
+    data.validate_stats([stat(), stat(asOf="2026-10-12", value=4.9)])
+    for key in ("source", "asOf", "label", "value"):
+        item = stat()
+        del item[key]
+        with pytest.raises(DataError, match=key):
+            data.validate_stats([item])
+    with pytest.raises(DataError, match="asOf"):
+        data.validate_stats([stat(asOf="올해")])
+    with pytest.raises(DataError, match="value"):
+        data.validate_stats([stat(value="천이백")])
+    with pytest.raises(DataError, match="value"):
+        data.validate_stats([stat(value=True)])
+    with pytest.raises(DataError, match="최대 6개"):
+        data.validate_stats([stat() for _ in range(7)])
+
+
+# ---- 사업자 정보
+
+def test_business_optional_but_checked_when_present():
+    data.validate_business({})
+    data.validate_business({"company": "에듀", "ceo": "홍", "regno": "000-00-00000", "address": "서울"})
+    with pytest.raises(DataError, match="regno"):
+        data.validate_business({"company": "에듀", "ceo": "홍", "address": "서울"})
+    with pytest.raises(DataError, match="label"):
+        data.validate_business({"company": "에듀", "ceo": "홍", "regno": "1", "address": "서울", "reports": [{"value": "x"}]})

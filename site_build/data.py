@@ -105,3 +105,28 @@ def validate_team(items: Sequence[Mapping], root: Path) -> set:
         if not isinstance(career, list) or not all(isinstance(c, str) and c for c in career):
             raise DataError("%s: career는 비어 있지 않은 문자열 목록이어야 합니다" % where)
     return ids
+
+
+# ---------------------------------------------------------------- 실적 수치 (stats.json)
+
+def validate_stats(items: Sequence[Mapping]) -> None:
+    if len(items) > 6:
+        raise DataError("stats.json: 수치는 최대 6개까지 쓸 수 있습니다 (현재 %d개)" % len(items))
+    for n, item in enumerate(items, 1):
+        where = "stats.json[%d]" % n
+        _require(item, ["value", "label", "asOf", "source"], where)
+        value = item["value"]
+        if isinstance(value, bool) or not isinstance(value, (int, float)) or value < 0:
+            raise DataError("%s: value는 0 이상의 숫자여야 합니다" % where)
+        if not AS_OF_RE.match(item["asOf"]):
+            raise DataError("%s: asOf는 '2026-10' 또는 '2026-10-12' 형식이어야 합니다" % where)
+
+
+# ---------------------------------------------------------------- 사업자 정보 (business.json)
+
+def validate_business(biz: Mapping) -> None:
+    if not biz:
+        return
+    _require(biz, ["company", "ceo", "regno", "address"], "business.json")
+    for rep in biz.get("reports", []):
+        _require(rep, ["label", "value"], "business.json.reports")
