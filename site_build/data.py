@@ -45,7 +45,26 @@ def _check_text(item, root, where, team_ids) -> None:
     _require(item, ["headline", "body", "person", "meta", "badge"], where)
 
 
-KIND_CHECKS = {"text": _check_text}
+def _check_capture(item, root, where, team_ids) -> None:
+    _require(item, ["image", "alt", "person"], where)
+    _exists(root, item["image"], where, "image")
+
+
+def _check_case(item, root, where, team_ids) -> None:
+    _require(item, ["slug", "title", "school", "track", "profile", "plan", "duration", "result",
+                    "planner", "seoDescription"], where)
+    if not SLUG_RE.match(item["slug"]):
+        raise DataError("%s: slug '%s'은(는) 영문 소문자·숫자·하이픈만 쓸 수 있습니다 (예: konkuk-transfer-2026)" % (where, item["slug"]))
+    _require(item["profile"], ["age", "background", "credits"], where + ".profile")
+    for row in item["plan"]:
+        _require(row, ["label", "detail"], where + ".plan")
+    if item["planner"] not in team_ids:
+        raise DataError("%s: planner '%s'이(가) team.json에 없습니다" % (where, item["planner"]))
+    for rel in item.get("proofImages", []):
+        _exists(root, rel, where, "proofImages")
+
+
+KIND_CHECKS = {"text": _check_text, "capture": _check_capture, "case": _check_case}
 
 
 def validate_reviews(items: Sequence[Mapping], root: Path, team_ids=frozenset()) -> None:

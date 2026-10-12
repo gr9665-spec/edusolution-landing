@@ -1,6 +1,7 @@
 import re
 
 import pytest
+from PIL import Image
 
 from site_build import render
 
@@ -15,6 +16,9 @@ def text_review(**over):
 
 @pytest.fixture
 def root(tmp_path):
+    (tmp_path / "assets" / "proof").mkdir(parents=True)
+    Image.new("RGB", (600, 900), "white").save(tmp_path / "assets" / "proof" / "한글 파일.jpg")
+    Image.new("RGB", (300, 300), "white").save(tmp_path / "assets" / "p.jpg")
     return tmp_path
 
 
@@ -37,6 +41,8 @@ def test_text_card_joins_goals_and_uses_first_char_as_avatar(root):
 def test_empty_data_renders_nothing(root):
     assert render.reviews_grid([], root) == ""
     assert render.reviews_featured([]) == ""
+    assert render.reviews_extras([], root) == ""
+    assert render.reviews_extras([text_review()], root) == ""
 
 
 def test_filters_show_only_goals_that_exist_in_fixed_order():
@@ -77,3 +83,52 @@ def test_team_card_shows_career_and_case_links():
     assert 'href="/pages/reviews/a-2026/"' in html and "B대 합격" in html
     assert "pt-mem-career" in render.team_extras([member(career=["경력"])])
     assert render.team_extras([member()], cases) != ""
+
+
+# ---- 캡처·합격 사례
+
+def capture(**over):
+    item = {"id": "c1", "kind": "capture", "goal": ["transfer"], "source": "테스트",
+            "image": "assets/proof/한글 파일.jpg", "alt": '대화 <캡처> & "인용"', "person": "홍○○ 님", "period": "2026.09"}
+    item.update(over)
+    return item
+
+
+def test_capture_card_encodes_path_escapes_alt_and_lazy_loads(root):
+    html = render.reviews_grid([capture()], root)
+    assert 'src="/assets/proof/%ED%95%9C%EA%B8%80%20%ED%8C%8C%EC%9D%BC.jpg"' in html     # 한글·공백 인코딩
+    assert 'alt="대화 &lt;캡처&gt; &amp; &quot;인용&quot;"' in html
+    assert 'width="600" height="900"' in html and 'loading="lazy"' in html
+    assert "홍○○ 님 · 2026.09" in html and "편입" in html
+
+
+def test_capture_without_period_shows_only_name(root):
+    html = render.reviews_grid([capture(period=None)], root)
+    assert "홍○○ 님" in html and "None" not in html
+
+
+def case(**over):
+    item = {"id": "k1", "kind": "case", "goal": ["transfer"], "source": "테스트", "slug": "univ-a-2026",
+            "title": "A대 <편입> 합격", "school": "A대학교", "track": "일반편입", "duration": "8개월",
+            "profile": {"age": "20대", "background": "전문대 졸업", "credits": "80학점"},
+            "plan": [{"label": "1학기", "detail": "전공 18학점"}], "result": "최종 합격",
+            "planner": "t1", "seoDescription": "설명"}
+    item.update(over)
+    return item
+
+
+def test_case_card_links_to_detail_page_and_escapes(root):
+    html = render.reviews_grid([case()], root)
+    assert 'href="/pages/reviews/univ-a-2026/"' in html
+    assert "A대 &lt;편입&gt; 합격" in html and "A대학교 · 일반편입" in html
+    assert "20대 · 전문대 졸업 · 8개월" in html
+
+
+def test_extras_appear_only_when_needed(root):
+    assert "pr-lb" in render.reviews_extras([capture()], root)
+    assert "pr-case-badge" in render.reviews_extras([case()], root)
+
+
+def test_url_path_quotes_unicode_and_spaces():
+    assert render.url_path("assets/한 글.jpg") == "/assets/%ED%95%9C%20%EA%B8%80.jpg"
+    assert render.url_path("/assets/a.jpg") == "/assets/a.jpg"

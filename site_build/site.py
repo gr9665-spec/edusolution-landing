@@ -4,6 +4,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from . import data, render
+from .cases import case_page
 
 
 def load_site(root: Path):
@@ -11,11 +12,19 @@ def load_site(root: Path):
     team_ids = data.validate_team(team, root)
     reviews = data.load(root, "reviews.json", [])
     data.validate_reviews(reviews, root, team_ids)
+
+    cases = [r for r in reviews if r["kind"] == "case"]
+    cases_by_planner = {}
+    for c in cases:
+        cases_by_planner.setdefault(c["planner"], []).append(c)
+
     tokens = {
         "reviews_grid": render.reviews_grid(reviews, root),
         "reviews_filters": render.reviews_filters(reviews),
         "reviews_featured": render.reviews_featured(reviews),
-        "team_cards": render.team_cards(team, "../../"),
-        "team_extras": render.team_extras(team),
+        "reviews_extras": render.reviews_extras(reviews, root),
+        "team_cards": render.team_cards(team, "../../", cases_by_planner),
+        "team_extras": render.team_extras(team, cases_by_planner),
     }
-    return tokens, []
+    team_by_id = {m["id"]: m for m in team}
+    return tokens, [case_page(c, team_by_id, root) for c in cases]
