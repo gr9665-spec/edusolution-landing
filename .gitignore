@@ -3,3 +3,4 @@ Thumbs.db
 *.log
 __pycache__/
 .pytest_cache/
+raw-proof/
