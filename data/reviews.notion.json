@@ -1,1 +1,16 @@
-[]
+[
+  {
+    "id": "notion-3f80820b",
+    "kind": "text",
+    "goal": [
+      "degree"
+    ],
+    "person": "시험○○ 님 (30대)",
+    "source": "Notion 후기 데이터베이스",
+    "headline": "노션에서 바로 반영돼요",
+    "body": "시험용 후기입니다. 노션에 적은 글이 사이트에 자동으로 나타나는지 확인하는 용도입니다.",
+    "meta": "시험 / 직장인",
+    "badge": "시험",
+    "featured": true
+  }
+]
