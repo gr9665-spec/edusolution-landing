@@ -247,12 +247,14 @@ def team_channel(channel: Mapping) -> str:
 # =============================================================== 메인: 실적 수치 띠, 푸터
 
 STATS_CSS = """<style>
-.est{width:100%;background:#fff;border-bottom:1px solid rgba(14,31,61,.09);font-family:'Noto Sans KR',sans-serif;box-sizing:border-box;}
-.est-in{max-width:1100px;margin:0 auto;padding:44px 6%;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2rem;text-align:center;}
-.est-main{margin:0 0 6px;font-size:clamp(2.4rem,4vw,3.4rem);font-weight:900;letter-spacing:-.03em;color:#1a2d4a;line-height:1.2;}
-.est-s{font-size:.55em;color:#4a7fa5;margin-left:3px;}
-.est-label{margin:0 0 4px;font-size:16px;font-weight:700;color:#1a2d4a;}
-.est-note{margin:0;font-size:12px;color:#8a9ab0;line-height:1.6;}
+.est{width:100%;background:#1a2d4a;font-family:'Noto Sans KR',sans-serif;box-sizing:border-box;}
+.est-in{max-width:1100px;margin:0 auto;padding:36px 6% 44px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2rem;text-align:center;}
+.est-item+.est-item{border-left:1px solid rgba(255,255,255,.1);}
+.est-main{margin:0 0 6px;font-size:clamp(2.4rem,4vw,3.4rem);font-weight:900;letter-spacing:-.03em;color:#fff;line-height:1.2;}
+.est-s{font-size:.55em;color:#7ab8d8;margin-left:3px;}
+.est-label{margin:0 0 4px;font-size:16px;font-weight:700;color:rgba(255,255,255,.88);}
+.est-note{margin:0;font-size:12px;color:rgba(255,255,255,.4);line-height:1.6;}
+@media(max-width:560px){.est-item+.est-item{border-left:0;border-top:1px solid rgba(255,255,255,.1);padding-top:1.5rem;}}
 </style>"""
 
 STATS_JS = """<script>
