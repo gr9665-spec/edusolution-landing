@@ -20,17 +20,18 @@ def posts(n):
 
 # ---- 목록 카드
 
-def test_list_card_links_to_detail_and_shows_image_title_subtitle_category_date():
+def test_list_card_links_to_detail_and_shows_image_title_subtitle_category_but_no_date():
     html = render.reviews_grid([post()])
     assert 'class="pr-card pr-post"' in html and 'href="/pages/reviews/r1/"' in html
     assert 'data-cat="degree"' in html
     assert 'src="/assets/proof/%ED%95%9C%EA%B8%80%20%ED%8C%8C%EC%9D%BC.jpg"' in html     # 한글·공백 인코딩
     assert 'alt="첫 번째 후기"' in html and 'loading="lazy"' in html
     assert "첫 번째 후기" in html and "직장인 / 학사 학위" in html
-    assert "학위 취득" in html and '<time datetime="2026-10-13">2026.10.13</time>' in html
+    assert "학위 취득" in html
+    assert "<time" not in html and "2026" not in html            # 날짜는 정렬에만 쓰고 화면에는 보이지 않는다
 
 
-def test_list_card_uses_default_image_and_hides_missing_date():
+def test_list_card_uses_default_image_when_there_is_none():
     html = render.reviews_grid([post(image=None, date=None)])
     assert 'src="/assets/review-default.jpg"' in html
     assert "<time" not in html and "None" not in html

@@ -13,8 +13,7 @@ POST_CSS = """<style>
 .pp-back{display:inline-block;color:#afd0e8;font-size:14px;margin-bottom:1.6rem;}
 .pp-badge{display:inline-block;background:rgba(107,157,189,.18);border:1px solid rgba(107,157,189,.35);color:#afd0e8;padding:8px 18px;border-radius:100px;font-size:14px;font-weight:500;margin:0 0 1.4rem;}
 .pp-head h1{font-size:clamp(2.4rem,4.2vw,3.8rem);font-weight:900;letter-spacing:-.04em;line-height:1.3;color:#fff;margin:0 auto 1rem;max-width:860px;word-break:keep-all;}
-.pp-sub{font-size:clamp(15px,1.8vw,19px);color:rgba(255,255,255,.7);margin:0 0 .8rem;}
-.pp-date{font-size:14px;color:rgba(255,255,255,.45);}
+.pp-sub{font-size:clamp(15px,1.8vw,19px);color:rgba(255,255,255,.7);margin:0;}
 .pp-main{padding:60px 6% 70px;}
 .pp-in{max-width:760px;margin:0 auto;}
 .pp-cover{margin:0 0 2.4rem;border-radius:16px;overflow:hidden;background:#eef3f8;}
@@ -51,18 +50,16 @@ def post_html(item: Mapping) -> str:
     if image and image != DEFAULT_IMAGE:
         cover = '<figure class="pp-cover"><img src="%s" alt="%s" loading="eager" decoding="async"></figure>' % (
             url_path(image), esc(item["title"]))
-    date = item.get("date")
-    time = '<p class="pp-date"><time datetime="%s">%s</time></p>' % (esc(date), esc(date.replace("-", "."))) if date else ""
     return (
         POST_CSS + '\n<div class="pp">\n'
         '<div class="pp-head"><a class="pp-back" href="/pages/reviews/">← 수강생 후기 전체 보기</a><br>'
-        '<span class="pp-badge">%s</span><h1>%s</h1><p class="pp-sub">%s</p>%s</div>\n'
+        '<span class="pp-badge">%s</span><h1>%s</h1><p class="pp-sub">%s</p></div>\n'
         '<div class="pp-main"><div class="pp-in">%s<div class="pp-body">%s</div></div></div>\n'
         '<div class="pp-cta"><p class="pp-cta-t">나도 이런 후기의 주인공이 되고 싶다면</p>'
         '<p>내 상황에 맞는 학점 계획을 1:1로 설계해 드립니다.</p>'
         '<div class="pp-cta-row"><a class="pp-go" href="/#es-form">1:1 무료 상담 신청 →</a>'
         '<a class="pp-more" href="/pages/reviews/">후기 더보기</a></div></div>\n</div>'
-        % (esc(GOAL_LABELS[item["category"]]), esc(item["title"]), esc(item["subtitle"]), time, cover, item["body"]))
+        % (esc(GOAL_LABELS[item["category"]]), esc(item["title"]), esc(item["subtitle"]), cover, item["body"]))
 
 
 def post_page(item: Mapping, root: Path) -> ExtraPage:
