@@ -6,56 +6,84 @@ from PIL import Image
 from site_build import render
 
 
-def text_review(**over):
-    item = {"id": "r1", "kind": "text", "goal": ["degree", "license"], "source": "테스트", "featured": True,
-            "headline": '"한 줄 <mark>제목</mark>"', "body": "본문 <strong>강조</strong>",
-            "person": "김○○ 님 (30대)", "meta": "직장인 / 학사", "badge": "학사 학위"}
+def post(**over):
+    item = {"id": "r1", "kind": "post", "slug": "r1", "title": "첫 번째 후기", "subtitle": "직장인 / 학사 학위",
+            "category": "degree", "body": "<p>본문</p>", "source": "테스트", "date": "2026-10-13",
+            "image": "assets/proof/한글 파일.jpg"}
     item.update(over)
     return item
 
 
-@pytest.fixture
-def root(tmp_path):
-    (tmp_path / "assets" / "proof").mkdir(parents=True)
-    Image.new("RGB", (600, 900), "white").save(tmp_path / "assets" / "proof" / "한글 파일.jpg")
-    Image.new("RGB", (300, 300), "white").save(tmp_path / "assets" / "p.jpg")
-    return tmp_path
+def posts(n):
+    return [post(id="r%d" % i, slug="r%d" % i, title="후기 %d" % i, date="2026-10-%02d" % (i + 1)) for i in range(n)]
 
 
-# ---- 글 후기
+# ---- 목록 카드
 
-def test_text_card_keeps_authored_html_but_escapes_plain_fields(root):
-    html = render.reviews_grid([text_review(person='김"○○ <님> & (30대)', meta="a<b", badge="x&y")], root)
-    assert "<mark>제목</mark>" in html and "<strong>강조</strong>" in html      # 제목·본문은 HTML 허용
-    assert "김&quot;○○ &lt;님&gt; &amp; (30대)" in html                         # 나머지는 이스케이프
-    assert "a&lt;b" in html and "x&amp;y" in html
-    assert html.count('class="pr-star"') == 5
-
-
-def test_text_card_joins_goals_and_uses_first_char_as_avatar(root):
-    html = render.reviews_grid([text_review()], root)
-    assert 'data-cat="degree license"' in html
-    assert '<div class="pr-av">김</div>' in html
+def test_list_card_links_to_detail_and_shows_image_title_subtitle_category_date():
+    html = render.reviews_grid([post()])
+    assert 'class="pr-card pr-post"' in html and 'href="/pages/reviews/r1/"' in html
+    assert 'data-cat="degree"' in html
+    assert 'src="/assets/proof/%ED%95%9C%EA%B8%80%20%ED%8C%8C%EC%9D%BC.jpg"' in html     # 한글·공백 인코딩
+    assert 'alt="첫 번째 후기"' in html and 'loading="lazy"' in html
+    assert "첫 번째 후기" in html and "직장인 / 학사 학위" in html
+    assert "학위 취득" in html and '<time datetime="2026-10-13">2026.10.13</time>' in html
 
 
-def test_empty_data_renders_nothing(root):
-    assert render.reviews_grid([], root) == ""
-    assert render.reviews_featured([]) == ""
-    assert render.reviews_extras([], root) == ""
-    assert render.reviews_extras([text_review()], root) == ""
+def test_list_card_uses_default_image_and_hides_missing_date():
+    html = render.reviews_grid([post(image=None, date=None)])
+    assert 'src="/assets/review-default.jpg"' in html
+    assert "<time" not in html and "None" not in html
 
 
-def test_filters_show_only_goals_that_exist_in_fixed_order():
-    items = [text_review(goal=["transfer"]), text_review(id="r2", goal=["degree"])]
+def test_list_card_escapes_plain_fields():
+    html = render.reviews_grid([post(title='a<b>"&', subtitle="x<y")])
+    assert "a&lt;b&gt;&quot;&amp;" in html and "x&lt;y" in html and "<b>" not in html
+
+
+def test_empty_data_renders_nothing():
+    assert render.reviews_grid([]) == ""
+    assert render.reviews_marquee([]) == ""
+
+
+def test_posts_are_sorted_newest_first_then_by_title_and_undated_last():
+    items = [post(id="a", slug="a", title="나", date="2026-10-01"), post(id="b", slug="b", title="가", date="2026-10-01"),
+             post(id="c", slug="c", title="다", date=None), post(id="d", slug="d", title="라", date="2026-10-05")]
+    assert [i["id"] for i in render.sort_posts(items)] == ["d", "b", "a", "c"]
+
+
+def test_filters_show_only_categories_that_exist_in_fixed_order():
+    items = [post(category="transfer"), post(id="r2", slug="r2", category="degree")]
     html = render.reviews_filters(items)
     assert re.findall(r'data-filter="(\w+)"', html) == ["all", "degree", "transfer"]
     assert "대학원" not in html
 
 
-def test_featured_uses_main_prefix_and_skips_non_featured(root):
-    items = [text_review(), text_review(id="r2", featured=False, person="이○○ 님")]
-    html = render.reviews_featured(items)
-    assert html.count('class="es5-card"') == 1 and "이○○" not in html and "data-cat" not in html
+# ---- 메인 흐르는 후기
+
+def test_marquee_flows_when_four_or_more_and_clones_are_hidden_from_assistive_tech():
+    html = render.reviews_marquee(posts(5))
+    assert 'class="es5-marq is-flow"' in html
+    assert html.count('class="es5-card"') == 5 + 5                       # 원본 + 복제
+    assert html.count("data-clone") == 1                                   # 복제 묶음 하나
+    assert html.count('aria-hidden="true"') == 1 and html.count('tabindex="-1"') == 5   # 복제는 보조기기·탭 이동에서 제외
+
+
+def test_marquee_is_static_with_fewer_than_four_and_has_no_clones():
+    html = render.reviews_marquee(posts(3))
+    assert 'class="es5-marq is-static"' in html and html.count('class="es5-card"') == 3
+    assert "data-clone" not in html and "tabindex" not in html
+
+
+def test_marquee_shows_at_most_eight_latest():
+    html = render.reviews_marquee(render.sort_posts(posts(12)))
+    assert html.count('class="es5-card"') == 16
+    assert "후기 11" in html and "후기 4" in html and "후기 3<" not in html
+
+
+def test_marquee_duration_scales_with_card_count():
+    assert "--dur:60s" in render.reviews_marquee(posts(8))
+    assert "--dur:30s" in render.reviews_marquee(posts(4))
 
 
 # ---- 팀
@@ -72,61 +100,14 @@ def test_team_card_basic_markup_matches_existing_page_structure():
     assert "<!-- 홍길동 담당자 -->" in html
     assert 'src="../../assets/p.jpg"' in html and "<strong>강조</strong>" in html
     assert html.count('class="pt-mem-tag"') == 2
-    assert "pt-mem-career" not in html and "pt-mem-cases" not in html
+    assert "pt-mem-career" not in html
     assert render.team_extras([member()]) == ""
 
 
-def test_team_card_shows_career_and_case_links():
-    cases = {"t1": [{"slug": "a-2026", "title": "A대 합격"}, {"slug": "b-2026", "title": "B대 합격"}]}
-    html = render.team_cards([member(career=["경력 5년", "사회복지사 2급"])], cases_by_planner=cases)
+def test_team_card_shows_career():
+    html = render.team_cards([member(career=["경력 5년", "사회복지사 2급"])])
     assert html.count("<li>") == 2
-    assert 'href="/pages/reviews/a-2026/"' in html and "B대 합격" in html
     assert "pt-mem-career" in render.team_extras([member(career=["경력"])])
-    assert render.team_extras([member()], cases) != ""
-
-
-# ---- 캡처·합격 사례
-
-def capture(**over):
-    item = {"id": "c1", "kind": "capture", "goal": ["transfer"], "source": "테스트",
-            "image": "assets/proof/한글 파일.jpg", "alt": '대화 <캡처> & "인용"', "person": "홍○○ 님", "period": "2026.09"}
-    item.update(over)
-    return item
-
-
-def test_capture_card_encodes_path_escapes_alt_and_lazy_loads(root):
-    html = render.reviews_grid([capture()], root)
-    assert 'src="/assets/proof/%ED%95%9C%EA%B8%80%20%ED%8C%8C%EC%9D%BC.jpg"' in html     # 한글·공백 인코딩
-    assert 'alt="대화 &lt;캡처&gt; &amp; &quot;인용&quot;"' in html
-    assert 'width="600" height="900"' in html and 'loading="lazy"' in html
-    assert "홍○○ 님 · 2026.09" in html and "편입" in html
-
-
-def test_capture_without_period_shows_only_name(root):
-    html = render.reviews_grid([capture(period=None)], root)
-    assert "홍○○ 님" in html and "None" not in html
-
-
-def case(**over):
-    item = {"id": "k1", "kind": "case", "goal": ["transfer"], "source": "테스트", "slug": "univ-a-2026",
-            "title": "A대 <편입> 합격", "school": "A대학교", "track": "일반편입", "duration": "8개월",
-            "profile": {"age": "20대", "background": "전문대 졸업", "credits": "80학점"},
-            "plan": [{"label": "1학기", "detail": "전공 18학점"}], "result": "최종 합격",
-            "planner": "t1", "seoDescription": "설명"}
-    item.update(over)
-    return item
-
-
-def test_case_card_links_to_detail_page_and_escapes(root):
-    html = render.reviews_grid([case()], root)
-    assert 'href="/pages/reviews/univ-a-2026/"' in html
-    assert "A대 &lt;편입&gt; 합격" in html and "A대학교 · 일반편입" in html
-    assert "20대 · 전문대 졸업 · 8개월" in html
-
-
-def test_extras_appear_only_when_needed(root):
-    assert "pr-lb" in render.reviews_extras([capture()], root)
-    assert "pr-case-badge" in render.reviews_extras([case()], root)
 
 
 def test_url_path_quotes_unicode_and_spaces():

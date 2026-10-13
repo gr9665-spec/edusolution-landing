@@ -12,7 +12,7 @@
 | [sections/02-hero-navy-features.html](sections/02-hero-navy-features.html) | 네이비 배경 히어로 + 4개 특징 카드 |
 | [sections/03-service-grid.html](sections/03-service-grid.html) | 핵심 서비스 6개 카드 그리드 |
 | [sections/04-caution-compare.html](sections/04-caution-compare.html) | "이런 곳은 조심하세요" 비교 섹션 |
-| [sections/05-reviews.html](sections/05-reviews.html) | 수강생 후기 카드 6개 |
+| [sections/05-reviews.html](sections/05-reviews.html) | 수강생 후기 — 최신 후기 카드(최대 8개)가 천천히 흐르는 띠 + 후기 더보기 |
 | [sections/06-consult-form.html](sections/06-consult-form.html) | 무료 상담 신청 폼 (EmailJS 연동) |
 | [sections/07-animations.html](sections/07-animations.html) | 스크롤 등장 애니메이션 · 카운트업 · 네비 그림자 등 공통 스크립트 (페이지 최하단 배치) |
 | [sections/08-form-label-fix.html](sections/08-form-label-fix.html) | 상담 폼 라벨 가시성 보정 CSS (아무 위치에나 추가 가능) |
@@ -61,56 +61,55 @@ python -m http.server 8777
 | 팀 에듀솔루션 (아임웹 `/27`) | [pages/team/](pages/team/) | 히어로 + 강점 3개 + 담당자 소개 3명 + CTA |
 | 학점은행제 (아임웹 `/28`) | [pages/credit-bank/](pages/credit-bank/) | 히어로 + 제도 개요 + 목표 6개 + 진행 절차 + FAQ + CTA |
 | 교육정보 (아임웹 `/29`) | [pages/education-info/](pages/education-info/) | 히어로 + 목표별 카드뉴스 6개(학위취득/사회복지사2급/보육교사2급/기사·산업기사/편입/대학원) + CTA |
-| 수강생 후기 (아임웹 `/30` 대체) | [pages/reviews/](pages/reviews/) | 아임웹 코드 이전이 아니라 **새로 제작**. 기존 메인의 후기 6개 + 목표별 필터(전체/학위/자격증/편입) + 공통 키워드 4개 + CTA |
+| 수강생 후기 (아임웹 `/30` 대체) | [pages/reviews/](pages/reviews/) | 아임웹 코드 이전이 아니라 **새로 제작**. 이미지 카드 목록(4/2/1열) + 분류 필터 + 공통 키워드 4개 + CTA. 카드를 누르면 `/pages/reviews/<slug>/` 상세 페이지 |
 
 ### pages/team/ 참고
 
 - 담당자 4명(상희경·이정민·성서아·홍시현)의 사진은 `assets/team-*.jpg`에 원본에서 가로 800px로 줄여 저장했습니다. 원본은 `Desktop/잡동/담당자 이미지/`에 있습니다. 담당자를 추가할 때는 `.pt-mem-card` 블록을 복사하고, `02-animations.html`의 `nth-child` 지연값과 `.pt-mem-grid` 열 수를 같이 조정하세요.
 - 네비게이션 · 카카오톡 플로팅 버튼 · 30초 자가진단 팝업은 메인 페이지(`sections/00, 09, 10`)와 동일한 코드를 재사용했습니다.
 
-## 후기·합격 사례·수치·사업자 정보 관리 (data/)
+## 후기·수치·사업자 정보 관리 (data/)
 
 내용은 `data/*.json`에 적고 `python build.py`를 실행하면 페이지와 sitemap이 함께 만들어집니다. 규칙에 어긋나면 어디가 문제인지 알려 주며 빌드가 멈춥니다.
 
 | 파일 | 내용 |
 |---|---|
-| `data/reviews.json` | 후기·합격 사례. `kind`: `text`(글 후기) / `capture`(대화 캡처) / `case`(합격 사례, 상세 페이지 자동 생성) |
+| `data/reviews.json` | 후기(블로그 글). 모든 항목이 `kind: "post"`이고 카드 + 상세 페이지가 자동 생성됩니다. 필수: `id`, `slug`, `title`, `subtitle`, `category`(`degree`/`license`/`transfer`/`grad`), `body`, `source` / 선택: `image`(없으면 기본 이미지 `assets/review-default.jpg`), `date`(`2026-10-13`) |
 | `data/stats.json` | 메인 실적 수치 띠(최대 6개). `value`, `label`, `asOf`(기준 시점)가 필수, `source`(근거 문구)는 선택(적으면 "2026.10 기준 · 근거"로, 안 적으면 "2026.10 기준"만 표시) |
 | `data/team.json` | 담당자 정보. `career`(경력·자격 목록), `youtube`(개인 유튜브 채널 주소)는 선택 |
 | `data/youtube.json` | 팀 유튜브 채널(`name`, `url`, 선택 `description`). 팀 페이지 담당자 카드 위에 크게 나옵니다. 없으면 구역이 나오지 않습니다 |
 | `data/business.json` | 하단 사업자 정보(상호·사업자등록번호·주소 필수, 대표자 이름은 선택). 없으면 푸터가 나오지 않습니다 |
 
-**대화 캡처·인증 이미지 올리는 순서**
+**수동으로 후기 이미지를 올리는 순서**
 1. 원본을 `raw-proof/`에 둡니다(git에 올라가지 않습니다).
 2. 이름·연락처·프로필 사진 위치를 확인하고 `python tools/mask.py raw-proof/원본.png assets/proof/결과.jpg --box x,y,w,h` 로 가립니다(여러 곳은 `--box`를 반복).
-3. 결과 이미지를 직접 열어 개인정보가 가려졌는지 확인한 뒤에만 `reviews.json`에 추가합니다.
+3. 결과 이미지를 직접 열어 개인정보가 가려졌는지 확인한 뒤에만 `reviews.json`의 `image` 또는 본문 `<img>`에 씁니다.
 
 **확인 명령**: `python -m pytest -q` (테스트), `python tools/check_links.py` (링크·이미지 검사)
 
 **주의사항**
 - **`data/` 폴더는 사이트에 그대로 공개됩니다** (예: `https://edu-solution.co.kr/data/reviews.json`). `source`를 포함해 어느 칸에도 수강생 실명·전화번호·이메일을 쓰지 마세요. 전화번호·이메일 형태는 빌드가 막습니다(사업자 정보 `business.json`은 제외).
 - 이미지 경로는 `assets/` 안의 상대경로만 허용됩니다. `raw-proof/`(원본)나 저장소 밖을 가리키면 빌드가 멈춥니다.
-- 후기의 `headline`·`body`와 담당자의 `bio`는 HTML이 그대로 들어갑니다(`<mark>`, `<strong>`, `<br>` 사용). 나머지 칸은 자동으로 이스케이프됩니다.
-- 합격 사례(`case`)를 `reviews.json`에서 지우면 다음 빌드에서 그 상세 페이지도 함께 지워집니다. 지운 뒤 반드시 `python build.py`를 실행하고 푸시하세요.
+- 후기의 `body`와 담당자의 `bio`는 HTML이 그대로 들어갑니다. 후기 본문에는 `p, h2, h3, strong, em, a(http/https), ul, ol, li, blockquote, hr, br, img(assets/ 안), figure, figcaption`만 쓸 수 있고, 그 밖의 태그·속성은 빌드가 멈춥니다. 나머지 칸은 자동으로 이스케이프됩니다.
+- 후기를 `reviews.json`에서 지우면 다음 빌드에서 그 상세 페이지도 함께 지워집니다. 지운 뒤 반드시 `python build.py`를 실행하세요.
 - 후기·수치를 바꾸면 화면이 바뀌므로 `python -m pytest -q`가 `test_golden`에서 실패합니다. 이것은 "기준본과 달라졌다"는 알림입니다. 로컬에서 화면을 확인한 뒤 `python tests/snapshot_golden.py`로 기준본을 갱신하고 함께 커밋하세요.
 
 ## 노션 후기 자동 동기화
 
-노션 데이터베이스에 후기를 적고 **공개**를 켜면 매시간 사이트에 자동 반영됩니다(`.github/workflows/notion-sync.yml`). 설계: `docs/superpowers/specs/2026-10-13-notion-sync-design.md`
+노션 데이터베이스에 후기를 쓰고(제목·소제목·분류·대표이미지, **내용은 페이지 본문에 글쓰듯이**) **공개**를 켜면 매시간 사이트에 자동 반영됩니다(`.github/workflows/notion-sync.yml`). 설계: `docs/superpowers/specs/2026-10-13-review-posts-design.md`
 
 **노션 데이터베이스 칸** (이름이 정확히 같아야 합니다)
 
 | 칸 | 형식 | 설명 |
 |---|---|---|
-| 이름 | 제목 | 수강생 표기. 예: `김○○ 님 (30대)` |
-| 종류 | 선택 | `글 후기` / `대화 캡처` |
-| 분류 | 다중 선택 | `학위 취득` / `자격증` / `편입` / `대학원` |
+| 제목 | 제목 | 후기 제목(카드·상세 페이지 제목) |
+| 소제목 | 텍스트 | 카드에 제목 아래로 나오는 한두 줄 설명 |
+| 분류 | 선택(하나) | `학위 취득` / `자격증` / `편입` / `대학원` |
+| 대표이미지 | 파일과 미디어 | 카드·상세 페이지 맨 위 이미지. 비워 두면 로고 기본 이미지 |
 | 공개 | 체크박스 | **켠 행만** 사이트에 반영됩니다 |
-| 한줄제목·본문·소개·배지 | 텍스트 | 글 후기에 필요. 한줄제목에서 굵게는 강조색, 본문에서 굵게는 굵은 글씨로 나옵니다 |
-| 이미지 | 파일과 미디어 | 대화 캡처에 필요. 첫 번째 파일이 쓰입니다 |
-| 시기 | 텍스트 | 예: `2026.09` (선택) |
-| 대표 | 체크박스 | 켜면 메인 후기 섹션에도 나옵니다(글 후기만, 선택) |
-| 순서 | 숫자 | 작은 수가 앞. 비워 두면 최신 등록순 (선택) |
+
+- **내용은 칸이 아니라 노션 페이지 본문**입니다(행을 열어 글쓰듯이 작성). 지원 블록: 문단, 제목 1·2·3, 글머리·번호 목록, 인용, 구분선, 이미지(캡션은 설명 문구가 됨). 서식은 굵게·기울임·링크만 반영되고, 그 밖의 블록(코드, 표, 콜아웃 등)은 건너뜁니다(Actions 로그에 개수가 남습니다).
+- 날짜는 노션에 행을 만든 날짜이고, 목록과 메인은 최신순입니다.
 
 **처음 한 번 설정**
 1. 노션에서 내부 연동(통합)을 만들고, 후기 데이터베이스를 그 연동에 공유합니다(데이터베이스 우측 상단 `…` → 연결).

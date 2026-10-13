@@ -6,9 +6,9 @@ from site_build import data
 from site_build.data import DataError
 
 
-def text_review(**over):
-    item = {"id": "r1", "kind": "text", "goal": ["degree"], "source": "테스트",
-            "headline": "제목", "body": "본문", "person": "김○○ 님 (30대)", "meta": "직장인", "badge": "학사"}
+def post(**over):
+    item = {"id": "r1", "kind": "post", "slug": "r1", "title": "제목", "subtitle": "소제목", "category": "degree",
+            "body": "<p>본문 <strong>강조</strong></p>", "source": "테스트"}
     item.update(over)
     return item
 
@@ -40,31 +40,73 @@ def test_load_reports_broken_json_with_file_name(tmp_path):
         data.load(tmp_path, "x.json", None)
 
 
-# ---- 후기
+# ---- 후기(post)
 
-def test_valid_text_review_passes(root):
-    data.validate_reviews([text_review()], root)
+def test_valid_post_passes_with_and_without_optional_fields(root):
+    data.validate_reviews([post()], root)
+    data.validate_reviews([post(id="r2", slug="r-2", image="assets/cap.jpg", date="2026-10-13")], root)
 
 
-@pytest.mark.parametrize("key", ["headline", "body", "person", "meta", "badge", "source", "goal"])
+@pytest.mark.parametrize("key", ["title", "subtitle", "category", "body", "source", "slug"])
 def test_missing_required_field_names_the_item_and_field(root, key):
-    item = text_review()
+    item = post()
     del item[key]
     with pytest.raises(DataError, match=r"r1.*%s" % key):
         data.validate_reviews([item], root)
 
 
-def test_duplicate_id_and_unknown_goal_and_unknown_kind(root):
+def test_duplicate_id_unknown_category_and_unknown_kind(root):
     with pytest.raises(DataError, match="중복"):
-        data.validate_reviews([text_review(), text_review()], root)
-    with pytest.raises(DataError, match="goal"):
-        data.validate_reviews([text_review(goal=["nope"])], root)
+        data.validate_reviews([post(), post(slug="other")], root)
+    with pytest.raises(DataError, match="category"):
+        data.validate_reviews([post(category="nope")], root)
     with pytest.raises(DataError, match="kind"):
-        data.validate_reviews([text_review(kind="video")], root)
+        data.validate_reviews([post(kind="text")], root)
 
 
-def test_featured_only_for_text_reviews(root):
-    data.validate_reviews([text_review(featured=True)], root)
+@pytest.mark.parametrize("slug", ["Univ-A", "univ a", "대학교", "a_b", "-a", "a--b", "index.html"])
+def test_bad_slug_is_rejected(root, slug):
+    with pytest.raises(DataError, match="slug"):
+        data.validate_reviews([post(slug=slug)], root)
+
+
+def test_duplicate_slug_is_rejected(root):
+    with pytest.raises(DataError, match="slug.*중복"):
+        data.validate_reviews([post(), post(id="r2")], root)
+
+
+@pytest.mark.parametrize("bad", ["2026-13-01", "2026-10-32", "2026.10.13", "어제", "2026-10-13T00:00"])
+def test_date_must_be_a_real_iso_date(root, bad):
+    with pytest.raises(DataError, match="date"):
+        data.validate_reviews([post(date=bad)], root)
+
+
+def test_image_must_exist(root):
+    with pytest.raises(DataError, match="파일이 없습니다"):
+        data.validate_reviews([post(image="assets/none.jpg")], root)
+
+
+@pytest.mark.parametrize("html", [
+    "<p>일반 <strong>본문</strong> <em>기울임</em><br></p><h2>a</h2><h3>b</h3><ul><li>x</li></ul><ol><li>y</li></ol>"
+    "<blockquote>q</blockquote><hr>",
+    '<p><a href="https://example.com/a?b=1" target="_blank" rel="noopener noreferrer">링크</a></p>',
+    '<figure><img src="/assets/cap.jpg" alt="설명"><figcaption>캡션</figcaption></figure>',
+])
+def test_body_accepts_the_allowed_tags(root, html):
+    data.validate_reviews([post(body=html)], root)
+
+
+@pytest.mark.parametrize("html", [
+    "<script>alert(1)</script>",
+    "<p onclick=\"x()\">클릭</p>",
+    '<a href="javascript:alert(1)">링크</a>',
+    '<img src="https://evil.example.com/x.jpg" alt="x">',
+    "<iframe src=\"https://example.com\"></iframe>",
+    '<p style="color:red">x</p>',
+])
+def test_body_rejects_unsafe_tags_attributes_and_urls(root, html):
+    with pytest.raises(DataError, match="body"):
+        data.validate_reviews([post(body=html)], root)
 
 
 # ---- 팀
@@ -84,53 +126,6 @@ def test_team_valid_returns_ids_and_checks_photo(root):
         data.validate_team([team_member(career=["ok", ""])], root)
     with pytest.raises(DataError, match="중복"):
         data.validate_team([team_member(), team_member()], root)
-
-
-# ---- 캡처·합격 사례
-
-def case(**over):
-    item = {"id": "k1", "kind": "case", "goal": ["transfer"], "source": "테스트", "slug": "univ-a-2026",
-            "title": "A대 편입 합격", "school": "A대학교", "track": "일반편입", "duration": "8개월",
-            "profile": {"age": "20대", "background": "전문대 졸업", "credits": "80학점"},
-            "plan": [{"label": "1학기", "detail": "전공 18학점"}], "result": "합격",
-            "planner": "t1", "seoDescription": "설명"}
-    item.update(over)
-    return item
-
-
-def test_capture_requires_existing_image(root):
-    ok = {"id": "c1", "kind": "capture", "goal": ["license"], "source": "테스트", "image": "assets/cap.jpg",
-          "alt": "캡처", "person": "이○○ 님"}
-    data.validate_reviews([ok], root)
-    with pytest.raises(DataError, match="파일이 없습니다"):
-        data.validate_reviews([dict(ok, image="assets/none.jpg")], root)
-
-
-def test_case_valid_and_planner_must_exist(root):
-    data.validate_reviews([case()], root, {"t1"})
-    with pytest.raises(DataError, match="planner"):
-        data.validate_reviews([case()], root, {"other"})
-
-
-@pytest.mark.parametrize("slug", ["Univ-A", "univ a", "대학교", "a_b", "-a", "a--b", "index.html"])
-def test_bad_slug_is_rejected(root, slug):
-    with pytest.raises(DataError, match="slug"):
-        data.validate_reviews([case(slug=slug)], root, {"t1"})
-
-
-def test_duplicate_slug_is_rejected(root):
-    with pytest.raises(DataError, match="slug.*중복"):
-        data.validate_reviews([case(), case(id="k2")], root, {"t1"})
-
-
-def test_featured_is_rejected_for_cases(root):
-    with pytest.raises(DataError, match="featured"):
-        data.validate_reviews([case(featured=True)], root, {"t1"})
-
-
-def test_case_missing_proof_image_is_rejected(root):
-    with pytest.raises(DataError, match="proofImages"):
-        data.validate_reviews([case(proofImages=["assets/none.jpg"])], root, {"t1"})
 
 
 # ---- 수치
@@ -176,34 +171,25 @@ def test_business_optional_but_checked_when_present():
 def test_image_paths_must_stay_inside_assets(root, bad):
     (root / "raw-proof").mkdir()
     (root / "raw-proof" / "a.jpg").write_bytes(b"x")
-    capture = {"id": "c1", "kind": "capture", "goal": ["license"], "source": "테스트", "image": bad,
-               "alt": "캡처", "person": "이○○ 님"}
     with pytest.raises(DataError, match="assets/ 폴더"):
-        data.validate_reviews([capture], root)
+        data.validate_reviews([post(image=bad)], root)
     with pytest.raises(DataError, match="assets/ 폴더"):
         data.validate_team([team_member(photo=bad)], root)
-    with pytest.raises(DataError, match="assets/ 폴더"):
-        data.validate_reviews([case(proofImages=[bad])], root, {"t1"})
 
 
 @pytest.mark.parametrize("field,value", [
     ("source", "카톡 김민수 님 010-1234-5678"),
-    ("meta", "연락처 01012345678"),
-    ("body", "문의는 hong@example.com 으로"),
-    ("person", "김○○ 010 1234 5678"),
+    ("subtitle", "연락처 01012345678"),
+    ("body", "<p>문의는 hong@example.com 으로</p>"),
+    ("title", "김○○ 010 1234 5678"),
 ])
 def test_reviews_reject_phone_numbers_and_emails(root, field, value):
     with pytest.raises(DataError, match="개인정보"):
-        data.validate_reviews([text_review(**{field: value})], root)
-
-
-def test_reviews_reject_pii_inside_nested_case_fields(root):
-    with pytest.raises(DataError, match="개인정보"):
-        data.validate_reviews([case(plan=[{"label": "1학기", "detail": "연락처 010-0000-0000"}])], root, {"t1"})
+        data.validate_reviews([post(**{field: value})], root)
 
 
 def test_ordinary_numbers_are_not_mistaken_for_pii(root):
-    ok = text_review(body="106학점 중 전공 60학점, 2026.09 기준 8개월, 80~140학점", source="2026-10-12 수강생 동의")
+    ok = post(body="<p>106학점 중 전공 60학점, 2026.09 기준 8개월, 80~140학점</p>", source="2026-10-12 수강생 동의")
     data.validate_reviews([ok], root)
 
 

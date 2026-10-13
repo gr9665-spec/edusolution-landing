@@ -1,38 +1,115 @@
-"""노션 데이터베이스 행을 reviews 항목으로 바꾸는 순수 함수들(네트워크 없음).
+"""노션 데이터베이스 행과 페이지 본문 블록을 reviews 항목(post)으로 바꾸는 순수 함수들(네트워크 없음).
 
-노션 데이터베이스의 칸 이름·형식은 docs/superpowers/specs/2026-10-13-notion-sync-design.md 3번을 따른다.
+노션 데이터베이스의 칸 이름·형식과 지원하는 블록은 docs/superpowers/specs/2026-10-13-review-posts-design.md 3번을 따른다.
 """
 from __future__ import annotations
 
+import datetime
 import html
-from typing import Callable, Mapping, Sequence
+import re
+from collections import Counter
+from typing import Callable, Mapping, Optional, Sequence
 
 from .core import BuildError
+from .render import sort_posts
 
-KIND_LABELS = {"글 후기": "text", "대화 캡처": "capture"}
-GOAL_LABELS = {"학위 취득": "degree", "자격증": "license", "편입": "transfer", "대학원": "grad"}
-TEXT_COLUMNS = (("한줄제목", "headline"), ("본문", "body"), ("소개", "meta"), ("배지", "badge"))
+CATEGORY_LABELS = {"학위 취득": "degree", "자격증": "license", "편입": "transfer", "대학원": "grad"}
 SOURCE = "Notion 후기 데이터베이스"
+LINK_RE = re.compile(r"^https?://[^\s\"'<>]+$")
+KST = datetime.timezone(datetime.timedelta(hours=9))
 
 
 class NotionError(BuildError):
-    """노션 행이 규칙에 맞지 않을 때. 어느 행(수강생 이름)·어느 칸인지 메시지에 담는다."""
+    """노션 행이 규칙에 맞지 않을 때. 어느 행(제목)·어느 칸인지 메시지에 담는다."""
 
 
 def plain(rich_text: Sequence[Mapping]) -> str:
     return "".join(part.get("plain_text", "") for part in rich_text or [])
 
 
-def rich_text_to_html(rich_text: Sequence[Mapping], bold_tag: str) -> str:
-    """노션 텍스트를 안전한 HTML로 바꾼다. 모든 글자는 이스케이프하고, 줄바꿈은 <br>, 굵게는 bold_tag로만 바꾼다."""
+def rich_text_to_html(rich_text: Sequence[Mapping]) -> str:
+    """노션 텍스트를 안전한 HTML로 바꾼다. 모든 글자는 이스케이프하고, 줄바꿈은 <br>,
+    굵게·기울임·http(s) 링크만 태그로 바꾼다. 그 밖의 서식은 무시한다."""
     out = []
     for part in rich_text or []:
         text = html.escape(part.get("plain_text", ""), quote=True).replace("\r\n", "\n").replace("\n", "<br>")
-        if text and part.get("annotations", {}).get("bold"):
-            text = "<%s>%s</%s>" % (bold_tag, text, bold_tag)
+        if not text:
+            continue
+        notes = part.get("annotations") or {}
+        if notes.get("italic"):
+            text = "<em>%s</em>" % text
+        if notes.get("bold"):
+            text = "<strong>%s</strong>" % text
+        href = part.get("href")
+        if href and LINK_RE.match(href):
+            text = '<a href="%s" target="_blank" rel="noopener noreferrer">%s</a>' % (html.escape(href, quote=True), text)
         out.append(text)
     return "".join(out)
 
+
+# ---------------------------------------------------------------- 본문 블록
+
+def _file_url(file_obj: Mapping) -> str:
+    return file_obj["file"]["url"] if file_obj.get("type") == "file" else file_obj["external"]["url"]
+
+
+def _children(block: Mapping, download_image, skipped) -> str:
+    return blocks_to_html(block.get("children") or [], download_image, skipped)
+
+
+def _list(blocks: Sequence[Mapping], tag: str, download_image, skipped) -> str:
+    items = []
+    for b in blocks:
+        data = b[b["type"]]
+        items.append("<li>%s%s</li>" % (rich_text_to_html(data.get("rich_text")), _children(b, download_image, skipped)))
+    return "<%s>%s</%s>" % (tag, "".join(items), tag)
+
+
+def blocks_to_html(blocks: Sequence[Mapping], download_image: Callable[[str], str],
+                   skipped: Optional[Counter] = None) -> str:
+    """페이지 본문 블록을 허용된 태그만 쓴 HTML로 바꾼다. 지원하지 않는 블록은 건너뛰고 skipped에 종류별 개수를 센다."""
+    skipped = skipped if skipped is not None else Counter()
+    out = []
+    i = 0
+    while i < len(blocks):
+        b = blocks[i]
+        kind = b.get("type")
+        data = b.get(kind) or {}
+        if kind in ("bulleted_list_item", "numbered_list_item"):
+            j = i
+            while j < len(blocks) and blocks[j].get("type") == kind:
+                j += 1
+            out.append(_list(blocks[i:j], "ul" if kind == "bulleted_list_item" else "ol", download_image, skipped))
+            i = j
+            continue
+        i += 1
+        rich = data.get("rich_text")
+        if kind == "paragraph":
+            text = rich_text_to_html(rich)
+            if text:
+                out.append("<p>%s</p>" % text)
+        elif kind in ("heading_1", "heading_2", "heading_3"):
+            tag = "h3" if kind == "heading_3" else "h2"
+            out.append("<%s>%s</%s>" % (tag, rich_text_to_html(rich), tag))
+        elif kind == "quote":
+            out.append("<blockquote>%s</blockquote>" % rich_text_to_html(rich))
+        elif kind == "divider":
+            out.append("<hr>")
+        elif kind == "image":
+            rel = download_image(_file_url(data))
+            caption = plain(data.get("caption"))
+            alt = html.escape(caption, quote=True)
+            figcaption = "<figcaption>%s</figcaption>" % alt if caption else ""
+            out.append('<figure><img src="/%s" alt="%s" loading="lazy" decoding="async">%s</figure>' % (rel, alt, figcaption))
+        else:
+            skipped[kind] += 1
+            continue
+        if kind in ("paragraph", "quote"):          # 하위 블록은 같은 글 흐름 안에 이어서 둔다
+            out.append(_children(b, download_image, skipped))
+    return "".join(out)
+
+
+# ---------------------------------------------------------------- 행
 
 def _prop(page: Mapping, name: str, who: str) -> Mapping:
     props = page.get("properties", {})
@@ -42,69 +119,53 @@ def _prop(page: Mapping, name: str, who: str) -> Mapping:
 
 
 def _title(page: Mapping) -> str:
-    prop = page.get("properties", {}).get("이름") or {}
+    prop = page.get("properties", {}).get("제목") or {}
     return plain(prop.get("title", [])).strip()
 
 
-def row_to_item(page: Mapping, download_image: Callable[[str], str]) -> dict:
-    """노션 행 하나를 reviews 항목으로 바꾼다. download_image(url)는 사이트 안의 이미지 경로(assets/…)를 돌려준다."""
+def _date(created_time: str) -> str:
+    stamp = datetime.datetime.fromisoformat(created_time.replace("Z", "+00:00"))
+    return stamp.astimezone(KST).date().isoformat()
+
+
+def row_to_item(page: Mapping, blocks: Sequence[Mapping], download_image: Callable[[str], str],
+                skipped: Optional[Counter] = None) -> dict:
+    """노션 행 하나와 그 페이지 본문 블록을 post 항목으로 바꾼다. download_image(url)는 사이트 안의 이미지 경로(assets/…)를 돌려준다."""
+    row_id = page["id"].replace("-", "")[:8]
     who = _title(page)
     if not who:
-        raise NotionError("행 %s: '이름' 칸이 비어 있습니다" % page.get("id", "?")[:8])
-    row_id = page["id"].replace("-", "")[:8]
+        raise NotionError("행 %s: '제목' 칸이 비어 있습니다" % row_id)
 
-    kind_sel = _prop(page, "종류", who).get("select")
-    kind = KIND_LABELS.get(kind_sel["name"]) if kind_sel else None
-    if kind is None:
-        raise NotionError("%s: '종류' 칸은 %s 중 하나여야 합니다" % (who, " / ".join(KIND_LABELS)))
+    subtitle = plain(_prop(page, "소제목", who).get("rich_text", [])).strip()
+    if not subtitle:
+        raise NotionError("%s: '소제목' 칸이 비어 있습니다" % who)
 
-    goals = []
-    for opt in _prop(page, "분류", who).get("multi_select", []):
-        if opt["name"] not in GOAL_LABELS:
-            raise NotionError("%s: '분류' 칸에 알 수 없는 값 '%s'가 있습니다 (허용: %s)" % (who, opt["name"], ", ".join(GOAL_LABELS)))
-        goals.append(GOAL_LABELS[opt["name"]])
-    if not goals:
+    selected = _prop(page, "분류", who).get("select")
+    if not selected:
         raise NotionError("%s: '분류' 칸이 비어 있습니다" % who)
+    if selected["name"] not in CATEGORY_LABELS:
+        raise NotionError("%s: '분류' 칸에 알 수 없는 값 '%s'가 있습니다 (허용: %s)" % (who, selected["name"], ", ".join(CATEGORY_LABELS)))
 
-    item = {"id": "notion-%s" % row_id, "kind": kind, "goal": goals, "person": who, "source": SOURCE}
+    body = blocks_to_html(blocks, download_image, skipped)
+    if not body.strip():
+        raise NotionError("%s: 페이지 본문이 비어 있습니다 (글을 쓰거나 '공개'를 꺼 주세요)" % who)
 
-    if kind == "text":
-        for column, key in TEXT_COLUMNS:
-            rich = _prop(page, column, who).get("rich_text", [])
-            if not plain(rich).strip():
-                raise NotionError("%s: 글 후기는 '%s' 칸이 필요합니다" % (who, column))
-            item[key] = rich_text_to_html(rich, "mark" if column == "한줄제목" else "strong") if column in ("한줄제목", "본문") \
-                else plain(rich).strip()
-        item["featured"] = bool(page["properties"].get("대표", {}).get("checkbox"))
-    else:
-        files = _prop(page, "이미지", who).get("files", [])
-        if not files:
-            raise NotionError("%s: 대화 캡처는 '이미지' 칸에 파일이 필요합니다" % who)
-        first = files[0]
-        url = first["file"]["url"] if first.get("type") == "file" else first["external"]["url"]
-        item["image"] = download_image(url)
-        item["alt"] = "%s의 수강 후기 대화 캡처" % who
-        period = plain(page["properties"].get("시기", {}).get("rich_text", [])).strip()
-        if period:
-            item["period"] = period
+    item = {"id": "notion-%s" % row_id, "kind": "post", "slug": "r-%s" % row_id, "title": who, "subtitle": subtitle,
+            "category": CATEGORY_LABELS[selected["name"]], "date": _date(page["created_time"]), "body": body, "source": SOURCE}
+    files = (page["properties"].get("대표이미지") or {}).get("files") or []
+    if files:
+        item["image"] = download_image(_file_url(files[0]))
     return item
 
 
-def rows_to_items(pages: Sequence[Mapping], download_image: Callable[[str], str]) -> list:
-    """공개된 행만 골라 항목으로 바꾸고 정렬한다(순서 칸 오름차순, 순서가 없으면 최신 등록순)."""
+def rows_to_items(pages: Sequence[Mapping], fetch_blocks: Callable[[str], Sequence[Mapping]],
+                  download_image: Callable[[str], str], skipped: Optional[Counter] = None) -> list:
+    """공개된 행만 골라 본문을 가져와 항목으로 바꾸고, 최신 날짜순(같으면 제목순)으로 정렬한다."""
     published = [p for p in pages if p.get("properties", {}).get("공개", {}).get("checkbox")]
-
-    def order(p):
-        number = (p["properties"].get("순서") or {}).get("number")
-        return (0, number, "") if number is not None else (1, 0, "")
-
-    # 최신 등록순(내림차순) -> 순서 칸 오름차순(안정 정렬이라 순서가 같거나 없으면 최신순이 유지된다)
-    published = sorted(published, key=lambda p: p.get("created_time", ""), reverse=True)
-    published = sorted(published, key=order)
-    items = [row_to_item(p, download_image) for p in published]
+    items = [row_to_item(p, fetch_blocks(p["id"]), download_image, skipped) for p in published]
     seen = set()
     for item in items:
         if item["id"] in seen:
             raise NotionError("행 ID 앞 8자가 겹치는 행이 있습니다(중복): %s" % item["id"])
         seen.add(item["id"])
-    return items
+    return sort_posts(items)

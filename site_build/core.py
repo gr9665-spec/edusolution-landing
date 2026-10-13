@@ -120,13 +120,14 @@ Part = Union[Path, Inline]
 
 @dataclass(frozen=True)
 class ExtraPage:
-    """데이터에서 만들어지는 추가 페이지(예: 합격 사례 상세)."""
+    """데이터에서 만들어지는 추가 페이지(예: 후기 상세)."""
     rel_dir: str            # 예: "pages/reviews/univ-a"
     title: str
     desc: str
     url_path: str           # 예: "/pages/reviews/univ-a/"
     parts: Sequence[Part]
     logo: str = "/assets/logo.png"
+    og_image: str = ""      # 공유 미리보기 이미지(전체 주소). 비어 있으면 사이트 기본 이미지
 
 
 class BuildError(Exception):
@@ -153,19 +154,19 @@ def expand(text: str, tokens: Mapping[str, str], where: str = "") -> str:
     return TOKEN_RE.sub(repl, text)
 
 
-def make_head(title: str, desc: str, url_path: str, head_extra: str) -> str:
+def make_head(title: str, desc: str, url_path: str, head_extra: str, og_image: str = "") -> str:
     return HEAD.substitute(
         title=html.escape(title, quote=True),
         desc=html.escape(desc, quote=True),
         site=SITE,
         path=url_path,
-        og_image=OG_IMAGE,
+        og_image=html.escape(og_image or OG_IMAGE, quote=True),
     ) + head_extra + "</head>\n<body>\n"
 
 
 def assemble_page(root: Path, tokens: Mapping[str, str], logo: str, title: str, desc: str,
-                  url_path: str, parts: Sequence[Part]) -> str:
-    out = [make_head(title, desc, url_path, read_text(root / "head-extra.html"))]
+                  url_path: str, parts: Sequence[Part], og_image: str = "") -> str:
+    out = [make_head(title, desc, url_path, read_text(root / "head-extra.html"), og_image)]
     for part in parts:
         if isinstance(part, Inline):
             text, where = part.html, "inline"
@@ -205,8 +206,8 @@ def sub_parts(root: Path, folder: str) -> list:
     ]
 
 
-def prune_stale_case_pages(out: Path, extra_pages: Sequence[ExtraPage]) -> None:
-    """데이터에서 지운 합격 사례의 상세 페이지가 공개 폴더에 남지 않게 지운다."""
+def prune_stale_post_pages(out: Path, extra_pages: Sequence[ExtraPage]) -> None:
+    """데이터에서 지운 후기의 상세 페이지가 공개 폴더에 남지 않게 지운다."""
     keep = {page.rel_dir for page in extra_pages}
     base = out / "pages" / "reviews"
     if not base.is_dir():
@@ -237,9 +238,9 @@ def build_all(root: Path, out: Path, tokens: Mapping[str, str] | None = None,
 
     for page in extra_pages:
         write_text(out / page.rel_dir / "index.html", assemble_page(
-            root, tokens, page.logo, page.title, page.desc, page.url_path, page.parts))
+            root, tokens, page.logo, page.title, page.desc, page.url_path, page.parts, page.og_image))
 
-    prune_stale_case_pages(out, extra_pages)
+    prune_stale_post_pages(out, extra_pages)
 
     for folder, target in REDIRECTS.items():
         write_text(out / folder / "index.html", REDIRECT.substitute(site=SITE, target=target))

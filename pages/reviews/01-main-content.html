@@ -26,23 +26,17 @@
 .pr-chip{background:#fff;border:1px solid rgba(74,127,165,.25);color:#4a7fa5;font-family:'Noto Sans KR',sans-serif;font-size:15px;font-weight:700;padding:11px 22px;border-radius:100px;cursor:pointer;transition:all .2s;}
 .pr-chip:hover{border-color:#4a7fa5;}
 .pr-chip.on{background:#1a2d4a;border-color:#1a2d4a;color:#fff;}
-.pr-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.75rem;}
-.pr-card{background:#fff;border-radius:22px;padding:2.5rem 2.5rem 2rem;border:1px solid rgba(74,127,165,.1);position:relative;overflow:hidden;transition:border-color .3s,transform .3s,box-shadow .3s;display:flex;flex-direction:column;}
-.pr-card:hover{border-color:rgba(74,127,165,.3);transform:translateY(-6px);box-shadow:0 20px 56px rgba(74,127,165,.12);}
+.pr-grid{display:grid;grid-template-columns:1fr;gap:1.5rem;}
+.pr-card{display:flex;flex-direction:column;background:#fff;border-radius:18px;border:1px solid rgba(74,127,165,.1);overflow:hidden;color:inherit;text-decoration:none;transition:border-color .3s,transform .3s,box-shadow .3s;}
+.pr-card:hover,.pr-card:focus-visible{border-color:rgba(74,127,165,.3);transform:translateY(-6px);box-shadow:0 20px 56px rgba(74,127,165,.12);}
 .pr-card.pr-hide{display:none;}
-.pr-quote-bg{position:absolute;top:-18px;left:16px;font-family:'Playfair Display',serif;font-size:200px;line-height:1;color:rgba(74,127,165,.06);pointer-events:none;user-select:none;}
-.pr-stars{display:flex;gap:4px;margin-bottom:1.4rem;position:relative;z-index:1;}
-.pr-star{width:20px;height:20px;background:#f5a623;clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);flex-shrink:0;}
-.pr-headline{font-size:clamp(16px,1.8vw,20px);font-weight:900;color:#1a2d4a;line-height:1.5;margin:0 0 1.25rem;position:relative;z-index:1;letter-spacing:-.02em;}
-.pr-headline mark{background:none;color:#4a7fa5;}
-.pr-text{font-size:15px;line-height:2;color:#4a5a6a;margin:0 0 auto;position:relative;z-index:1;padding-bottom:1.75rem;}
-.pr-text strong{color:#1a2d4a;font-weight:700;}
-.pr-div{height:1px;background:rgba(74,127,165,.1);margin-bottom:1.5rem;}
-.pr-foot{display:flex;align-items:center;gap:14px;position:relative;z-index:1;}
-.pr-av{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#ddeaf4,#b8d4ea);color:#1a2d4a;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:900;flex-shrink:0;border:2px solid rgba(74,127,165,.2);}
-.pr-name{font-size:16px;font-weight:700;color:#1a2d4a;margin:0 0 3px;}
-.pr-meta{font-size:13px;color:#8a9ab0;margin:0;}
-.pr-badge{margin-left:auto;flex-shrink:0;background:#1a2d4a;color:#a0cde0;font-size:12px;font-weight:700;padding:6px 13px;border-radius:7px;white-space:nowrap;}
+.pr-img{display:block;aspect-ratio:16/10;background:#1a2d4a;overflow:hidden;}
+.pr-img img{display:block;width:100%;height:100%;object-fit:cover;}
+.pr-body{display:flex;flex-direction:column;flex:1;padding:1.25rem 1.4rem 1.3rem;}
+.pr-ttl{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:18px;font-weight:900;line-height:1.45;letter-spacing:-.02em;color:#1a2d4a;margin:0 0 .5rem;}
+.pr-sub{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:14px;line-height:1.7;color:#6b7f93;margin:0 0 auto;padding-bottom:1rem;}
+.pr-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px;color:#8a9ab0;}
+.pr-cat{background:#eef3f8;color:#4a7fa5;font-size:12px;font-weight:700;padding:5px 11px;border-radius:7px;white-space:nowrap;}
 
 /* 후기 속 공통 키워드 */
 .pr-why{background:#fff;}
@@ -61,8 +55,10 @@
 .pr-cta-btn{display:inline-block;background:#4a7fa5;color:#fff !important;padding:18px 48px;border-radius:10px;font-size:17px;font-weight:700;text-decoration:none;transition:background .2s,transform .15s;}
 .pr-cta-btn:hover{background:#6b9dbd;transform:translateY(-2px);}
 
-@media(max-width:900px){.pr-grid{grid-template-columns:1fr 1fr;}.pr-why-grid{grid-template-columns:1fr 1fr;}}
-@media(max-width:540px){.pr-grid,.pr-why-grid{grid-template-columns:1fr;}.pr-sec{padding:60px 5%;}.pr-hero{padding:70px 5% 60px;}.pr-card{padding:2rem 1.75rem 1.5rem;}}
+@media(min-width:600px){.pr-grid{grid-template-columns:repeat(2,1fr);}}
+@media(min-width:1100px){.pr-grid{grid-template-columns:repeat(4,1fr);}}
+@media(max-width:900px){.pr-why-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:540px){.pr-why-grid{grid-template-columns:1fr;}.pr-sec{padding:60px 5%;}.pr-hero{padding:70px 5% 60px;}}
 </style>
 
 <div class="pr">
@@ -123,4 +119,3 @@
 
 </div>
 
-{{reviews_extras}}

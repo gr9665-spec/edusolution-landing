@@ -35,20 +35,28 @@ def rt(text, bold=False):
     return {"plain_text": text, "annotations": {"bold": bold}}
 
 
-def row(row_id, kind="글 후기", url=None, **over):
+def row(row_id, url=None, **over):
     props = {
-        "이름": {"type": "title", "title": [rt("김○○ 님")]},
-        "종류": {"type": "select", "select": {"name": kind}},
-        "분류": {"type": "multi_select", "multi_select": [{"name": "학위 취득"}]},
+        "제목": {"type": "title", "title": [rt("학사 취득 후기")]},
+        "소제목": {"type": "rich_text", "rich_text": [rt("직장인 / 학사")]},
+        "분류": {"type": "select", "select": {"name": "학위 취득"}},
         "공개": {"type": "checkbox", "checkbox": True},
-        "한줄제목": {"type": "rich_text", "rich_text": [rt("제목")]},
-        "본문": {"type": "rich_text", "rich_text": [rt("본문")]},
-        "소개": {"type": "rich_text", "rich_text": [rt("직장인")]},
-        "배지": {"type": "rich_text", "rich_text": [rt("학사")]},
-        "이미지": {"type": "files", "files": [{"type": "file", "file": {"url": url}}] if url else []},
+        "대표이미지": {"type": "files", "files": [{"type": "file", "file": {"url": url}}] if url else []},
     }
     props.update(over)
     return {"id": row_id, "created_time": "2026-10-01T00:00:00.000Z", "properties": props}
+
+
+def paragraph(text, has_children=False, block_id="b"):
+    return {"id": block_id, "type": "paragraph", "has_children": has_children, "paragraph": {"rich_text": [rt(text)]}}
+
+
+def image_block(url, block_id="img"):
+    return {"id": block_id, "type": "image", "has_children": False,
+            "image": {"type": "file", "file": {"url": url}, "caption": []}}
+
+
+BODY = lambda page_id: [paragraph("본문입니다")]   # noqa: E731
 
 
 # ---- 데이터베이스 조회
@@ -131,7 +139,51 @@ def test_non_image_download_is_an_error(tmp_path):
         resolve("https://s3.example.com/ws/uuid-aaa/chat.png?s=1")
 
 
+# ---- 본문 블록 조회
+
+def test_fetch_blocks_pages_through_children_and_recurses_into_nested_blocks():
+    calls = []
+    responses = {
+        "https://api.notion.com/v1/blocks/PAGE/children?page_size=100": {
+            "results": [paragraph("첫째", has_children=True, block_id="P1")], "has_more": True, "next_cursor": "CUR"},
+        "https://api.notion.com/v1/blocks/PAGE/children?page_size=100&start_cursor=CUR": {
+            "results": [paragraph("둘째", block_id="P2")], "has_more": False, "next_cursor": None},
+        "https://api.notion.com/v1/blocks/P1/children?page_size=100": {
+            "results": [paragraph("하위", block_id="C1")], "has_more": False, "next_cursor": None},
+    }
+
+    def fake_urlopen(req, timeout=None):
+        calls.append(req)
+        return FakeResponse(json.dumps(responses[req.full_url]).encode("utf-8"))
+
+    sleeps = []
+    blocks = notion_sync.fetch_blocks("PAGE", "secret-token", urlopen=fake_urlopen, sleep=sleeps.append)
+    assert [b["id"] for b in blocks] == ["P1", "P2"]
+    assert [c["id"] for c in blocks[0]["children"]] == ["C1"] and "children" not in blocks[1]
+    assert all(c.get_header("Authorization") == "Bearer secret-token" and c.get_method() == "GET" for c in calls)
+    assert len(calls) == 3 and len(sleeps) == 3 and all(s > 0 for s in sleeps)     # 요청 사이 쉬어 한도를 지킨다
+
+
+def test_fetch_blocks_stops_recursing_at_depth_three():
+    def deep(req, timeout=None):
+        block_id = req.full_url.split("/blocks/")[1].split("/")[0]
+        return FakeResponse(json.dumps({"results": [paragraph("x", has_children=True, block_id=block_id + "x")],
+                                        "has_more": False}).encode("utf-8"))
+
+    blocks = notion_sync.fetch_blocks("P", "tok", urlopen=deep, sleep=lambda s: None)
+    levels = 0
+    node = blocks[0]
+    while "children" in node:
+        levels += 1
+        node = node["children"][0]
+    assert levels == 3
+
+
 # ---- 동기화(파일 쓰기)
+
+def fetcher(blocks_by_page=None):
+    return lambda page_id: (blocks_by_page or {}).get(page_id, [paragraph("본문입니다")])
+
 
 def test_sync_writes_deterministic_json_and_prunes_unreferenced_notion_images(tmp_path):
     proof = tmp_path / "assets" / "proof"
@@ -139,41 +191,60 @@ def test_sync_writes_deterministic_json_and_prunes_unreferenced_notion_images(tm
     (proof / "notion-stale000000.jpg").write_bytes(b"old")        # 더는 쓰이지 않는 노션 이미지 -> 삭제
     (proof / "manual-case.jpg").write_bytes(b"keep")              # 수동으로 올린 이미지 -> 유지
     rows = [row("1a2b3c4d-0000-0000-0000-000000000000"),
-            row("9f8e7d6c-0000-0000-0000-000000000000", kind="대화 캡처", url="https://s3.example.com/ws/uuid-aaa/c.png?s=1")]
-    summary = notion_sync.sync(tmp_path, rows, lambda url: png_bytes())
-    out = (tmp_path / "data" / "reviews.notion.json")
+            row("9f8e7d6c-0000-0000-0000-000000000000", url="https://s3.example.com/ws/uuid-aaa/c.png?s=1")]
+    summary = notion_sync.sync(tmp_path, rows, fetcher(), lambda url: png_bytes())
+    out = tmp_path / "data" / "reviews.notion.json"
     first = out.read_bytes()
     items = json.loads(first.decode("utf-8"))
-    assert [i["id"] for i in items] == ["notion-1a2b3c4d", "notion-9f8e7d6c"] or {i["id"] for i in items} == {"notion-1a2b3c4d", "notion-9f8e7d6c"}
+    assert {i["id"] for i in items} == {"notion-1a2b3c4d", "notion-9f8e7d6c"}
     assert b"\r\n" not in first and first.endswith(b"\n")
     assert not (proof / "notion-stale000000.jpg").exists() and (proof / "manual-case.jpg").exists()
-    assert summary == {"items": 2, "images": 1, "removed_images": 1}
-    notion_sync.sync(tmp_path, rows, lambda url: png_bytes())
+    assert summary["items"] == 2 and summary["images"] == 1 and summary["removed_images"] == 1
+    notion_sync.sync(tmp_path, rows, fetcher(), lambda url: png_bytes())
     assert out.read_bytes() == first                              # 같은 입력이면 파일이 그대로(불필요한 커밋 없음)
+
+
+def test_images_inside_the_body_are_downloaded_kept_and_not_pruned(tmp_path):
+    body = {"1a2b3c4d-0000-0000-0000-000000000000": [paragraph("앞"), image_block("https://s3.example.com/ws/uuid-bbb/in.png?s=1")]}
+    notion_sync.sync(tmp_path, [row("1a2b3c4d-0000-0000-0000-000000000000")], fetcher(body), lambda url: png_bytes())
+    item = json.loads((tmp_path / "data" / "reviews.notion.json").read_text(encoding="utf-8"))[0]
+    saved = list((tmp_path / "assets" / "proof").glob("notion-*.jpg"))
+    assert len(saved) == 1 and "/assets/proof/%s" % saved[0].name in item["body"]
+    notion_sync.sync(tmp_path, [row("1a2b3c4d-0000-0000-0000-000000000000")], fetcher(body), lambda url: png_bytes())
+    assert list((tmp_path / "assets" / "proof").glob("notion-*.jpg")) == saved
 
 
 def test_sync_output_passes_site_validation_and_renders(tmp_path):
     rows = [row("1a2b3c4d-0000-0000-0000-000000000000"),
-            row("9f8e7d6c-0000-0000-0000-000000000000", kind="대화 캡처", url="https://s3.example.com/ws/uuid-aaa/c.png?s=1")]
-    notion_sync.sync(tmp_path, rows, lambda url: png_bytes())
-    tokens, _ = load_site(tmp_path)
-    assert "제목" in tokens["reviews_grid"] and "pr-cap" in tokens["reviews_grid"] and "pr-lb" in tokens["reviews_extras"]
+            row("9f8e7d6c-0000-0000-0000-000000000000", url="https://s3.example.com/ws/uuid-aaa/c.png?s=1")]
+    notion_sync.sync(tmp_path, rows, fetcher(), lambda url: png_bytes())
+    (tmp_path / "assets").mkdir(exist_ok=True)
+    tokens, extra = load_site(tmp_path)
+    assert "학사 취득 후기" in tokens["reviews_grid"] and len(extra) == 2
 
 
 def test_sync_with_no_published_rows_writes_empty_list_and_removes_notion_images(tmp_path):
     proof = tmp_path / "assets" / "proof"
     proof.mkdir(parents=True)
     (proof / "notion-aaaaaaaaaaaa.jpg").write_bytes(b"old")
-    notion_sync.sync(tmp_path, [], lambda url: png_bytes())
+    notion_sync.sync(tmp_path, [], fetcher(), lambda url: png_bytes())
     assert json.loads((tmp_path / "data" / "reviews.notion.json").read_text(encoding="utf-8")) == []
     assert not list(proof.glob("notion-*.jpg"))
 
 
 def test_phone_number_typed_in_notion_stops_the_sync_validation(tmp_path):
-    bad = row("1a2b3c4d-0000-0000-0000-000000000000", 본문={"type": "rich_text", "rich_text": [rt("연락주세요 010-1234-5678")]})
-    notion_sync.sync(tmp_path, [bad], lambda url: png_bytes())
+    body = {"1a2b3c4d-0000-0000-0000-000000000000": [paragraph("연락주세요 010-1234-5678")]}
+    notion_sync.sync(tmp_path, [row("1a2b3c4d-0000-0000-0000-000000000000")], fetcher(body), lambda url: png_bytes())
     with pytest.raises(data.DataError, match="개인정보"):
         load_site(tmp_path)
+
+
+def test_script_in_the_notion_body_is_stored_as_text(tmp_path):
+    body = {"1a2b3c4d-0000-0000-0000-000000000000": [paragraph("<script>alert(1)</script>")]}
+    notion_sync.sync(tmp_path, [row("1a2b3c4d-0000-0000-0000-000000000000")], fetcher(body), lambda url: png_bytes())
+    stored = (tmp_path / "data" / "reviews.notion.json").read_text(encoding="utf-8")
+    assert "<script" not in stored and "&lt;script&gt;" in stored
+    load_site(tmp_path)                                           # 검증도 통과(글자로만 남아 있다)
 
 
 def test_main_requires_environment_variables(monkeypatch, capsys):

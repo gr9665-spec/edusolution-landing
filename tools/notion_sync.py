@@ -1,11 +1,12 @@
 """노션 후기 데이터베이스를 읽어 data/reviews.notion.json 과 assets/proof/notion-*.jpg 를 만든다.
 
 사용법(저장소 루트):  NOTION_TOKEN=... NOTION_DATABASE_ID=... python tools/notion_sync.py
-표준 라이브러리와 Pillow만 쓴다. 노션 칸 구성은 docs/superpowers/specs/2026-10-13-notion-sync-design.md 3번을 따른다.
+표준 라이브러리와 Pillow만 쓴다. 노션 칸 구성과 지원 블록은 docs/superpowers/specs/2026-10-13-review-posts-design.md 3번을 따른다.
 토큰은 어떤 출력·오류 메시지에도 넣지 않는다.
 """
 from __future__ import annotations
 
+import collections
 import hashlib
 import json
 import os
@@ -31,6 +32,8 @@ API = "https://api.notion.com/v1"
 NOTION_VERSION = "2022-06-28"
 RETRY_STATUSES = {429, 500, 502, 503, 504}
 MAX_ATTEMPTS = 4
+PACE_SECONDS = 0.35         # 노션 한도(초당 약 3회)를 지키려고 요청 사이에 쉬는 시간
+MAX_BLOCK_DEPTH = 3
 JSON_LIMIT = 50 * 1024 * 1024
 IMAGE_LIMIT = 20 * 1024 * 1024
 
@@ -79,6 +82,37 @@ def query_database(database_id: str, token: str, urlopen=urllib.request.urlopen,
         cursor = payload["next_cursor"]
 
 
+def _get_json(url: str, token: str, urlopen, sleep) -> dict:
+    sleep(PACE_SECONDS)
+
+    def make_request():
+        return urllib.request.Request(url, method="GET", headers={
+            "Authorization": "Bearer " + token, "Notion-Version": NOTION_VERSION})
+
+    return json.loads(_call(make_request, urlopen, sleep, JSON_LIMIT).decode("utf-8"))
+
+
+def fetch_blocks(block_id: str, token: str, urlopen=urllib.request.urlopen, sleep=time.sleep,
+                 depth: int = MAX_BLOCK_DEPTH) -> list:
+    """페이지(또는 블록)의 하위 블록을 모두 가져온다(100개씩 페이지를 넘기고, 하위 블록은 깊이 depth까지 children에 담는다)."""
+    blocks: list = []
+    cursor = None
+    while True:
+        url = "%s/blocks/%s/children?page_size=100" % (API, block_id)
+        if cursor:
+            url += "&start_cursor=" + urllib.parse.quote(cursor, safe="")
+        payload = _get_json(url, token, urlopen, sleep)
+        blocks.extend(payload.get("results", []))
+        if not payload.get("has_more"):
+            break
+        cursor = payload["next_cursor"]
+    if depth > 0:
+        for block in blocks:
+            if block.get("has_children") and block.get("type") not in ("child_page", "child_database"):
+                block["children"] = fetch_blocks(block["id"], token, urlopen, sleep, depth - 1)
+    return blocks
+
+
 def download(url: str, urlopen=urllib.request.urlopen, sleep=time.sleep) -> bytes:
     return _call(lambda: urllib.request.Request(url), urlopen, sleep, IMAGE_LIMIT)
 
@@ -106,21 +140,29 @@ def make_image_resolver(root: Path, fetch: Callable[[str], bytes]) -> Callable[[
     return resolve
 
 
-def sync(root: Path, rows: Sequence, fetch: Callable[[str], bytes]) -> dict:
-    """행을 reviews 항목으로 바꿔 data/reviews.notion.json 에 쓰고, 쓰이지 않는 노션 이미지는 지운다."""
-    items = notion.rows_to_items(rows, make_image_resolver(root, fetch))
-    referenced = {item["image"] for item in items if "image" in item}
+def sync(root: Path, rows: Sequence, fetch_page_blocks: Callable[[str], Sequence], fetch: Callable[[str], bytes]) -> dict:
+    """행과 본문을 post 항목으로 바꿔 data/reviews.notion.json 에 쓰고, 쓰이지 않는 노션 이미지는 지운다."""
+    resolve = make_image_resolver(root, fetch)
+    used: set = set()
+
+    def download_image(url: str) -> str:
+        rel = resolve(url)
+        used.add(rel)
+        return rel
+
+    skipped = collections.Counter()
+    items = notion.rows_to_items(rows, fetch_page_blocks, download_image, skipped)
     removed = 0
     proof = root / "assets" / "proof"
     if proof.is_dir():
         for path in proof.glob("notion-*.jpg"):
-            if "assets/proof/%s" % path.name not in referenced:
+            if "assets/proof/%s" % path.name not in used:
                 path.unlink()
                 removed += 1
     out = root / "data" / "reviews.notion.json"
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_bytes((json.dumps(items, ensure_ascii=False, indent=2) + "\n").encode("utf-8"))
-    return {"items": len(items), "images": len(referenced), "removed_images": removed}
+    return {"items": len(items), "images": len(used), "removed_images": removed, "skipped_blocks": dict(skipped)}
 
 
 def _database_id(value: str) -> str:
@@ -138,11 +180,13 @@ def main(argv=None) -> int:
         return 1
     try:
         rows = query_database(_database_id(database), token)
-        summary = sync(ROOT, rows, download)
+        summary = sync(ROOT, rows, lambda page_id: fetch_blocks(page_id, token), download)
     except BuildError as exc:
         print("노션 동기화 실패: %s" % exc, file=sys.stderr)
         return 1
     print("노션 동기화 완료: 후기 %(items)d개, 이미지 %(images)d개, 정리한 이미지 %(removed_images)d개" % summary)
+    if summary["skipped_blocks"]:
+        print("지원하지 않아 건너뛴 블록: %s" % ", ".join("%s %d개" % kv for kv in sorted(summary["skipped_blocks"].items())))
     return 0
 
 

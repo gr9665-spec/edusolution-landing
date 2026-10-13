@@ -21,15 +21,20 @@ FILES = ["index.html", "sitemap.xml", "robots.txt",
 for folder in ("team", "credit-bank", "education-info", "reviews"):
     FILES += ["pages/%s/%s" % (folder, name)
               for name in ("index.html", "00-nav.html", "03-kakao-float-button.html", "04-diagnostic-popup.html")]
+FILES.append("pages/reviews/g01/index.html")        # 후기 상세 페이지 한 개(대표 이미지·제목·본문 서식 포함)
 
 
 def main() -> None:
     if GOLDEN.exists():
         shutil.rmtree(GOLDEN)
-    for rel in FILES:
-        dst = GOLDEN / rel
-        dst.parent.mkdir(parents=True, exist_ok=True)
-        dst.write_bytes((ROOT / rel).read_bytes().replace(b"\r\n", b"\n"))
+    with tempfile.TemporaryDirectory() as tmp:
+        built = Path(tmp)
+        tokens, extra = load_site(ROOT, data_root=GOLDEN_DATA)
+        build_all(ROOT, built, tokens, extra)
+        for rel in FILES:
+            dst = GOLDEN / rel
+            dst.parent.mkdir(parents=True, exist_ok=True)
+            dst.write_bytes((built / rel).read_bytes().replace(b"\r\n", b"\n"))
     print("golden %d개 저장" % len(FILES))
 
 

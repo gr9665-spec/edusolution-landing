@@ -1,8 +1,11 @@
 """data/*.json 읽기와 검증. 규칙에 어긋나면 DataError로 어디가 문제인지 알려준다."""
 from __future__ import annotations
 
+import datetime
 import json
 import re
+import urllib.parse
+from html.parser import HTMLParser
 from pathlib import Path
 from typing import Any, Mapping, Sequence
 
@@ -63,54 +66,78 @@ def _no_pii(value, where: str) -> None:
 
 # ---------------------------------------------------------------- 후기 (reviews.json)
 
-def _check_text(item, root, where, team_ids) -> None:
-    _require(item, ["headline", "body", "person", "meta", "badge"], where)
+DEFAULT_IMAGE = "assets/review-default.jpg"
+DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+SAFE_URL_RE = re.compile(r"^https?://[^\s\"'<>]+$")
+
+# 본문에 쓸 수 있는 태그와, 태그마다 허용하는 속성
+BODY_TAGS = {
+    "p": (), "h2": (), "h3": (), "strong": (), "em": (), "ul": (), "ol": (), "li": (), "blockquote": (),
+    "hr": (), "br": (), "figure": (), "figcaption": (),
+    "a": ("href", "target", "rel"),
+    "img": ("src", "alt", "loading", "decoding", "width", "height"),
+}
 
 
-def _check_capture(item, root, where, team_ids) -> None:
-    _require(item, ["image", "alt", "person"], where)
-    _exists(root, item["image"], where, "image")
+class _BodyChecker(HTMLParser):
+    def __init__(self, root: Path, where: str):
+        super().__init__(convert_charrefs=True)
+        self.root, self.where = root, where
+
+    def _bad(self, why: str) -> DataError:
+        return DataError("%s: body에 허용되지 않는 내용이 있습니다 (%s)" % (self.where, why))
+
+    def handle_starttag(self, tag, attrs):
+        if tag not in BODY_TAGS:
+            raise self._bad("<%s> 태그는 쓸 수 없습니다" % tag)
+        for name, value in attrs:
+            if name not in BODY_TAGS[tag]:
+                raise self._bad("<%s>의 '%s' 속성은 쓸 수 없습니다" % (tag, name))
+            if tag == "a" and name == "href" and not SAFE_URL_RE.match(value or ""):
+                raise self._bad("링크는 http 또는 https 주소여야 합니다: %s" % value)
+            if tag == "img" and name == "src":
+                rel = (value or "").lstrip("/")
+                _exists(self.root, urllib.parse.unquote(rel), self.where, "body 이미지")
+
+    handle_startendtag = handle_starttag
 
 
-def _check_case(item, root, where, team_ids) -> None:
-    _require(item, ["slug", "title", "school", "track", "profile", "plan", "duration", "result",
-                    "planner", "seoDescription"], where)
-    if not SLUG_RE.match(item["slug"]):
-        raise DataError("%s: slug '%s'은(는) 영문 소문자·숫자·하이픈만 쓸 수 있습니다 (예: konkuk-transfer-2026)" % (where, item["slug"]))
-    _require(item["profile"], ["age", "background", "credits"], where + ".profile")
-    for row in item["plan"]:
-        _require(row, ["label", "detail"], where + ".plan")
-    if item["planner"] not in team_ids:
-        raise DataError("%s: planner '%s'이(가) team.json에 없습니다" % (where, item["planner"]))
-    for rel in item.get("proofImages", []):
-        _exists(root, rel, where, "proofImages")
+def _check_body(body, root: Path, where: str) -> None:
+    if not isinstance(body, str):
+        raise DataError("%s: body는 문자열이어야 합니다" % where)
+    checker = _BodyChecker(root, where)
+    checker.feed(body)
+    checker.close()
 
 
-KIND_CHECKS = {"text": _check_text, "capture": _check_capture, "case": _check_case}
-
-
-def validate_reviews(items: Sequence[Mapping], root: Path, team_ids=frozenset()) -> None:
+def validate_reviews(items: Sequence[Mapping], root: Path) -> None:
     ids, slugs = set(), set()
     for item in items:
         where = "reviews.json[%s]" % item.get("id", "?")
-        _require(item, ["id", "kind", "goal", "source"], where)
+        _require(item, ["id", "kind", "slug", "title", "subtitle", "category", "body", "source"], where)
         _no_pii(item, where)
+        if item["kind"] != "post":
+            raise DataError("%s: 알 수 없는 kind '%s' (허용: post)" % (where, item["kind"]))
         if item["id"] in ids:
             raise DataError("%s: id가 중복됩니다" % where)
         ids.add(item["id"])
-        bad = [g for g in item["goal"] if g not in GOALS]
-        if bad:
-            raise DataError("%s: 알 수 없는 goal %s (허용: %s)" % (where, bad, ", ".join(GOALS)))
-        check = KIND_CHECKS.get(item["kind"])
-        if check is None:
-            raise DataError("%s: 알 수 없는 kind '%s' (허용: %s)" % (where, item["kind"], ", ".join(KIND_CHECKS)))
-        if item.get("featured") and item["kind"] != "text":
-            raise DataError("%s: featured는 글 후기(text)에만 쓸 수 있습니다" % where)
-        check(item, root, where, team_ids)
-        if "slug" in item:
-            if item["slug"] in slugs:
-                raise DataError("%s: slug '%s'이(가) 중복됩니다" % (where, item["slug"]))
-            slugs.add(item["slug"])
+        if item["category"] not in GOALS:
+            raise DataError("%s: 알 수 없는 category '%s' (허용: %s)" % (where, item["category"], ", ".join(GOALS)))
+        if not isinstance(item["slug"], str) or not SLUG_RE.match(item["slug"]):
+            raise DataError("%s: slug '%s'은(는) 영문 소문자·숫자·하이픈만 쓸 수 있습니다 (예: r-1a2b3c4d)" % (where, item["slug"]))
+        if item["slug"] in slugs:
+            raise DataError("%s: slug '%s'이(가) 중복됩니다" % (where, item["slug"]))
+        slugs.add(item["slug"])
+        if "date" in item:
+            try:
+                if not (isinstance(item["date"], str) and DATE_RE.match(item["date"])):
+                    raise ValueError
+                datetime.date.fromisoformat(item["date"])
+            except ValueError:
+                raise DataError("%s: date는 2026-10-13 형식의 실제 날짜여야 합니다: %s" % (where, item["date"])) from None
+        if item.get("image"):
+            _exists(root, item["image"], where, "image")
+        _check_body(item["body"], root, where)
 
 
 # ---------------------------------------------------------------- 팀 (team.json)
