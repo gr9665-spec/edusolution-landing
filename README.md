@@ -76,7 +76,8 @@ python -m http.server 8777
 |---|---|
 | `data/reviews.json` | 후기·합격 사례. `kind`: `text`(글 후기) / `capture`(대화 캡처) / `case`(합격 사례, 상세 페이지 자동 생성) |
 | `data/stats.json` | 메인 실적 수치 띠(최대 6개). `value`, `label`, `asOf`(기준 시점)가 필수, `source`(근거 문구)는 선택(적으면 "2026.10 기준 · 근거"로, 안 적으면 "2026.10 기준"만 표시) |
-| `data/team.json` | 담당자 정보. `career`(경력·자격 목록)는 선택 |
+| `data/team.json` | 담당자 정보. `career`(경력·자격 목록), `youtube`(개인 유튜브 채널 주소)는 선택 |
+| `data/youtube.json` | 팀 유튜브 채널(`name`, `url`, 선택 `description`). 팀 페이지 담당자 카드 위에 크게 나옵니다. 없으면 구역이 나오지 않습니다 |
 | `data/business.json` | 하단 사업자 정보(상호·사업자등록번호·주소 필수, 대표자 이름은 선택). 없으면 푸터가 나오지 않습니다 |
 
 **대화 캡처·인증 이미지 올리는 순서**

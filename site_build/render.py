@@ -195,18 +195,53 @@ def team_cards(team: Sequence[Mapping], rel: str = "../../", cases_by_planner: M
             lines.append('%s<p class="pt-mem-cases">합격 사례 · %s</p>' % (i2, links))
         lines.append('%s<div class="pt-mem-tags">' % i2)
         lines += ['%s<span class="pt-mem-tag">%s</span>' % (i3 + "  ", esc(t)) for t in m["tags"]]
-        lines += ['%s</div>' % i2, '%s</div>' % i1, '%s</div>' % ind]
+        lines.append('%s</div>' % i2)
+        if m.get("youtube"):
+            lines.append('%s<a class="pt-mem-yt" href="%s" target="_blank" rel="noopener noreferrer">%s유튜브 채널</a>'
+                         % (i2, esc(m["youtube"]), YT_ICON_SMALL))
+        lines += ['%s</div>' % i1, '%s</div>' % ind]
         cards.append("\n".join(lines))
     if not cards:
         return ""
     return "\n\n" + "\n\n".join(cards) + "\n\n      "
 
 
-def team_extras(team: Sequence[Mapping], cases_by_planner: Mapping = None) -> str:
-    """경력 목록이나 합격 사례 링크가 하나라도 있을 때만 필요한 CSS."""
+def team_extras(team: Sequence[Mapping], cases_by_planner: Mapping = None, channel: Mapping = None) -> str:
+    """경력 목록·합격 사례 링크·유튜브 링크가 있을 때만 필요한 CSS."""
+    css = []
     if any(m.get("career") for m in team) or any(cases_by_planner or {}):
-        return TEAM_EXTRAS_CSS
-    return ""
+        css.append(TEAM_EXTRAS_CSS)
+    if channel or any(m.get("youtube") for m in team):
+        css.append(TEAM_YT_CSS)
+    return "\n".join(css)
+
+
+YT_ICON_SMALL = ('<svg class="pt-yt-ico" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">'
+                 '<rect x="1" y="4.5" width="22" height="15" rx="4.5" fill="#ff0000"/><path d="M10 8.7v6.6l5.6-3.3z" fill="#fff"/></svg>')
+YT_ICON_BIG = YT_ICON_SMALL.replace('width="18" height="18"', 'width="56" height="56"')
+
+TEAM_YT_CSS = """<style>
+.pt-yt-team{display:flex;align-items:center;gap:24px;margin-top:2.5rem;padding:28px 32px;border-radius:20px;background:#1a2d4a;}
+.pt-yt-team .pt-yt-ico{flex-shrink:0;}
+.pt-yt-body{flex:1;min-width:0;}
+.pt-yt-name{margin:0 0 6px;font-size:clamp(20px,2.4vw,26px);font-weight:900;color:#fff;letter-spacing:-.02em;}
+.pt-yt-desc{margin:0;font-size:15px;color:rgba(255,255,255,.65);line-height:1.8;}
+.pt-yt-btn{flex-shrink:0;background:#ff0000;color:#fff !important;font-weight:700;font-size:15px;padding:14px 26px;border-radius:10px;text-decoration:none;white-space:nowrap;}
+.pt-yt-btn:hover{background:#d90000;}
+.pt-mem-yt{display:inline-flex;align-items:center;gap:6px;margin-top:1.1rem;font-size:13px;font-weight:700;color:#4a7fa5 !important;text-decoration:none;}
+.pt-mem-yt:hover{color:#1a2d4a !important;}
+@media(max-width:700px){.pt-yt-team{flex-direction:column;align-items:flex-start;padding:24px;}.pt-yt-btn{width:100%;text-align:center;}}
+</style>"""
+
+
+def team_channel(channel: Mapping) -> str:
+    """담당자 카드 위에 크게 보이는 팀 유튜브 채널 안내."""
+    if not channel:
+        return ""
+    desc = '\n    <p class="pt-yt-desc">%s</p>' % esc(channel["description"]) if channel.get("description") else ""
+    return ('<div class="pt-yt-team">\n  %s\n  <div class="pt-yt-body">\n    <p class="pt-yt-name">%s</p>%s\n  </div>\n'
+            '  <a class="pt-yt-btn" href="%s" target="_blank" rel="noopener noreferrer">유튜브 채널 바로가기 →</a>\n</div>'
+            % (YT_ICON_BIG, esc(channel["name"]), desc, esc(channel["url"])))
 
 
 # =============================================================== 메인: 실적 수치 띠, 푸터

@@ -115,6 +115,15 @@ def validate_reviews(items: Sequence[Mapping], root: Path, team_ids=frozenset())
 
 # ---------------------------------------------------------------- 팀 (team.json)
 
+YOUTUBE_RE = re.compile(r"^https://(www\.|m\.)?(youtube\.com|youtu\.be)/\S+$")
+
+
+def _check_youtube(url, where: str, key: str = "youtube") -> None:
+    """유튜브 주소는 https://www.youtube.com/… 형태만 허용한다(엉뚱한 사이트·스크립트 링크 차단)."""
+    if not isinstance(url, str) or not YOUTUBE_RE.match(url):
+        raise DataError("%s: '%s'는 https://www.youtube.com/@채널이름 같은 유튜브 주소여야 합니다: %s" % (where, key, url))
+
+
 def validate_team(items: Sequence[Mapping], root: Path) -> set:
     ids = set()
     for item in items:
@@ -127,7 +136,17 @@ def validate_team(items: Sequence[Mapping], root: Path) -> set:
         career = item.get("career", [])
         if not isinstance(career, list) or not all(isinstance(c, str) and c for c in career):
             raise DataError("%s: career는 비어 있지 않은 문자열 목록이어야 합니다" % where)
+        if item.get("youtube"):
+            _check_youtube(item["youtube"], where)
     return ids
+
+
+def validate_youtube(channel: Mapping) -> None:
+    """팀 유튜브 채널(data/youtube.json). 비어 있으면 구역이 나오지 않는다."""
+    if not channel:
+        return
+    _require(channel, ["name", "url"], "youtube.json")
+    _check_youtube(channel["url"], "youtube.json", "url")
 
 
 # ---------------------------------------------------------------- 실적 수치 (stats.json)

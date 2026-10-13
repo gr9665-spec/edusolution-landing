@@ -16,6 +16,8 @@ def load_site(root: Path):
     data.validate_stats(stats)
     business = data.load(root, "business.json", {})
     data.validate_business(business)
+    channel = data.load(root, "youtube.json", {})
+    data.validate_youtube(channel)
 
     cases = [r for r in reviews if r["kind"] == "case"]
     cases_by_planner = {}
@@ -28,7 +30,8 @@ def load_site(root: Path):
         "reviews_featured": render.reviews_featured(reviews),
         "reviews_extras": render.reviews_extras(reviews, root),
         "team_cards": render.team_cards(team, "../../", cases_by_planner),
-        "team_extras": render.team_extras(team, cases_by_planner),
+        "team_extras": render.team_extras(team, cases_by_planner, channel),
+        "team_channel": render.team_channel(channel),
         "stats_strip": render.stats_strip(stats),
         "site_footer": render.site_footer(business),
     }

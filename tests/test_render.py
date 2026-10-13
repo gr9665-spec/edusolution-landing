@@ -165,3 +165,27 @@ def test_footer_omits_ceo_row_when_name_is_not_given():
 def test_stats_note_omits_basis_when_source_is_not_given():
     html = render.stats_strip([{"value": 9000, "suffix": "명+", "label": "누적 수강생", "asOf": "2026-10"}])
     assert '<p class="est-note">2026.10 기준</p>' in html
+
+
+# ---- 유튜브 채널
+
+def test_member_card_gets_small_youtube_link_only_when_given():
+    assert "pt-mem-yt" not in render.team_cards([member()])
+    html = render.team_cards([member(youtube="https://www.youtube.com/@Heekyoungsam?a=1&b=2")])
+    assert 'href="https://www.youtube.com/@Heekyoungsam?a=1&amp;b=2"' in html
+    assert 'target="_blank"' in html and 'rel="noopener noreferrer"' in html and "유튜브 채널" in html
+
+
+def test_team_channel_block_renders_name_description_and_safe_link():
+    html = render.team_channel({"name": "에듀솔루션 <팀> 채널", "url": "https://www.youtube.com/@EDUSOLUTIONN",
+                                "description": "소개 문장"})
+    assert "에듀솔루션 &lt;팀&gt; 채널" in html and "소개 문장" in html
+    assert 'href="https://www.youtube.com/@EDUSOLUTIONN"' in html and 'rel="noopener noreferrer"' in html
+    assert "pt-yt-desc" not in render.team_channel({"name": "팀", "url": "https://www.youtube.com/@a"})
+    assert render.team_channel({}) == ""
+
+
+def test_team_extras_includes_youtube_css_when_channels_exist():
+    assert render.team_extras([member()]) == ""
+    assert "pt-yt-team" in render.team_extras([member()], channel={"name": "팀", "url": "https://www.youtube.com/@a"})
+    assert "pt-mem-yt" in render.team_extras([member(youtube="https://www.youtube.com/@a")])

@@ -215,3 +215,32 @@ def test_stats_source_is_optional(root):
     item = stat()
     del item["source"]
     data.validate_stats([item])
+
+
+# ---- 유튜브 채널
+
+GOOD_YT = "https://www.youtube.com/@EDUSOLUTIONN"
+
+
+@pytest.mark.parametrize("bad", ["http://www.youtube.com/@a", "https://evil.example.com/@a", "javascript:alert(1)",
+                                 "youtube.com/@a", "https://www.youtube.com.evil.com/@a", "https://www.youtube.com/"])
+def test_youtube_url_must_be_an_https_youtube_address(root, bad):
+    with pytest.raises(DataError, match="youtube"):
+        data.validate_team([team_member(youtube=bad)], root)
+    with pytest.raises(DataError, match="youtube"):
+        data.validate_youtube({"name": "팀 채널", "url": bad})
+
+
+def test_team_member_and_team_channel_accept_good_youtube_urls(root):
+    data.validate_team([team_member(youtube=GOOD_YT)], root)
+    data.validate_team([team_member(youtube="https://www.youtube.com/@%ED%95%99%EC%A0%90")], root)
+    data.validate_youtube({})
+    data.validate_youtube({"name": "팀 채널", "url": GOOD_YT})
+
+
+def test_team_channel_requires_name_and_url():
+    for key in ("name", "url"):
+        item = {"name": "팀 채널", "url": GOOD_YT}
+        del item[key]
+        with pytest.raises(DataError, match=key):
+            data.validate_youtube(item)
