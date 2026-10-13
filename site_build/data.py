@@ -35,8 +35,30 @@ def _require(item: Mapping, keys: Sequence[str], where: str) -> None:
 
 
 def _exists(root: Path, rel: str, where: str, key: str) -> None:
+    """이미지 경로는 assets/ 안의 상대경로여야 한다(원본 폴더·저장소 밖을 가리키면 사이트에서 깨지거나 원본이 노출된다)."""
+    parts = rel.replace("\\", "/").split("/") if isinstance(rel, str) else []
+    if (not isinstance(rel, str) or "\\" in rel or ":" in rel or rel.startswith("/")
+            or ".." in parts or parts[0] != "assets" or len(parts) < 2):
+        raise DataError("%s: '%s'은(는) assets/ 폴더 안의 상대경로여야 합니다 (예: assets/proof/a.jpg): %s" % (where, key, rel))
     if not (root / rel).is_file():
         raise DataError("%s: '%s'에 적힌 파일이 없습니다: %s" % (where, key, rel))
+
+
+PII_RE = re.compile(r"(?<!\d)01[016789][-\s.]?\d{3,4}[-\s.]?\d{4}(?!\d)|[\w.+-]+@[\w-]+\.[\w.-]+")
+
+
+def _no_pii(value, where: str) -> None:
+    """공개되는 데이터에 전화번호·이메일이 섞여 들어가지 않게 한다(data/*.json은 사이트에 그대로 공개된다)."""
+    if isinstance(value, str):
+        m = PII_RE.search(value)
+        if m:
+            raise DataError("%s: 개인정보로 보이는 값이 들어 있습니다 (%s). 전화번호·이메일은 쓰지 마세요" % (where, m.group(0)))
+    elif isinstance(value, Mapping):
+        for v in value.values():
+            _no_pii(v, where)
+    elif isinstance(value, (list, tuple)):
+        for v in value:
+            _no_pii(v, where)
 
 
 # ---------------------------------------------------------------- 후기 (reviews.json)
@@ -72,6 +94,7 @@ def validate_reviews(items: Sequence[Mapping], root: Path, team_ids=frozenset())
     for item in items:
         where = "reviews.json[%s]" % item.get("id", "?")
         _require(item, ["id", "kind", "goal", "source"], where)
+        _no_pii(item, where)
         if item["id"] in ids:
             raise DataError("%s: id가 중복됩니다" % where)
         ids.add(item["id"])

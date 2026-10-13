@@ -205,6 +205,22 @@ def sub_parts(root: Path, folder: str) -> list:
     ]
 
 
+def prune_stale_case_pages(out: Path, extra_pages: Sequence[ExtraPage]) -> None:
+    """데이터에서 지운 합격 사례의 상세 페이지가 공개 폴더에 남지 않게 지운다."""
+    keep = {page.rel_dir for page in extra_pages}
+    base = out / "pages" / "reviews"
+    if not base.is_dir():
+        return
+    for folder in base.iterdir():
+        index = folder / "index.html"
+        if folder.is_dir() and index.is_file() and ("pages/reviews/%s" % folder.name) not in keep:
+            index.unlink()
+            try:
+                folder.rmdir()      # 다른 파일이 들어 있으면 폴더는 남긴다
+            except OSError:
+                pass
+
+
 def build_all(root: Path, out: Path, tokens: Mapping[str, str] | None = None,
               extra_pages: Sequence[ExtraPage] = ()) -> None:
     tokens = tokens or {}
@@ -222,6 +238,8 @@ def build_all(root: Path, out: Path, tokens: Mapping[str, str] | None = None,
     for page in extra_pages:
         write_text(out / page.rel_dir / "index.html", assemble_page(
             root, tokens, page.logo, page.title, page.desc, page.url_path, page.parts))
+
+    prune_stale_case_pages(out, extra_pages)
 
     for folder, target in REDIRECTS.items():
         write_text(out / folder / "index.html", REDIRECT.substitute(site=SITE, target=target))

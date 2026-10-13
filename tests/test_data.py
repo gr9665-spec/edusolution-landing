@@ -167,3 +167,41 @@ def test_business_optional_but_checked_when_present():
         data.validate_business({"company": "에듀", "ceo": "홍", "address": "서울"})
     with pytest.raises(DataError, match="label"):
         data.validate_business({"company": "에듀", "ceo": "홍", "regno": "1", "address": "서울", "reports": [{"value": "x"}]})
+
+
+# ---- 안전 검사 (공개 저장소에 올라가는 데이터)
+
+@pytest.mark.parametrize("bad", ["raw-proof/a.jpg", "/assets/cap.jpg", "../r/assets/cap.jpg",
+                                 "assets/../raw-proof/a.jpg", r"assets\cap.jpg", "C:/x/cap.jpg"])
+def test_image_paths_must_stay_inside_assets(root, bad):
+    (root / "raw-proof").mkdir()
+    (root / "raw-proof" / "a.jpg").write_bytes(b"x")
+    capture = {"id": "c1", "kind": "capture", "goal": ["license"], "source": "테스트", "image": bad,
+               "alt": "캡처", "person": "이○○ 님"}
+    with pytest.raises(DataError, match="assets/ 폴더"):
+        data.validate_reviews([capture], root)
+    with pytest.raises(DataError, match="assets/ 폴더"):
+        data.validate_team([team_member(photo=bad)], root)
+    with pytest.raises(DataError, match="assets/ 폴더"):
+        data.validate_reviews([case(proofImages=[bad])], root, {"t1"})
+
+
+@pytest.mark.parametrize("field,value", [
+    ("source", "카톡 김민수 님 010-1234-5678"),
+    ("meta", "연락처 01012345678"),
+    ("body", "문의는 hong@example.com 으로"),
+    ("person", "김○○ 010 1234 5678"),
+])
+def test_reviews_reject_phone_numbers_and_emails(root, field, value):
+    with pytest.raises(DataError, match="개인정보"):
+        data.validate_reviews([text_review(**{field: value})], root)
+
+
+def test_reviews_reject_pii_inside_nested_case_fields(root):
+    with pytest.raises(DataError, match="개인정보"):
+        data.validate_reviews([case(plan=[{"label": "1학기", "detail": "연락처 010-0000-0000"}])], root, {"t1"})
+
+
+def test_ordinary_numbers_are_not_mistaken_for_pii(root):
+    ok = text_review(body="106학점 중 전공 60학점, 2026.09 기준 8개월, 80~140학점", source="2026-10-12 수강생 동의")
+    data.validate_reviews([ok], root)

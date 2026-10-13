@@ -85,3 +85,10 @@ python -m http.server 8777
 3. 결과 이미지를 직접 열어 개인정보가 가려졌는지 확인한 뒤에만 `reviews.json`에 추가합니다.
 
 **확인 명령**: `python -m pytest -q` (테스트), `python tools/check_links.py` (링크·이미지 검사)
+
+**주의사항**
+- **`data/` 폴더는 사이트에 그대로 공개됩니다** (예: `https://edu-solution.co.kr/data/reviews.json`). `source`를 포함해 어느 칸에도 수강생 실명·전화번호·이메일을 쓰지 마세요. 전화번호·이메일 형태는 빌드가 막습니다(사업자 정보 `business.json`은 제외).
+- 이미지 경로는 `assets/` 안의 상대경로만 허용됩니다. `raw-proof/`(원본)나 저장소 밖을 가리키면 빌드가 멈춥니다.
+- 후기의 `headline`·`body`와 담당자의 `bio`는 HTML이 그대로 들어갑니다(`<mark>`, `<strong>`, `<br>` 사용). 나머지 칸은 자동으로 이스케이프됩니다.
+- 합격 사례(`case`)를 `reviews.json`에서 지우면 다음 빌드에서 그 상세 페이지도 함께 지워집니다. 지운 뒤 반드시 `python build.py`를 실행하고 푸시하세요.
+- 후기·수치를 바꾸면 화면이 바뀌므로 `python -m pytest -q`가 `test_golden`에서 실패합니다. 이것은 "기준본과 달라졌다"는 알림입니다. 로컬에서 화면을 확인한 뒤 `python tests/snapshot_golden.py`로 기준본을 갱신하고 함께 커밋하세요.
