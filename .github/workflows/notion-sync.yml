@@ -1,0 +1,54 @@
+name: 노션 후기 동기화
+
+on:
+  schedule:
+    - cron: "17 * * * *"      # 매시 17분(UTC 기준, 한국 시간으로는 매시 17분과 같다)
+  workflow_dispatch:           # GitHub 저장소의 Actions 탭에서 "Run workflow"로 바로 실행
+
+permissions:
+  contents: write
+
+concurrency:
+  group: notion-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    if: github.repository == 'gr9665-spec/edusolution-landing'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: 의존성 설치
+        run: pip install -r requirements.txt
+
+      - name: 노션에서 후기 가져오기
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_DATABASE_ID: ${{ vars.NOTION_DATABASE_ID }}
+        run: python tools/notion_sync.py
+
+      - name: 사이트 빌드 (데이터 검증 포함)
+        run: python build.py
+
+      - name: 링크·이미지 검사
+        run: python tools/check_links.py
+
+      - name: 변경이 있으면 커밋하고 올리기
+        run: |
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "변경 없음 - 올릴 것이 없습니다"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Sync reviews from Notion"
+          git pull --rebase origin master
+          git push origin HEAD:master
