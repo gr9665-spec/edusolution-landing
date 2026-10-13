@@ -207,13 +207,13 @@ def test_sync_writes_deterministic_json_and_prunes_unreferenced_notion_images(tm
     proof.mkdir(parents=True)
     (proof / "notion-stale000000.jpg").write_bytes(b"old")        # 더는 쓰이지 않는 노션 이미지 -> 삭제
     (proof / "manual-case.jpg").write_bytes(b"keep")              # 수동으로 올린 이미지 -> 유지
-    rows = [row("1a2b3c4d-0000-0000-0000-000000000000"),
-            row("9f8e7d6c-0000-0000-0000-000000000000", url="https://s3.example.com/ws/uuid-aaa/c.png?s=1")]
+    rows = [row("00000000-0000-0000-0000-1a2b3c4d0000"),
+            row("00000000-0000-0000-0000-9f8e7d6c0000", url="https://s3.example.com/ws/uuid-aaa/c.png?s=1")]
     summary = notion_sync.sync(tmp_path, rows, fetcher(), lambda url: png_bytes())
     out = tmp_path / "data" / "reviews.notion.json"
     first = out.read_bytes()
     items = json.loads(first.decode("utf-8"))
-    assert {i["id"] for i in items} == {"notion-1a2b3c4d", "notion-9f8e7d6c"}
+    assert {i["id"] for i in items} == {"notion-1a2b3c4d0000", "notion-9f8e7d6c0000"}
     assert b"\r\n" not in first and first.endswith(b"\n")
     assert not (proof / "notion-stale000000.jpg").exists() and (proof / "manual-case.jpg").exists()
     assert summary["items"] == 2 and summary["images"] == 1 and summary["removed_images"] == 1
@@ -222,18 +222,18 @@ def test_sync_writes_deterministic_json_and_prunes_unreferenced_notion_images(tm
 
 
 def test_images_inside_the_body_are_downloaded_kept_and_not_pruned(tmp_path):
-    body = {"1a2b3c4d-0000-0000-0000-000000000000": [paragraph("앞"), image_block("https://s3.example.com/ws/uuid-bbb/in.png?s=1")]}
-    notion_sync.sync(tmp_path, [row("1a2b3c4d-0000-0000-0000-000000000000")], fetcher(body), lambda url: png_bytes())
+    body = {"00000000-0000-0000-0000-1a2b3c4d0000": [paragraph("앞"), image_block("https://s3.example.com/ws/uuid-bbb/in.png?s=1")]}
+    notion_sync.sync(tmp_path, [row("00000000-0000-0000-0000-1a2b3c4d0000")], fetcher(body), lambda url: png_bytes())
     item = json.loads((tmp_path / "data" / "reviews.notion.json").read_text(encoding="utf-8"))[0]
     saved = list((tmp_path / "assets" / "proof").glob("notion-*.jpg"))
     assert len(saved) == 1 and "/assets/proof/%s" % saved[0].name in item["body"]
-    notion_sync.sync(tmp_path, [row("1a2b3c4d-0000-0000-0000-000000000000")], fetcher(body), lambda url: png_bytes())
+    notion_sync.sync(tmp_path, [row("00000000-0000-0000-0000-1a2b3c4d0000")], fetcher(body), lambda url: png_bytes())
     assert list((tmp_path / "assets" / "proof").glob("notion-*.jpg")) == saved
 
 
 def test_sync_output_passes_site_validation_and_renders(tmp_path):
-    rows = [row("1a2b3c4d-0000-0000-0000-000000000000"),
-            row("9f8e7d6c-0000-0000-0000-000000000000", url="https://s3.example.com/ws/uuid-aaa/c.png?s=1")]
+    rows = [row("00000000-0000-0000-0000-1a2b3c4d0000"),
+            row("00000000-0000-0000-0000-9f8e7d6c0000", url="https://s3.example.com/ws/uuid-aaa/c.png?s=1")]
     notion_sync.sync(tmp_path, rows, fetcher(), lambda url: png_bytes())
     (tmp_path / "assets").mkdir(exist_ok=True)
     tokens, extra = load_site(tmp_path)
@@ -250,15 +250,15 @@ def test_sync_with_no_published_rows_writes_empty_list_and_removes_notion_images
 
 
 def test_phone_number_typed_in_notion_stops_the_sync_validation(tmp_path):
-    body = {"1a2b3c4d-0000-0000-0000-000000000000": [paragraph("연락주세요 010-1234-5678")]}
-    notion_sync.sync(tmp_path, [row("1a2b3c4d-0000-0000-0000-000000000000")], fetcher(body), lambda url: png_bytes())
+    body = {"00000000-0000-0000-0000-1a2b3c4d0000": [paragraph("연락주세요 010-1234-5678")]}
+    notion_sync.sync(tmp_path, [row("00000000-0000-0000-0000-1a2b3c4d0000")], fetcher(body), lambda url: png_bytes())
     with pytest.raises(data.DataError, match="개인정보"):
         load_site(tmp_path)
 
 
 def test_script_in_the_notion_body_is_stored_as_text(tmp_path):
-    body = {"1a2b3c4d-0000-0000-0000-000000000000": [paragraph("<script>alert(1)</script>")]}
-    notion_sync.sync(tmp_path, [row("1a2b3c4d-0000-0000-0000-000000000000")], fetcher(body), lambda url: png_bytes())
+    body = {"00000000-0000-0000-0000-1a2b3c4d0000": [paragraph("<script>alert(1)</script>")]}
+    notion_sync.sync(tmp_path, [row("00000000-0000-0000-0000-1a2b3c4d0000")], fetcher(body), lambda url: png_bytes())
     stored = (tmp_path / "data" / "reviews.notion.json").read_text(encoding="utf-8")
     assert "<script" not in stored and "&lt;script&gt;" in stored
     load_site(tmp_path)                                           # 검증도 통과(글자로만 남아 있다)

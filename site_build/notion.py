@@ -132,10 +132,15 @@ def _date(created_time: str) -> str:
     return stamp.astimezone(KST).date().isoformat()
 
 
+def _row_id(page: Mapping) -> str:
+    """행 ID의 끝 12자. 앞부분은 같은 시기에 만든 행끼리 똑같아서(예: 3f80820b-1e5d-80…) 구분에 쓸 수 없다."""
+    return page["id"].replace("-", "")[-12:]
+
+
 def row_to_item(page: Mapping, blocks: Sequence[Mapping], download_image: Callable[[str], str],
                 skipped: Optional[Counter] = None) -> dict:
     """노션 행 하나와 그 페이지 본문 블록을 post 항목으로 바꾼다. download_image(url)는 사이트 안의 이미지 경로(assets/…)를 돌려준다."""
-    row_id = page["id"].replace("-", "")[:8]
+    row_id = _row_id(page)
     who = _title(page)
     if not who:
         raise NotionError("행 %s: '제목' 칸이 비어 있습니다" % row_id)
@@ -170,6 +175,6 @@ def rows_to_items(pages: Sequence[Mapping], fetch_blocks: Callable[[str], Sequen
     seen = set()
     for item in items:
         if item["id"] in seen:
-            raise NotionError("행 ID 앞 8자가 겹치는 행이 있습니다(중복): %s" % item["id"])
+            raise NotionError("행 ID 끝 12자가 겹치는 행이 있습니다(중복): %s" % item["id"])
         seen.add(item["id"])
     return sort_posts(items)

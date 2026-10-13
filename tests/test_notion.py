@@ -25,7 +25,7 @@ def page(**props):
         "대표이미지": {"type": "files", "files": []},
     }
     base.update(props)
-    return {"id": "1a2b3c4d-1111-2222-3333-444455556666", "created_time": "2026-10-01T03:00:00.000Z", "properties": base}
+    return {"id": "11111111-1111-2222-3333-1a2b3c4d5e6f", "created_time": "2026-10-01T03:00:00.000Z", "properties": base}
 
 
 BODY = [block("paragraph", "본문입니다")]
@@ -105,7 +105,7 @@ def test_unsupported_blocks_are_ignored_but_counted():
 
 def test_row_maps_all_fields():
     item = notion.row_to_item(page(), BODY, IMG)
-    assert item == {"id": "notion-1a2b3c4d", "kind": "post", "slug": "r-1a2b3c4d", "title": "학사 학위를 따기까지",
+    assert item == {"id": "notion-1a2b3c4d5e6f", "kind": "post", "slug": "r-1a2b3c4d5e6f", "title": "학사 학위를 따기까지",
                     "subtitle": "직장인 / 학사 학위", "category": "degree", "date": "2026-10-01",
                     "body": "<p>본문입니다</p>", "source": "Notion 후기 데이터베이스"}
 
@@ -164,11 +164,11 @@ def test_missing_column_in_the_database_is_reported_by_column_name():
 # ---- 여러 행
 
 def test_rows_are_sorted_newest_first_then_by_title_and_unpublished_rows_are_skipped():
-    older = dict(page(), id="aaaaaaaa-1111-2222-3333-444455556666", created_time="2026-10-01T03:00:00.000Z")
-    newest = dict(page(), id="bbbbbbbb-1111-2222-3333-444455556666", created_time="2026-10-09T03:00:00.000Z")
-    same_day = dict(page(제목={"type": "title", "title": [rt("가나다")]}), id="cccccccc-1111-2222-3333-444455556666",
+    older = dict(page(), id="11111111-1111-2222-3333-aaaaaaaaaaaa", created_time="2026-10-01T03:00:00.000Z")
+    newest = dict(page(), id="11111111-1111-2222-3333-bbbbbbbbbbbb", created_time="2026-10-09T03:00:00.000Z")
+    same_day = dict(page(제목={"type": "title", "title": [rt("가나다")]}), id="11111111-1111-2222-3333-cccccccccccc",
                     created_time="2026-10-01T05:00:00.000Z")
-    hidden = dict(page(공개={"type": "checkbox", "checkbox": False}), id="dddddddd-1111-2222-3333-444455556666")
+    hidden = dict(page(공개={"type": "checkbox", "checkbox": False}), id="11111111-1111-2222-3333-dddddddddddd")
     fetched = []
 
     def fetch_blocks(page_id):
@@ -176,12 +176,12 @@ def test_rows_are_sorted_newest_first_then_by_title_and_unpublished_rows_are_ski
         return BODY
 
     items = notion.rows_to_items([older, hidden, newest, same_day], fetch_blocks, IMG)
-    assert [i["id"] for i in items] == ["notion-bbbbbbbb", "notion-cccccccc", "notion-aaaaaaaa"]
-    assert "dddddddd-1111-2222-3333-444455556666" not in fetched          # 비공개 행은 본문도 가져오지 않는다
+    assert [i["id"] for i in items] == ["notion-bbbbbbbbbbbb", "notion-cccccccccccc", "notion-aaaaaaaaaaaa"]
+    assert "11111111-1111-2222-3333-dddddddddddd" not in fetched          # 비공개 행은 본문도 가져오지 않는다
 
 
 def test_duplicate_row_prefixes_are_rejected():
-    twin = dict(page(), id="1a2b3c4d-9999-9999-9999-999999999999")
+    twin = dict(page(), id="99999999-9999-9999-9999-1a2b3c4d5e6f")
     with pytest.raises(NotionError, match="중복"):
         notion.rows_to_items([page(), twin], lambda page_id: BODY, IMG)
 
@@ -195,3 +195,11 @@ def test_image_block_without_a_usable_url_is_a_notion_error_not_a_crash():
 
 def test_link_with_trailing_newline_is_not_a_link():
     assert notion.rich_text_to_html([rt("x", href="https://example.com/\n")]) == "x"
+
+
+def test_ids_come_from_the_end_of_the_page_id_because_the_start_is_shared_by_rows_created_around_the_same_time():
+    first = dict(page(), id="3f80820b-1e5d-80c9-a333-d9b69dfcaa04")
+    second = dict(page(), id="3f80820b-1e5d-80c9-b444-0123456789ab")      # 앞 8자(와 그 뒤)가 같은 새 행
+    items = notion.rows_to_items([first, second], lambda page_id: BODY, IMG)
+    assert {i["id"] for i in items} == {"notion-d9b69dfcaa04", "notion-0123456789ab"}
+    assert {i["slug"] for i in items} == {"r-d9b69dfcaa04", "r-0123456789ab"}
