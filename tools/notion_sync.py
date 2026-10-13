@@ -11,6 +11,7 @@ import hashlib
 import json
 import os
 import re
+import shutil
 import sys
 import tempfile
 import time
@@ -120,10 +121,16 @@ def download(url: str, urlopen=urllib.request.urlopen, sleep=time.sleep) -> byte
 def make_image_resolver(root: Path, fetch: Callable[[str], bytes]) -> Callable[[str], str]:
     """노션 파일 주소를 받아 가공한 JPEG를 assets/proof/notion-<해시>.jpg 로 저장하고 사이트 안 경로를 돌려준다.
 
-    파일 이름은 주소의 경로 부분(쿼리의 만료되는 서명 제외)으로 만들어 같은 파일은 다시 받지 않는다.
+    파일 이름은 같은 파일이면 같아야 다시 받지 않는다. 노션이 올린 파일의 주소에는 만료되는 서명(X-Amz-…)이 붙으므로
+    그때는 경로 부분만, 서명이 없는 외부 주소는 주소 전체(호스트·쿼리 포함)로 이름을 만든다.
     """
+    def cache_key(url: str) -> str:
+        parts = urllib.parse.urlparse(url)
+        signed = any(k.lower().startswith("x-amz-") for k, _ in urllib.parse.parse_qsl(parts.query))
+        return parts.path if signed else urllib.parse.urlunparse(parts._replace(fragment=""))
+
     def resolve(url: str) -> str:
-        key = hashlib.sha1(urllib.parse.urlparse(url).path.encode("utf-8")).hexdigest()[:12]
+        key = hashlib.sha1(cache_key(url).encode("utf-8")).hexdigest()[:12]
         rel = "assets/proof/notion-%s.jpg" % key
         dst = root / rel
         if dst.exists():
@@ -132,10 +139,15 @@ def make_image_resolver(root: Path, fetch: Callable[[str], bytes]) -> Callable[[
         with tempfile.TemporaryDirectory() as tmp:
             src = Path(tmp) / "download"
             src.write_bytes(raw)
+            part = Path(tmp) / "result.jpg"
             try:
-                mask_image(src, dst, [])        # 가로 1200px 이하 JPEG로 줄이고 EXIF를 지운다
+                mask_image(src, part, [])       # 가로 1200px 이하 JPEG로 줄이고 EXIF를 지운다
             except Exception as exc:            # Pillow가 열지 못하는 파일(이미지가 아님)
                 raise NotionError("이미지 파일을 열 수 없습니다(%s)" % type(exc).__name__) from None
+            dst.parent.mkdir(parents=True, exist_ok=True)
+            staging = dst.with_name(dst.name + ".part")
+            shutil.copyfile(part, staging)
+            os.replace(staging, dst)            # 다 만든 뒤에 이름을 바꾼다(저장 중 끊겨도 깨진 파일이 남지 않는다)
         return rel
     return resolve
 

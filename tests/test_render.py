@@ -52,6 +52,11 @@ def test_posts_are_sorted_newest_first_then_by_title_and_undated_last():
     assert [i["id"] for i in render.sort_posts(items)] == ["d", "b", "a", "c"]
 
 
+def test_sort_is_stable_for_equal_date_and_title_by_id():
+    a, b = post(id="b-id", slug="b-id", date="2026-10-01"), post(id="a-id", slug="a-id", date="2026-10-01")
+    assert [i["id"] for i in render.sort_posts([a, b])] == ["a-id", "b-id"] == [i["id"] for i in render.sort_posts([b, a])]
+
+
 def test_filters_show_only_categories_that_exist_in_fixed_order():
     items = [post(category="transfer"), post(id="r2", slug="r2", category="degree")]
     html = render.reviews_filters(items)

@@ -67,8 +67,8 @@ def _no_pii(value, where: str) -> None:
 # ---------------------------------------------------------------- 후기 (reviews.json)
 
 DEFAULT_IMAGE = "assets/review-default.jpg"
-DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
-SAFE_URL_RE = re.compile(r"^https?://[^\s\"'<>]+$")
+DATE_RE = re.compile(r"\d{4}-\d{2}-\d{2}")
+SAFE_URL_RE = re.compile(r"https?://[^\s\"'<>]+")
 
 # 본문에 쓸 수 있는 태그와, 태그마다 허용하는 속성
 BODY_TAGS = {
@@ -77,29 +77,70 @@ BODY_TAGS = {
     "a": ("href", "target", "rel"),
     "img": ("src", "alt", "loading", "decoding", "width", "height"),
 }
+VOID_TAGS = {"hr", "br", "img"}
+FIXED_ATTRS = {("a", "target"): "_blank", ("a", "rel"): "noopener noreferrer"}
 
 
 class _BodyChecker(HTMLParser):
+    """본문 HTML이 허용 목록 안에 있는지 검사한다. 주석·선언·끝맺지 않은 태그·짝이 안 맞는 태그처럼
+    브라우저와 파서가 다르게 읽을 수 있는 구조는 모두 거부한다(이스케이프하지 않은 '<'도 거부)."""
+
     def __init__(self, root: Path, where: str):
-        super().__init__(convert_charrefs=True)
-        self.root, self.where = root, where
+        super().__init__(convert_charrefs=False)
+        self.root, self.where, self.stack = root, where, []
 
     def _bad(self, why: str) -> DataError:
         return DataError("%s: body에 허용되지 않는 내용이 있습니다 (%s)" % (self.where, why))
 
-    def handle_starttag(self, tag, attrs):
+    def _check_start(self, tag, attrs):
         if tag not in BODY_TAGS:
             raise self._bad("<%s> 태그는 쓸 수 없습니다" % tag)
+        names = [name for name, _ in attrs]
+        if len(names) != len(set(names)):
+            raise self._bad("<%s>에 같은 속성이 두 번 있습니다" % tag)
         for name, value in attrs:
             if name not in BODY_TAGS[tag]:
                 raise self._bad("<%s>의 '%s' 속성은 쓸 수 없습니다" % (tag, name))
-            if tag == "a" and name == "href" and not SAFE_URL_RE.match(value or ""):
+            if (tag, name) in FIXED_ATTRS and value != FIXED_ATTRS[(tag, name)]:
+                raise self._bad("<%s>의 %s는 '%s'만 쓸 수 있습니다" % (tag, name, FIXED_ATTRS[(tag, name)]))
+            if tag == "a" and name == "href" and not SAFE_URL_RE.fullmatch(value or ""):
                 raise self._bad("링크는 http 또는 https 주소여야 합니다: %s" % value)
             if tag == "img" and name == "src":
-                rel = (value or "").lstrip("/")
-                _exists(self.root, urllib.parse.unquote(rel), self.where, "body 이미지")
+                if not (value or "").startswith("/"):
+                    raise self._bad("이미지 주소는 /assets/… 처럼 /로 시작해야 합니다: %s" % value)
+                _exists(self.root, urllib.parse.unquote(value.lstrip("/")), self.where, "body 이미지")
+        if tag == "img" and "src" not in names:
+            raise self._bad("<img>에는 src가 필요합니다")
 
-    handle_startendtag = handle_starttag
+    def handle_starttag(self, tag, attrs):
+        self._check_start(tag, attrs)
+        if tag not in VOID_TAGS:
+            self.stack.append(tag)
+
+    def handle_startendtag(self, tag, attrs):
+        self._check_start(tag, attrs)
+        if tag not in VOID_TAGS:
+            raise self._bad("<%s/> 형태로는 쓸 수 없습니다" % tag)
+
+    def handle_endtag(self, tag):
+        if tag in VOID_TAGS or not self.stack or self.stack.pop() != tag:
+            raise self._bad("</%s> 태그의 짝이 맞지 않습니다" % tag)
+
+    def handle_data(self, data):
+        if "<" in data:
+            raise self._bad("끝맺지 않은 태그이거나 이스케이프하지 않은 '<'가 있습니다")
+
+    def handle_comment(self, data):
+        raise self._bad("주석은 쓸 수 없습니다")
+
+    def handle_decl(self, decl):
+        raise self._bad("선언(<!…>)은 쓸 수 없습니다")
+
+    def handle_pi(self, data):
+        raise self._bad("처리 명령(<?…>)은 쓸 수 없습니다")
+
+    def unknown_decl(self, data):
+        raise self._bad("선언(<![…]>)은 쓸 수 없습니다")
 
 
 def _check_body(body, root: Path, where: str) -> None:
@@ -108,6 +149,8 @@ def _check_body(body, root: Path, where: str) -> None:
     checker = _BodyChecker(root, where)
     checker.feed(body)
     checker.close()
+    if checker.stack:
+        raise checker._bad("<%s> 태그가 닫히지 않았습니다" % checker.stack[-1])
 
 
 def validate_reviews(items: Sequence[Mapping], root: Path) -> None:
@@ -130,7 +173,7 @@ def validate_reviews(items: Sequence[Mapping], root: Path) -> None:
         slugs.add(item["slug"])
         if "date" in item:
             try:
-                if not (isinstance(item["date"], str) and DATE_RE.match(item["date"])):
+                if not (isinstance(item["date"], str) and DATE_RE.fullmatch(item["date"])):
                     raise ValueError
                 datetime.date.fromisoformat(item["date"])
             except ValueError:

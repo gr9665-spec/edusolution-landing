@@ -29,8 +29,8 @@ SECONDS_PER_CARD = 7.5  # 카드 8장이 한 바퀴 도는 데 약 60초
 
 def sort_posts(items: Sequence[Mapping]) -> list:
     """최신 날짜순, 같은 날짜는 제목순. 날짜가 없는 후기는 맨 뒤."""
-    by_title = sorted(items, key=lambda it: it["title"])
-    return sorted(by_title, key=lambda it: it.get("date") or "", reverse=True)
+    stable = sorted(items, key=lambda it: (it["title"], it["id"]))          # 날짜·제목이 같으면 id순(실행마다 순서가 달라지지 않게)
+    return sorted(stable, key=lambda it: it.get("date") or "", reverse=True)
 
 
 def _card(item: Mapping, p: str, ind: str, extra_cls: str = "", with_cat: bool = False, clone: bool = False) -> str:

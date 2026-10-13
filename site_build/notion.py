@@ -15,7 +15,7 @@ from .render import sort_posts
 
 CATEGORY_LABELS = {"학위 취득": "degree", "자격증": "license", "편입": "transfer", "대학원": "grad"}
 SOURCE = "Notion 후기 데이터베이스"
-LINK_RE = re.compile(r"^https?://[^\s\"'<>]+$")
+LINK_RE = re.compile(r"https?://[^\s\"'<>]+")
 KST = datetime.timezone(datetime.timedelta(hours=9))
 
 
@@ -41,7 +41,7 @@ def rich_text_to_html(rich_text: Sequence[Mapping]) -> str:
         if notes.get("bold"):
             text = "<strong>%s</strong>" % text
         href = part.get("href")
-        if href and LINK_RE.match(href):
+        if href and LINK_RE.fullmatch(href):
             text = '<a href="%s" target="_blank" rel="noopener noreferrer">%s</a>' % (html.escape(href, quote=True), text)
         out.append(text)
     return "".join(out)
@@ -50,7 +50,11 @@ def rich_text_to_html(rich_text: Sequence[Mapping]) -> str:
 # ---------------------------------------------------------------- 본문 블록
 
 def _file_url(file_obj: Mapping) -> str:
-    return file_obj["file"]["url"] if file_obj.get("type") == "file" else file_obj["external"]["url"]
+    kind = file_obj.get("type")
+    url = (file_obj.get(kind) or {}).get("url") if kind in ("file", "external") else None
+    if not url:
+        raise NotionError("이미지 주소를 읽을 수 없습니다 (이미지 블록 또는 대표이미지 파일을 확인해 주세요)")
+    return url
 
 
 def _children(block: Mapping, download_image, skipped) -> str:

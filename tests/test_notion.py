@@ -184,3 +184,14 @@ def test_duplicate_row_prefixes_are_rejected():
     twin = dict(page(), id="1a2b3c4d-9999-9999-9999-999999999999")
     with pytest.raises(NotionError, match="중복"):
         notion.rows_to_items([page(), twin], lambda page_id: BODY, IMG)
+
+
+def test_image_block_without_a_usable_url_is_a_notion_error_not_a_crash():
+    with pytest.raises(NotionError, match="이미지"):
+        notion.blocks_to_html([{"type": "image", "image": {"type": "file", "caption": []}}], IMG)
+    with pytest.raises(NotionError, match="이미지"):
+        notion.blocks_to_html([{"type": "image", "image": {"type": "unknown"}}], IMG)
+
+
+def test_link_with_trailing_newline_is_not_a_link():
+    assert notion.rich_text_to_html([rt("x", href="https://example.com/\n")]) == "x"

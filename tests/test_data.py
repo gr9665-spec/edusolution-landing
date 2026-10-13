@@ -97,6 +97,33 @@ def test_body_accepts_the_allowed_tags(root, html):
 
 
 @pytest.mark.parametrize("html", [
+    "<!--><img src=x onerror=alert(1)>-->",
+    "<!---><img src=x onerror=alert(1)>-->",
+    "<!-- --!><img src=x onerror=alert(1)> -->",
+    "<p>끝맺지 않은 태그 <img src=x onerror=alert(1)//",
+    "<p>닫지 않은 문단",
+    '<a href="https://evil.example.com">닫지 않은 링크',
+    "<p>짝이 안 맞음</strong>",
+    "<!DOCTYPE html><p>x</p>",
+    "<?php echo 1 ?>",
+    "<p>날것의 < 기호</p>",
+    "<p/>",
+    '<img alt="src 없음">',
+    '<img src="assets/cap.jpg" alt="앞에 / 없음">',
+    '<a href="https://example.com/a\nb">줄바꿈</a>',
+    '<a href="https://example.com/" target="_self">타깃</a>',
+    '<a href="https://example.com/" rel="opener">rel</a>',
+])
+def test_body_rejects_parser_tricks_unclosed_tags_and_loose_attributes(root, html):
+    with pytest.raises(DataError, match="body"):
+        data.validate_reviews([post(body=html)], root)
+
+
+def test_body_accepts_escaped_text_and_void_tags_in_both_spellings(root):
+    data.validate_reviews([post(body="<p>a &lt; b &amp; c &quot;d&quot;</p><br><br/><hr><hr/>")], root)
+
+
+@pytest.mark.parametrize("html", [
     "<script>alert(1)</script>",
     "<p onclick=\"x()\">클릭</p>",
     '<a href="javascript:alert(1)">링크</a>',

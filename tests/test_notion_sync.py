@@ -128,6 +128,23 @@ def test_image_is_saved_as_small_clean_jpeg_and_not_downloaded_twice(tmp_path):
         assert im.format == "JPEG" and im.size == (1200, 600) and len(im.getexif()) == 0
 
 
+def test_external_urls_with_the_same_path_but_different_hosts_or_queries_are_different_files(tmp_path):
+    resolve = notion_sync.make_image_resolver(tmp_path, lambda url: png_bytes())
+    names = {resolve("https://a.example.com/img.png"), resolve("https://b.example.com/img.png"),
+             resolve("https://a.example.com/img.php?id=1"), resolve("https://a.example.com/img.php?id=2")}
+    assert len(names) == 4
+    assert resolve("https://a.example.com/img.png") == resolve("https://a.example.com/img.png")
+
+
+def test_a_half_written_download_is_not_reused(tmp_path):
+    def broken(url):
+        raise notion_sync.NotionError("연결 실패")
+    resolve = notion_sync.make_image_resolver(tmp_path, broken)
+    with pytest.raises(NotionError):
+        resolve("https://s3.example.com/ws/uuid-aaa/c.png?X-Amz-Signature=1")
+    assert not list((tmp_path / "assets" / "proof").glob("*")) if (tmp_path / "assets" / "proof").exists() else True
+
+
 def test_different_files_get_different_names(tmp_path):
     resolve = notion_sync.make_image_resolver(tmp_path, lambda url: png_bytes())
     assert resolve("https://s3.example.com/ws/uuid-aaa/a.png?s=1") != resolve("https://s3.example.com/ws/uuid-bbb/a.png?s=1")
