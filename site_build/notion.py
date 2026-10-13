@@ -53,7 +53,7 @@ def _file_url(file_obj: Mapping) -> str:
     kind = file_obj.get("type")
     url = (file_obj.get(kind) or {}).get("url") if kind in ("file", "external") else None
     if not url:
-        raise NotionError("이미지 주소를 읽을 수 없습니다 (이미지 블록 또는 대표이미지 파일을 확인해 주세요)")
+        raise NotionError("이미지 주소를 읽을 수 없습니다 (이미지 블록 또는 페이지 커버를 확인해 주세요)")
     return url
 
 
@@ -161,9 +161,9 @@ def row_to_item(page: Mapping, blocks: Sequence[Mapping], download_image: Callab
 
     item = {"id": "notion-%s" % row_id, "kind": "post", "slug": "r-%s" % row_id, "title": who, "subtitle": subtitle,
             "category": CATEGORY_LABELS[selected["name"]], "date": _date(page["created_time"]), "body": body, "source": SOURCE}
-    files = (page["properties"].get("대표이미지") or {}).get("files") or []
-    if files:
-        item["image"] = download_image(_file_url(files[0]))
+    cover = page.get("cover")                      # 노션 페이지 맨 위 커버 이미지가 대표 이미지
+    if cover:
+        item["image"] = download_image(_file_url(cover))
     return item
 
 

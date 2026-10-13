@@ -41,10 +41,10 @@ def row(row_id, url=None, **over):
         "소제목": {"type": "rich_text", "rich_text": [rt("직장인 / 학사")]},
         "분류": {"type": "select", "select": {"name": "학위 취득"}},
         "공개": {"type": "checkbox", "checkbox": True},
-        "대표이미지": {"type": "files", "files": [{"type": "file", "file": {"url": url}}] if url else []},
     }
     props.update(over)
-    return {"id": row_id, "created_time": "2026-10-01T00:00:00.000Z", "properties": props}
+    return {"id": row_id, "created_time": "2026-10-01T00:00:00.000Z", "properties": props,
+            "cover": {"type": "file", "file": {"url": url}} if url else None}
 
 
 def paragraph(text, has_children=False, block_id="b"):

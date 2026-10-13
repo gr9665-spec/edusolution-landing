@@ -22,7 +22,6 @@ def page(**props):
         "소제목": {"type": "rich_text", "rich_text": [rt("직장인 / 학사 학위")]},
         "분류": {"type": "select", "select": {"name": "학위 취득"}},
         "공개": {"type": "checkbox", "checkbox": True},
-        "대표이미지": {"type": "files", "files": []},
     }
     base.update(props)
     return {"id": "11111111-1111-2222-3333-1a2b3c4d5e6f", "created_time": "2026-10-01T03:00:00.000Z", "properties": base}
@@ -115,21 +114,24 @@ def test_date_uses_korean_time():
     assert notion.row_to_item(dict(page(), created_time="2026-10-12T16:00:00.000Z"), BODY, IMG)["date"] == "2026-10-13"
 
 
-def test_cover_image_is_first_file_and_optional():
-    files = {"type": "files", "files": [{"name": "a.png", "type": "file", "file": {"url": "https://s3.example.com/x/a.png?sig=1"}}]}
+def test_page_cover_is_the_representative_image_and_optional():
+    cover = {"type": "file", "file": {"url": "https://s3.example.com/x/a.png?sig=1"}}
     seen = []
-    item = notion.row_to_item(page(대표이미지=files), BODY, lambda u: seen.append(u) or "assets/proof/notion-c.jpg")
+    item = notion.row_to_item(dict(page(), cover=cover), BODY, lambda u: seen.append(u) or "assets/proof/notion-c.jpg")
     assert item["image"] == "assets/proof/notion-c.jpg" and seen == ["https://s3.example.com/x/a.png?sig=1"]
-    assert "image" not in notion.row_to_item(page(), BODY, IMG)
-    external = {"type": "files", "files": [{"name": "b", "type": "external", "external": {"url": "https://img.example.com/b.png"}}]}
+    assert "image" not in notion.row_to_item(page(), BODY, IMG)                       # 커버가 없으면 기본 이미지
+    assert "image" not in notion.row_to_item(dict(page(), cover=None), BODY, IMG)
+    external = {"type": "external", "external": {"url": "https://img.example.com/b.png"}}
     seen.clear()
-    notion.row_to_item(page(대표이미지=external), BODY, lambda u: seen.append(u) or "assets/proof/x.jpg")
+    notion.row_to_item(dict(page(), cover=external), BODY, lambda u: seen.append(u) or "assets/proof/x.jpg")
     assert seen == ["https://img.example.com/b.png"]
 
 
-def test_cover_image_is_optional_even_if_the_column_is_missing():
+def test_the_old_cover_image_column_is_ignored_and_not_required():
+    files = {"type": "files", "files": [{"name": "a.png", "type": "file", "file": {"url": "https://s3.example.com/x/a.png?sig=1"}}]}
+    assert "image" not in notion.row_to_item(page(대표이미지=files), BODY, IMG)        # 커버만 본다
     p = page()
-    del p["properties"]["대표이미지"]
+    p["properties"].pop("대표이미지", None)
     assert "image" not in notion.row_to_item(p, BODY, IMG)
 
 
