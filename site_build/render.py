@@ -28,7 +28,7 @@ SECONDS_PER_CARD = 7.5  # 카드 8장이 한 바퀴 도는 데 약 60초
 
 
 def sort_posts(items: Sequence[Mapping]) -> list:
-    """최신 날짜순, 같은 날짜는 제목순. 날짜가 없는 후기는 맨 뒤."""
+    """최신 날짜순, 같은 날짜는 제목순. 날짜가 없는 후기는 맨 뒤. 날짜는 정렬에만 쓰고 화면에는 보여주지 않는다."""
     stable = sorted(items, key=lambda it: (it["title"], it["id"]))          # 날짜·제목이 같으면 id순(실행마다 순서가 달라지지 않게)
     return sorted(stable, key=lambda it: it.get("date") or "", reverse=True)
 
@@ -38,8 +38,6 @@ def _card(item: Mapping, p: str, ind: str, extra_cls: str = "", with_cat: bool =
     i1, i2 = ind + "  ", ind + "    "
     cat = ' data-cat="%s"' % esc(item["category"]) if with_cat else ""
     hide = ' tabindex="-1"' if clone else ""
-    date = item.get("date")
-    time = '<time datetime="%s">%s</time>' % (esc(date), esc(date.replace("-", "."))) if date else ""
     src = url_path(item.get("image") or DEFAULT_IMAGE)
     lines = [
         '%s<a class="%s-card%s"%s href="/pages/reviews/%s/"%s>' % (ind, p, extra_cls, cat, esc(item["slug"]), hide),
@@ -48,7 +46,7 @@ def _card(item: Mapping, p: str, ind: str, extra_cls: str = "", with_cat: bool =
         '%s<span class="%s-body">' % (i1, p),
         '%s<span class="%s-ttl">%s</span>' % (i2, p, esc(item["title"])),
         '%s<span class="%s-sub">%s</span>' % (i2, p, esc(item["subtitle"])),
-        '%s<span class="%s-meta"><span class="%s-cat">%s</span>%s</span>' % (i2, p, p, esc(GOAL_LABELS[item["category"]]), time),
+        '%s<span class="%s-meta"><span class="%s-cat">%s</span></span>' % (i2, p, p, esc(GOAL_LABELS[item["category"]])),
         '%s</span>' % i1,
         '%s</a>' % ind,
     ]

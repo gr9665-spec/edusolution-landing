@@ -19,17 +19,18 @@ def post(**over):
     return item
 
 
-def test_detail_shows_back_link_badge_title_subtitle_date_image_body_and_cta():
+def test_detail_shows_back_link_badge_title_subtitle_image_body_and_cta_but_no_date():
     html = post_html(post())
     assert 'href="/pages/reviews/"' in html and "학위 취득" in html
     assert "<h1" in html and "학사 &quot;취득&quot; &lt;후기&gt;" in html
-    assert "직장인 / 학사 학위" in html and '<time datetime="2026-10-13">2026.10.13</time>' in html
+    assert "직장인 / 학사 학위" in html
+    assert "<time" not in html and "2026.10.13" not in html and "2026-10-13" not in html
     assert 'src="/assets/proof/%ED%95%9C%EA%B8%80%20%EC%82%AC%EC%A7%84.jpg"' in html
     assert "<p>본문 <strong>강조</strong></p>" in html                 # 본문은 이미 안전한 HTML
     assert 'href="/#es-form"' in html
 
 
-def test_default_image_and_missing_date_are_hidden():
+def test_default_image_is_hidden():
     html = post_html(post(image=None, date=None))
     assert "review-default" not in html and "<img" not in html and "<time" not in html
 
