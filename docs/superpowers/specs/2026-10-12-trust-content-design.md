@@ -42,9 +42,9 @@ build.py          build.sh 대체
 - `case`: 위 + `slug`, `title`(예: `○○대 편입 합격`), `school`, `track`(전형), `profile`(연령대·전적 학력·보유 학점), `plan`(학점 계획 표), `duration`, `result`, `proofImages`, `planner`(team.json의 id), 검색용 `seoTitle`·`seoDescription`
 - `case` 항목이 있으면 `/pages/reviews/<slug>/` 상세 페이지가 생성된다. `text`·`capture`는 상세 페이지가 없다.
 
-**stats.json 항목**: `value`, `label`, `asOf`(기준 시점), `source`(근거). 둘 중 하나라도 비면 빌드 실패.
+**stats.json 항목**: `value`(숫자), `suffix`(선택, 예: `명+`), `label`, `asOf`(기준 시점), `source`(근거). `label`·`asOf`·`source` 중 하나라도 비면 빌드 실패.
 
-**team.json 항목**: `id`, `name`, `role`, `photo`, `bio`(기존 소개 문구 그대로), `tags`, `career`(경력·자격), `field`(담당 분야).
+**team.json 항목**: `id`, `name`, `role`, `photo`, `bio`(기존 소개 문구 그대로), `tags`, `career`(선택, 경력·자격 목록). 담당 분야는 기존 `role`과 `tags`로 표현한다.
 
 **business.json 항목**: 상호, 대표자, 사업자등록번호, 신고번호, 연락처, 주소. 필요한 항목은 사용자의 사업 형태에 따라 확정한다.
 
@@ -64,7 +64,7 @@ build.py          build.sh 대체
 - 합격 사례 상세: 익명 프로필, 목표, 학점 계획 표, 소요 기간, 결과·인증 이미지, 담당 플래너, 상담 신청 버튼.
 
 **메인**
-- 히어로 아래 실적 수치 띠(4칸, 기준 시점·근거를 작은 글씨로 표기, 기존 카운트업 애니메이션 재사용).
+- 히어로 아래 실적 수치 띠(최대 6칸, 기준 시점·근거를 작은 글씨로 표기. 기존 카운트업 함수는 대상 섹션(`.es2`)이 사라져 쓰이지 않으므로 수치 띠 전용 카운트업 스크립트를 함께 출력).
 - 후기 섹션은 `featured` 항목 6개를 데이터에서 가져온다. `후기 더보기`는 위 페이지로 연결.
 - 하단 푸터 신설(사업자 정보, `business.json`).
 

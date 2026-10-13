@@ -67,3 +67,21 @@ python -m http.server 8777
 
 - 담당자 4명(상희경·이정민·성서아·홍시현)의 사진은 `assets/team-*.jpg`에 원본에서 가로 800px로 줄여 저장했습니다. 원본은 `Desktop/잡동/담당자 이미지/`에 있습니다. 담당자를 추가할 때는 `.pt-mem-card` 블록을 복사하고, `02-animations.html`의 `nth-child` 지연값과 `.pt-mem-grid` 열 수를 같이 조정하세요.
 - 네비게이션 · 카카오톡 플로팅 버튼 · 30초 자가진단 팝업은 메인 페이지(`sections/00, 09, 10`)와 동일한 코드를 재사용했습니다.
+
+## 후기·합격 사례·수치·사업자 정보 관리 (data/)
+
+내용은 `data/*.json`에 적고 `python build.py`를 실행하면 페이지와 sitemap이 함께 만들어집니다. 규칙에 어긋나면 어디가 문제인지 알려 주며 빌드가 멈춥니다.
+
+| 파일 | 내용 |
+|---|---|
+| `data/reviews.json` | 후기·합격 사례. `kind`: `text`(글 후기) / `capture`(대화 캡처) / `case`(합격 사례, 상세 페이지 자동 생성) |
+| `data/stats.json` | 메인 실적 수치 띠(최대 6개). `value`, `label`, `asOf`(기준 시점), `source`(근거)가 모두 필수 |
+| `data/team.json` | 담당자 정보. `career`(경력·자격 목록)는 선택 |
+| `data/business.json` | 하단 사업자 정보. 없으면 푸터가 나오지 않습니다 |
+
+**대화 캡처·인증 이미지 올리는 순서**
+1. 원본을 `raw-proof/`에 둡니다(git에 올라가지 않습니다).
+2. 이름·연락처·프로필 사진 위치를 확인하고 `python tools/mask.py raw-proof/원본.png assets/proof/결과.jpg --box x,y,w,h` 로 가립니다(여러 곳은 `--box`를 반복).
+3. 결과 이미지를 직접 열어 개인정보가 가려졌는지 확인한 뒤에만 `reviews.json`에 추가합니다.
+
+**확인 명령**: `python -m pytest -q` (테스트), `python tools/check_links.py` (링크·이미지 검사)
