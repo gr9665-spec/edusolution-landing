@@ -19,6 +19,8 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: master              # "Re-run"이 옛 커밋으로 도는 것을 막고 항상 최신 master에서 시작한다
 
       - uses: actions/setup-python@v5
         with:
@@ -50,5 +52,6 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
           git commit -m "Sync reviews from Notion"
-          git pull --rebase origin master
+          # 그 사이 master가 앞서 갔어도(수동 푸시 등) 이번에 새로 만든 생성 파일이 이기도록 합친다
+          git pull --rebase -X theirs origin master
           git push origin HEAD:master
