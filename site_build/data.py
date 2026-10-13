@@ -137,7 +137,7 @@ def validate_stats(items: Sequence[Mapping]) -> None:
         raise DataError("stats.json: 수치는 최대 6개까지 쓸 수 있습니다 (현재 %d개)" % len(items))
     for n, item in enumerate(items, 1):
         where = "stats.json[%d]" % n
-        _require(item, ["value", "label", "asOf", "source"], where)
+        _require(item, ["value", "label", "asOf"], where)      # source(근거 문구)는 선택
         value = item["value"]
         if isinstance(value, bool) or not isinstance(value, (int, float)) or value < 0:
             raise DataError("%s: value는 0 이상의 숫자여야 합니다" % where)

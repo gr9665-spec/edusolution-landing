@@ -1,4 +1,4 @@
 [
-  {"value": 9000, "suffix": "명+", "label": "누적 수강생", "asOf": "2026-10", "source": "자체 집계"},
-  {"value": 8, "suffix": "년", "label": "운영 기간", "asOf": "2026-10", "source": "자체 집계"}
+  {"value": 9000, "suffix": "명+", "label": "누적 수강생", "asOf": "2026-10"},
+  {"value": 8, "suffix": "년", "label": "운영 기간", "asOf": "2026-10"}
 ]

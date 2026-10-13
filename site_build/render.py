@@ -251,13 +251,15 @@ def stats_strip(stats: Sequence[Mapping]) -> str:
     items = []
     for s in stats:
         suffix = '<span class="est-s">%s</span>' % esc(s["suffix"]) if s.get("suffix") else ""
+        note = "%s 기준" % esc(s["asOf"].replace("-", "."))
+        if s.get("source"):
+            note += " · %s" % esc(s["source"])
         items.append(
             '    <div class="est-item">\n'
             '      <p class="est-main"><span class="est-n" data-count="%s">%s</span>%s</p>\n'
             '      <p class="est-label">%s</p>\n'
-            '      <p class="est-note">%s 기준 · %s</p>\n'
-            '    </div>' % (s["value"], _fmt_number(s["value"]), suffix, esc(s["label"]),
-                            esc(s["asOf"].replace("-", ".")), esc(s["source"])))
+            '      <p class="est-note">%s</p>\n'
+            '    </div>' % (s["value"], _fmt_number(s["value"]), suffix, esc(s["label"]), note))
     return (STATS_CSS + '\n<div class="est">\n  <div class="est-in">\n' + "\n".join(items) +
             "\n  </div>\n</div>\n" + STATS_JS)
 

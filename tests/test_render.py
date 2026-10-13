@@ -160,3 +160,8 @@ def test_footer_omits_ceo_row_when_name_is_not_given():
     html = render.site_footer({"company": "에듀솔루션", "regno": "000-00-00000", "address": "서울"})
     assert "대표자" not in html and "000-00-00000" in html and "에듀솔루션" in html
     assert "<b>대표자</b>" in render.site_footer({"company": "에듀솔루션", "ceo": "홍길동", "regno": "1", "address": "서울"})
+
+
+def test_stats_note_omits_basis_when_source_is_not_given():
+    html = render.stats_strip([{"value": 9000, "suffix": "명+", "label": "누적 수강생", "asOf": "2026-10"}])
+    assert '<p class="est-note">2026.10 기준</p>' in html

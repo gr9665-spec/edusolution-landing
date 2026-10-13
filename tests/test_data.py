@@ -141,9 +141,9 @@ def stat(**over):
     return item
 
 
-def test_stats_require_source_and_as_of(root):
+def test_stats_require_value_label_and_as_of(root):
     data.validate_stats([stat(), stat(asOf="2026-10-12", value=4.9)])
-    for key in ("source", "asOf", "label", "value"):
+    for key in ("asOf", "label", "value"):
         item = stat()
         del item[key]
         with pytest.raises(DataError, match=key):
@@ -209,3 +209,9 @@ def test_ordinary_numbers_are_not_mistaken_for_pii(root):
 
 def test_business_ceo_name_is_optional():
     data.validate_business({"company": "에듀솔루션", "regno": "000-00-00000", "address": "서울"})
+
+
+def test_stats_source_is_optional(root):
+    item = stat()
+    del item["source"]
+    data.validate_stats([item])
