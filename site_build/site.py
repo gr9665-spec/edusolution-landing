@@ -7,16 +7,18 @@ from . import data, render
 from .cases import case_page
 
 
-def load_site(root: Path):
-    team = data.load(root, "team.json", [])
+def load_site(root: Path, data_root: Path = None):
+    """root는 조각·이미지가 있는 저장소, data_root는 data/*.json이 있는 곳(기본은 root). 테스트가 고정 데이터를 쓰려고 나눈다."""
+    data_root = data_root or root
+    team = data.load(data_root, "team.json", [])
     team_ids = data.validate_team(team, root)
-    reviews = data.load(root, "reviews.json", [])
+    reviews = data.load(data_root, "reviews.json", []) + data.load(data_root, "reviews.notion.json", [])
     data.validate_reviews(reviews, root, team_ids)
-    stats = data.load(root, "stats.json", [])
+    stats = data.load(data_root, "stats.json", [])
     data.validate_stats(stats)
-    business = data.load(root, "business.json", {})
+    business = data.load(data_root, "business.json", {})
     data.validate_business(business)
-    channel = data.load(root, "youtube.json", {})
+    channel = data.load(data_root, "youtube.json", {})
     data.validate_youtube(channel)
 
     cases = [r for r in reviews if r["kind"] == "case"]

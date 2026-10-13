@@ -15,6 +15,8 @@ ROOT = Path(__file__).resolve().parent.parent
 GOLDEN = ROOT / "tests" / "golden"
 GOLDEN_FILES = sorted(p.relative_to(GOLDEN).as_posix() for p in GOLDEN.rglob("*") if p.is_file())
 
+GOLDEN_DATA = ROOT / "tests" / "golden_data"     # 운영 데이터가 바뀌어도 기준본이 흔들리지 않게 고정 데이터로 빌드한다
+
 LOOSE = {"index.html", "pages/reviews/index.html", "pages/team/index.html"}
 
 
@@ -28,7 +30,7 @@ def prepare(rel: str, data: bytes) -> str:
 @pytest.fixture(scope="module")
 def built(tmp_path_factory):
     out = tmp_path_factory.mktemp("built")
-    tokens, extra = load_site(ROOT)
+    tokens, extra = load_site(ROOT, data_root=GOLDEN_DATA)
     build_all(ROOT, out, tokens, extra)
     return out
 

@@ -1,12 +1,20 @@
-"""현재 저장소의 생성물을 tests/golden 으로 복사한다(줄바꿈은 LF로 통일).
+"""고정 데이터(tests/golden_data)로 빌드한 결과를 tests/golden 으로 저장한다(줄바꿈은 LF).
 
-사람이 화면 변화를 확인하고 승인한 변경 뒤에만 실행한다.  사용법: python tests/snapshot_golden.py
+조각 파일(sections/, pages/)이나 빌더 코드를 바꿔 화면이 달라졌고 그 변화를 확인·승인한 뒤에만 실행한다.
+후기·수치 같은 운영 데이터(data/)를 바꾼 것만으로는 실행할 필요가 없다.  사용법: python tests/snapshot_golden.py
 """
 import shutil
+import sys
+import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT))
+from site_build.core import build_all  # noqa: E402
+from site_build.site import load_site  # noqa: E402
+
 GOLDEN = ROOT / "tests" / "golden"
+GOLDEN_DATA = ROOT / "tests" / "golden_data"
 
 FILES = ["index.html", "sitemap.xml", "robots.txt",
          "27/index.html", "28/index.html", "29/index.html", "30/index.html"]
