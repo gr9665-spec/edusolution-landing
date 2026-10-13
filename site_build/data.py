@@ -150,6 +150,6 @@ def validate_stats(items: Sequence[Mapping]) -> None:
 def validate_business(biz: Mapping) -> None:
     if not biz:
         return
-    _require(biz, ["company", "ceo", "regno", "address"], "business.json")
+    _require(biz, ["company", "regno", "address"], "business.json")      # ceo(대표자)는 선택
     for rep in biz.get("reports", []):
         _require(rep, ["label", "value"], "business.json.reports")

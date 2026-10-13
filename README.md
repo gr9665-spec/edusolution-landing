@@ -77,7 +77,7 @@ python -m http.server 8777
 | `data/reviews.json` | 후기·합격 사례. `kind`: `text`(글 후기) / `capture`(대화 캡처) / `case`(합격 사례, 상세 페이지 자동 생성) |
 | `data/stats.json` | 메인 실적 수치 띠(최대 6개). `value`, `label`, `asOf`(기준 시점), `source`(근거)가 모두 필수 |
 | `data/team.json` | 담당자 정보. `career`(경력·자격 목록)는 선택 |
-| `data/business.json` | 하단 사업자 정보. 없으면 푸터가 나오지 않습니다 |
+| `data/business.json` | 하단 사업자 정보(상호·사업자등록번호·주소 필수, 대표자 이름은 선택). 없으면 푸터가 나오지 않습니다 |
 
 **대화 캡처·인증 이미지 올리는 순서**
 1. 원본을 `raw-proof/`에 둡니다(git에 올라가지 않습니다).

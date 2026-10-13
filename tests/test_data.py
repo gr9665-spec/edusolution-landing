@@ -205,3 +205,7 @@ def test_reviews_reject_pii_inside_nested_case_fields(root):
 def test_ordinary_numbers_are_not_mistaken_for_pii(root):
     ok = text_review(body="106학점 중 전공 60학점, 2026.09 기준 8개월, 80~140학점", source="2026-10-12 수강생 동의")
     data.validate_reviews([ok], root)
+
+
+def test_business_ceo_name_is_optional():
+    data.validate_business({"company": "에듀솔루션", "regno": "000-00-00000", "address": "서울"})

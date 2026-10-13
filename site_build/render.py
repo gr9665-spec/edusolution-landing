@@ -276,7 +276,8 @@ FOOTER_CSS = """<style>
 def site_footer(business: Mapping) -> str:
     if not business:
         return ""
-    rows = [("대표자", business["ceo"]), ("사업자등록번호", business["regno"])]
+    rows = [("대표자", business["ceo"])] if business.get("ceo") else []
+    rows.append(("사업자등록번호", business["regno"]))
     for rep in business.get("reports", []):
         rows.append((rep["label"], rep["value"]))
     for key, label in (("phone", "연락처"), ("email", "이메일")):
