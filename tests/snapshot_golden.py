@@ -22,6 +22,7 @@ for folder in ("team", "credit-bank", "education-info", "reviews"):
     FILES += ["pages/%s/%s" % (folder, name)
               for name in ("index.html", "00-nav.html", "03-kakao-float-button.html", "04-diagnostic-popup.html")]
 FILES.append("pages/reviews/g01/index.html")        # 후기 상세 페이지 한 개(대표 이미지·제목·본문 서식 포함)
+FILES.append("pages/education-info/sample-article/index.html")        # 교육정보 글 상세 페이지 한 개(표·구조화 정보 포함)
 
 
 def main() -> None:

@@ -4,6 +4,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from . import data, render
+from .articles import article_page, articles_section, sort_articles
 from .posts import post_page
 
 
@@ -15,6 +16,9 @@ def load_site(root: Path, data_root: Path = None):
     reviews = data.load(data_root, "reviews.json", []) + data.load(data_root, "reviews.notion.json", [])
     data.validate_reviews(reviews, root)
     reviews = render.sort_posts(reviews)
+    articles = data.load(data_root, "articles.json", [])
+    data.validate_articles(articles, root)
+    articles = sort_articles(articles)
     stats = data.load(data_root, "stats.json", [])
     data.validate_stats(stats)
     business = data.load(data_root, "business.json", {})
@@ -26,10 +30,11 @@ def load_site(root: Path, data_root: Path = None):
         "reviews_grid": render.reviews_grid(reviews),
         "reviews_filters": render.reviews_filters(reviews),
         "reviews_marquee": render.reviews_marquee(reviews),
+        "education_articles": articles_section(articles),
         "team_cards": render.team_cards(team, "../../"),
         "team_extras": render.team_extras(team, channel),
         "team_channel": render.team_channel(channel),
         "stats_strip": render.stats_strip(stats),
         "site_footer": render.site_footer(business),
     }
-    return tokens, [post_page(r, root) for r in reviews]
+    return tokens, [post_page(r, root) for r in reviews] + [article_page(a, articles, root) for a in articles]

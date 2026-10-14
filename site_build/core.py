@@ -206,20 +206,24 @@ def sub_parts(root: Path, folder: str) -> list:
     ]
 
 
+PRUNED_SECTIONS = ("reviews", "education-info")      # 데이터로 상세 페이지가 만들어지는 폴더(후기, 교육정보 글)
+
+
 def prune_stale_post_pages(out: Path, extra_pages: Sequence[ExtraPage]) -> None:
-    """데이터에서 지운 후기의 상세 페이지가 공개 폴더에 남지 않게 지운다."""
+    """데이터에서 지운 후기·교육정보 글의 상세 페이지가 공개 폴더에 남지 않게 지운다."""
     keep = {page.rel_dir for page in extra_pages}
-    base = out / "pages" / "reviews"
-    if not base.is_dir():
-        return
-    for folder in base.iterdir():
-        index = folder / "index.html"
-        if folder.is_dir() and index.is_file() and ("pages/reviews/%s" % folder.name) not in keep:
-            index.unlink()
-            try:
-                folder.rmdir()      # 다른 파일이 들어 있으면 폴더는 남긴다
-            except OSError:
-                pass
+    for section in PRUNED_SECTIONS:
+        base = out / "pages" / section
+        if not base.is_dir():
+            continue
+        for folder in base.iterdir():
+            index = folder / "index.html"
+            if folder.is_dir() and index.is_file() and ("pages/%s/%s" % (section, folder.name)) not in keep:
+                index.unlink()
+                try:
+                    folder.rmdir()      # 다른 파일이 들어 있으면 폴더는 남긴다
+                except OSError:
+                    pass
 
 
 def build_all(root: Path, out: Path, tokens: Mapping[str, str] | None = None,

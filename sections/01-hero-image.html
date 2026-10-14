@@ -7,6 +7,10 @@
 .esh-in{position:relative;z-index:3;max-width:1200px;margin:0 auto;padding:80px 6% 180px;width:100%;box-sizing:border-box;text-align:center;}
 .esh h1{font-size:clamp(3.6rem,8vw,6.2rem);font-weight:900;line-height:1.18;letter-spacing:-.03em;color:#fff;margin:0 0 1.75rem;text-shadow:0 2px 28px rgba(0,0,0,.5);}
 .esh h1 .line2{font-family:'Playfair Display',Georgia,serif;font-style:italic;font-weight:700;color:#a0cde0;display:block;font-size:105%;}
+.esh-badge{display:inline-flex;align-items:center;gap:9px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.32);color:#fff;padding:9px 18px;border-radius:100px;font-size:14px;font-weight:700;letter-spacing:.01em;margin:0 0 1.6rem;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);}
+.esh-dot{width:9px;height:9px;border-radius:50%;background:#4ade80;box-shadow:0 0 0 0 rgba(74,222,128,.6);}
+@media (prefers-reduced-motion:no-preference){.esh-dot{animation:eshLive 2s infinite;}}
+@keyframes eshLive{0%{box-shadow:0 0 0 0 rgba(74,222,128,.55);}70%{box-shadow:0 0 0 9px rgba(74,222,128,0);}100%{box-shadow:0 0 0 0 rgba(74,222,128,0);}}
 .esh-sub{font-size:clamp(17px,2.8vw,22px);line-height:1.9;color:rgba(255,255,255,.78);margin:0 0 2.5rem;}
 .esh-sub strong{color:#7ab8d8;font-weight:500;text-decoration:underline;text-underline-offset:4px;}
 .esh-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;}
@@ -24,6 +28,7 @@
 </style>
 <div class="esh">
   <div class="esh-in">
+    <div class="esh-badge"><span class="esh-dot"></span>실시간 상담 가능</div>
     <h1>1:1 맞춤 관리<br><span class="line2">TEAM 에듀솔루션</span></h1>
     <p class="esh-sub">학위취득, 대학입시, 대학원 진학, 자격증 등<br>각 분야 전문가들이 맞춤형 상담을 통해<br><strong>여러분의 미래를 함께 설계합니다</strong></p>
     <div class="esh-btns">

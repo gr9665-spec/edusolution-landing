@@ -110,6 +110,18 @@ def test_team_card_basic_markup_matches_existing_page_structure():
     assert render.team_extras([member()]) == ""
 
 
+def test_team_card_shows_slogan_only_when_given_and_escapes_it():
+    assert "pt-mem-slogan" not in render.team_cards([member()])
+    html = render.team_cards([member(slogan='처음부터 <끝까지> "함께"')])
+    assert '<p class="pt-mem-slogan">' in html and "처음부터 &lt;끝까지&gt; &quot;함께&quot;" in html
+
+
+def test_team_card_has_a_consultation_button_and_a_labelled_specialty_list():
+    html = render.team_cards([member()])
+    assert 'class="pt-mem-cta" href="/#es-form"' in html and "무료 상담" in html
+    assert 'class="pt-mem-tags-label"' in html and html.index("pt-mem-tags-label") < html.index('class="pt-mem-tags"')
+
+
 def test_team_card_shows_career():
     html = render.team_cards([member(career=["경력 5년", "사회복지사 2급"])])
     assert html.count("<li>") == 2

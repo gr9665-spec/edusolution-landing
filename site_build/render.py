@@ -102,27 +102,34 @@ def team_cards(team: Sequence[Mapping], rel: str = "../../") -> str:
         i1, i2, i3 = ind + "  ", ind + "    ", ind + "      "
         lines = [
             '%s<!-- %s -->' % (ind, esc(m["name"])),
-            '%s<div class="pt-mem-card">' % ind,
+            '%s<article class="pt-mem-card">' % ind,
             '%s<div class="pt-mem-photo">' % i1,
-            '%s<img src="%s%s" alt="%s">' % (i2, rel, esc(m["photo"]), esc(m["name"])),
+            '%s<img src="%s%s" alt="%s" loading="lazy" decoding="async">' % (i2, rel, esc(m["photo"]), esc(m["name"])),
             '%s</div>' % i1,
             '%s<div class="pt-mem-body">' % i1,
-            '%s<p class="pt-mem-name">%s</p>' % (i2, esc(m["name"])),
             '%s<p class="pt-mem-role">%s</p>' % (i2, esc(m["role"])),
-            '%s<p class="pt-mem-desc">%s</p>' % (i2, m["bio"]),
+            '%s<h3 class="pt-mem-name">%s</h3>' % (i2, esc(m["name"])),
         ]
+        if m.get("slogan"):
+            lines.append('%s<p class="pt-mem-slogan">%s</p>' % (i2, esc(m["slogan"])))
+        lines.append('%s<p class="pt-mem-desc">%s</p>' % (i2, m["bio"]))
         career = m.get("career") or []
         if career:
             lines.append('%s<ul class="pt-mem-career">' % i2)
             lines += ['%s<li>%s</li>' % (i3, esc(c)) for c in career]
             lines.append('%s</ul>' % i2)
+        lines.append('%s<p class="pt-mem-tags-label">전문 분야</p>' % i2)
         lines.append('%s<div class="pt-mem-tags">' % i2)
         lines += ['%s<span class="pt-mem-tag">%s</span>' % (i3 + "  ", esc(t)) for t in m["tags"]]
         lines.append('%s</div>' % i2)
+        actions = ['%s<a class="pt-mem-cta" href="/#es-form">무료 상담 신청</a>' % i3]
         if m.get("youtube"):
-            lines.append('%s<a class="pt-mem-yt" href="%s" target="_blank" rel="noopener noreferrer">%s유튜브 채널</a>'
-                         % (i2, esc(m["youtube"]), YT_ICON_SMALL))
-        lines += ['%s</div>' % i1, '%s</div>' % ind]
+            actions.append('%s<a class="pt-mem-yt" href="%s" target="_blank" rel="noopener noreferrer">%s유튜브 채널</a>'
+                           % (i3, esc(m["youtube"]), YT_ICON_SMALL))
+        lines.append('%s<div class="pt-mem-actions">' % i2)
+        lines += actions
+        lines.append('%s</div>' % i2)
+        lines += ['%s</div>' % i1, '%s</article>' % ind]
         cards.append("\n".join(lines))
     if not cards:
         return ""
@@ -151,7 +158,7 @@ TEAM_YT_CSS = """<style>
 .pt-yt-desc{margin:0;font-size:15px;color:rgba(255,255,255,.65);line-height:1.8;}
 .pt-yt-btn{flex-shrink:0;background:#ff0000;color:#fff !important;font-weight:700;font-size:15px;padding:14px 26px;border-radius:10px;text-decoration:none;white-space:nowrap;}
 .pt-yt-btn:hover{background:#d90000;}
-.pt-mem-yt{display:inline-flex;align-items:center;gap:6px;margin-top:1.1rem;font-size:13px;font-weight:700;color:#4a7fa5 !important;text-decoration:none;}
+.pt-mem-yt{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:#4a7fa5 !important;text-decoration:none;}
 .pt-mem-yt:hover{color:#1a2d4a !important;}
 @media(max-width:700px){.pt-yt-team{flex-direction:column;align-items:flex-start;padding:24px;}.pt-yt-btn{width:100%;text-align:center;}}
 </style>"""

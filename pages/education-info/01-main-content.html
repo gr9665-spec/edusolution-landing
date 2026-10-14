@@ -61,6 +61,17 @@
 .pe-note b{font-weight:800;}
 .pe-note.warn{background:#fff4e8;border-left-color:#e8892b;}
 
+/* 교육정보 글 목록 */
+.pe-articles{background:#f7f9fb;}
+.pe-art-list{display:grid;grid-template-columns:repeat(2,1fr);gap:1.25rem;margin-top:40px;}
+.pe-art{display:flex;flex-direction:column;gap:6px;background:#fff;border:1px solid #d6e3ee;border-radius:16px;padding:24px 26px;text-decoration:none;color:inherit;transition:border-color .25s,transform .25s,box-shadow .25s;}
+.pe-art:hover{border-color:#4a7fa5;transform:translateY(-4px);box-shadow:0 16px 40px rgba(74,127,165,.12);}
+.pe-art-cat{font-size:13px;font-weight:800;color:#4a7fa5;}
+.pe-art-t{font-size:19px;font-weight:800;color:#1a2d4a;line-height:1.5;letter-spacing:-.01em;}
+.pe-art-d{font-size:15px;color:#4a5a6a;line-height:1.75;}
+.pe-art-m{font-size:13px;color:#8a9ab0;margin-top:4px;}
+@media(max-width:760px){.pe-art-list{grid-template-columns:1fr;}}
+
 /* CTA */
 .pe-cta{background:#1a2d4a;padding:88px 6%;text-align:center;}
 .pe-cta h2{font-size:clamp(2.4rem,3.6vw,3.2rem);font-weight:800;letter-spacing:-.03em;line-height:1.35;color:#fff;}
@@ -226,6 +237,7 @@
     </div>
   </div>
 
+{{education_articles}}
   <!-- CTA -->
   <div class="pe-cta">
     <h2>내 목표에 맞는 플랜,<br>지금 바로 확인하세요</h2>

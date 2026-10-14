@@ -17,7 +17,7 @@ GOLDEN_FILES = sorted(p.relative_to(GOLDEN).as_posix() for p in GOLDEN.rglob("*"
 
 GOLDEN_DATA = ROOT / "tests" / "golden_data"     # 운영 데이터가 바뀌어도 기준본이 흔들리지 않게 고정 데이터로 빌드한다
 
-LOOSE = {"index.html", "pages/reviews/index.html", "pages/team/index.html", "pages/reviews/g01/index.html"}
+LOOSE = {"index.html", "pages/reviews/index.html", "pages/team/index.html", "pages/reviews/g01/index.html", "pages/education-info/sample-article/index.html"}
 
 
 def prepare(rel: str, data: bytes) -> str:
@@ -36,7 +36,7 @@ def built(tmp_path_factory):
 
 
 def test_golden_snapshot_is_complete():
-    assert len(GOLDEN_FILES) == 24
+    assert len(GOLDEN_FILES) == 25
 
 
 @pytest.mark.parametrize("rel", GOLDEN_FILES)

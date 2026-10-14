@@ -69,11 +69,13 @@ def _no_pii(value, where: str) -> None:
 DEFAULT_IMAGE = "assets/review-default.jpg"
 DATE_RE = re.compile(r"\d{4}-\d{2}-\d{2}")
 SAFE_URL_RE = re.compile(r"https?://[^\s\"'<>]+")
+INTERNAL_URL_RE = re.compile(r"/(?!/)[^\s\"'<>]*")      # 사이트 안 주소(/pages/…). '//' 로 시작하는 외부 주소는 거부
 
 # 본문에 쓸 수 있는 태그와, 태그마다 허용하는 속성
 BODY_TAGS = {
     "p": (), "h2": (), "h3": (), "strong": (), "em": (), "ul": (), "ol": (), "li": (), "blockquote": (),
     "hr": (), "br": (), "figure": (), "figcaption": (),
+    "table": (), "thead": (), "tbody": (), "tr": (), "th": (), "td": (),
     "a": ("href", "target", "rel"),
     "img": ("src", "alt", "loading", "decoding", "width", "height"),
 }
@@ -103,8 +105,8 @@ class _BodyChecker(HTMLParser):
                 raise self._bad("<%s>의 '%s' 속성은 쓸 수 없습니다" % (tag, name))
             if (tag, name) in FIXED_ATTRS and value != FIXED_ATTRS[(tag, name)]:
                 raise self._bad("<%s>의 %s는 '%s'만 쓸 수 있습니다" % (tag, name, FIXED_ATTRS[(tag, name)]))
-            if tag == "a" and name == "href" and not SAFE_URL_RE.fullmatch(value or ""):
-                raise self._bad("링크는 http 또는 https 주소여야 합니다: %s" % value)
+            if tag == "a" and name == "href" and not (SAFE_URL_RE.fullmatch(value or "") or INTERNAL_URL_RE.fullmatch(value or "")):
+                raise self._bad("링크는 http·https 주소이거나 /로 시작하는 사이트 안 주소여야 합니다: %s" % value)
             if tag == "img" and name == "src":
                 if not (value or "").startswith("/"):
                     raise self._bad("이미지 주소는 /assets/… 처럼 /로 시작해야 합니다: %s" % value)
@@ -172,15 +174,47 @@ def validate_reviews(items: Sequence[Mapping], root: Path) -> None:
             raise DataError("%s: slug '%s'이(가) 중복됩니다" % (where, item["slug"]))
         slugs.add(item["slug"])
         if "date" in item:
-            try:
-                if not (isinstance(item["date"], str) and DATE_RE.fullmatch(item["date"])):
-                    raise ValueError
-                datetime.date.fromisoformat(item["date"])
-            except ValueError:
-                raise DataError("%s: date는 2026-10-13 형식의 실제 날짜여야 합니다: %s" % (where, item["date"])) from None
+            _check_date(item["date"], where, "date")
         if item.get("image"):
             _exists(root, item["image"], where, "image")
         _check_body(item["body"], root, where)
+
+
+def _check_date(value, where: str, key: str) -> None:
+    try:
+        if not (isinstance(value, str) and DATE_RE.fullmatch(value)):
+            raise ValueError
+        datetime.date.fromisoformat(value)
+    except ValueError:
+        raise DataError("%s: %s는 2026-10-13 형식의 실제 날짜여야 합니다: %s" % (where, key, value)) from None
+
+
+# ---------------------------------------------------------------- 교육정보 글 (articles.json)
+
+def validate_articles(items: Sequence[Mapping], root: Path) -> None:
+    ids, slugs = set(), set()
+    for item in items:
+        where = "articles.json[%s]" % item.get("id", "?")
+        _require(item, ["id", "slug", "title", "description", "category", "date", "body", "source"], where)
+        _no_pii(item, where)
+        if item["id"] in ids:
+            raise DataError("%s: id가 중복됩니다" % where)
+        ids.add(item["id"])
+        if item["category"] not in GOALS:
+            raise DataError("%s: 알 수 없는 category '%s' (허용: %s)" % (where, item["category"], ", ".join(GOALS)))
+        if not isinstance(item["slug"], str) or not SLUG_RE.match(item["slug"]):
+            raise DataError("%s: slug '%s'은(는) 영문 소문자·숫자·하이픈만 쓸 수 있습니다 (예: credit-bank-degree-credits)" % (where, item["slug"]))
+        if item["slug"] in slugs:
+            raise DataError("%s: slug '%s'이(가) 중복됩니다" % (where, item["slug"]))
+        slugs.add(item["slug"])
+        _check_date(item["date"], where, "date")
+        if "updated" in item:
+            _check_date(item["updated"], where, "updated")
+        _check_body(item["body"], root, where)
+    for item in items:
+        for slug in item.get("related", []):
+            if slug not in slugs:
+                raise DataError("articles.json[%s]: related에 적은 '%s' 글이 없습니다" % (item["id"], slug))
 
 
 # ---------------------------------------------------------------- 팀 (team.json)
@@ -206,6 +240,8 @@ def validate_team(items: Sequence[Mapping], root: Path) -> set:
         career = item.get("career", [])
         if not isinstance(career, list) or not all(isinstance(c, str) and c for c in career):
             raise DataError("%s: career는 비어 있지 않은 문자열 목록이어야 합니다" % where)
+        if "slogan" in item and not (isinstance(item["slogan"], str) and item["slogan"].strip()):
+            raise DataError("%s: slogan은 비어 있지 않은 문장이어야 합니다 (쓰지 않으려면 항목을 지우세요)" % where)
         if item.get("youtube"):
             _check_youtube(item["youtube"], where)
     return ids

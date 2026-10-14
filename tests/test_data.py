@@ -155,6 +155,13 @@ def test_team_valid_returns_ids_and_checks_photo(root):
         data.validate_team([team_member(), team_member()], root)
 
 
+def test_team_slogan_is_optional_but_must_be_text_when_given(root):
+    data.validate_team([team_member(slogan="한 줄 소개")], root)
+    for bad in ("", "  ", 5, ["a"]):
+        with pytest.raises(DataError, match="slogan"):
+            data.validate_team([team_member(slogan=bad)], root)
+
+
 # ---- 수치
 
 def stat(**over):

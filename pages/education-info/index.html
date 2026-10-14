@@ -164,6 +164,17 @@ gtag('config', 'AW-16886735349');
 .pe-note b{font-weight:800;}
 .pe-note.warn{background:#fff4e8;border-left-color:#e8892b;}
 
+/* 교육정보 글 목록 */
+.pe-articles{background:#f7f9fb;}
+.pe-art-list{display:grid;grid-template-columns:repeat(2,1fr);gap:1.25rem;margin-top:40px;}
+.pe-art{display:flex;flex-direction:column;gap:6px;background:#fff;border:1px solid #d6e3ee;border-radius:16px;padding:24px 26px;text-decoration:none;color:inherit;transition:border-color .25s,transform .25s,box-shadow .25s;}
+.pe-art:hover{border-color:#4a7fa5;transform:translateY(-4px);box-shadow:0 16px 40px rgba(74,127,165,.12);}
+.pe-art-cat{font-size:13px;font-weight:800;color:#4a7fa5;}
+.pe-art-t{font-size:19px;font-weight:800;color:#1a2d4a;line-height:1.5;letter-spacing:-.01em;}
+.pe-art-d{font-size:15px;color:#4a5a6a;line-height:1.75;}
+.pe-art-m{font-size:13px;color:#8a9ab0;margin-top:4px;}
+@media(max-width:760px){.pe-art-list{grid-template-columns:1fr;}}
+
 /* CTA */
 .pe-cta{background:#1a2d4a;padding:88px 6%;text-align:center;}
 .pe-cta h2{font-size:clamp(2.4rem,3.6vw,3.2rem);font-weight:800;letter-spacing:-.03em;line-height:1.35;color:#fff;}
@@ -325,6 +336,52 @@ gtag('config', 'AW-16886735349');
           </div>
         </details>
 
+      </div>
+    </div>
+  </div>
+
+
+  <div class="pe-sec pe-articles" id="articles">
+    <div class="pe-in">
+      <h2 class="pe-h2">교육정보 글</h2>
+      <p class="pe-lead">자주 묻는 학점은행제 규정과 일정을 글로 정리했어요.</p>
+      <div class="pe-art-list">
+        <a class="pe-art" href="/pages/education-info/knou-transfer-with-credit-bank/">
+          <span class="pe-art-cat">편입</span>
+          <span class="pe-art-t">방송대 편입, 학점은행제로 지원할 수 있나요? 3학년 63학점·전문학사 조건 정리</span>
+          <span class="pe-art-d">한국방송통신대학교 3학년 편입은 학점은행제 전문학사 또는 63학점 이상이면 전공과 관계없이 지원할 수 있어요. 2026학년도 기준 자격·전형·일정을 정리했어요.</span>
+          <span class="pe-art-m">2026.10.14</span>
+        </a>
+        <a class="pe-art" href="/pages/education-info/credit-bank-previous-school-credits/">
+          <span class="pe-art-cat">학위 취득</span>
+          <span class="pe-art-t">전적대 학점인정: 대학 다니다 그만뒀다면 몇 학점까지 인정될까요?</span>
+          <span class="pe-art-d">전문대는 최대 80학점, 4년제는 제적한 학점에 한해 최대 140학점까지 인정돼요. 성적 기준, 휴학 중 인정 여부, 전공에 따라 달라지는 인정 범위를 정리했어요.</span>
+          <span class="pe-art-m">2026.10.14</span>
+        </a>
+        <a class="pe-art" href="/pages/education-info/social-worker-2-credit-bank/">
+          <span class="pe-art-cat">자격증</span>
+          <span class="pe-art-t">학점은행제 사회복지사 2급: 신법 17과목·구법 14과목, 실습 160시간 정리</span>
+          <span class="pe-art-d">학점은행제로 사회복지사 2급을 받으려면 신법은 17과목, 구법은 14과목을 이수하고 현장실습 160시간을 채워야 해요. 구법·신법 차이와 주의점을 정리했어요.</span>
+          <span class="pe-art-m">2026.10.14</span>
+        </a>
+        <a class="pe-art" href="/pages/education-info/credit-bank-degree-application-schedule/">
+          <span class="pe-art-cat">학위 취득</span>
+          <span class="pe-art-t">학점은행제 학위 신청 기간: 2월·8월 학위, 언제까지 해야 하나요?</span>
+          <span class="pe-art-d">학점은행제 학위는 매년 2월과 8월에 수여돼요. 학위 신청 기간, 학습자등록·학점인정 신청 시기, 학위수여예정증명서 발급까지 일정으로 정리했어요.</span>
+          <span class="pe-art-m">2026.10.14</span>
+        </a>
+        <a class="pe-art" href="/pages/education-info/credit-bank-degree-requirements/">
+          <span class="pe-art-cat">학위 취득</span>
+          <span class="pe-art-t">학점은행제 학위 취득 조건: 전문학사 80학점·학사 140학점 구성 정리</span>
+          <span class="pe-art-d">학점은행제로 전문학사와 학사를 받으려면 몇 학점이 필요한지, 전공·교양·일반선택 구성과 수강 학점 한도까지 한 번에 정리했어요.</span>
+          <span class="pe-art-m">2026.10.14</span>
+        </a>
+        <a class="pe-art" href="/pages/education-info/credit-bank-engineer-eligibility/">
+          <span class="pe-art-cat">자격증</span>
+          <span class="pe-art-t">학점은행제로 기사·산업기사 응시자격 만들기: 106학점·41학점 정리</span>
+          <span class="pe-art-d">학점은행제 106학점이면 기사, 41학점이면 산업기사 응시자격이 돼요. 관련 전공 기준과 경력으로 응시하는 방법, 전공이 필요 없는 종목까지 정리했어요.</span>
+          <span class="pe-art-m">2026.10.14</span>
+        </a>
       </div>
     </div>
   </div>

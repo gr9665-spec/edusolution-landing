@@ -110,6 +110,10 @@ gtag('config', 'AW-16886735349');
 .esh-in{position:relative;z-index:3;max-width:1200px;margin:0 auto;padding:80px 6% 180px;width:100%;box-sizing:border-box;text-align:center;}
 .esh h1{font-size:clamp(3.6rem,8vw,6.2rem);font-weight:900;line-height:1.18;letter-spacing:-.03em;color:#fff;margin:0 0 1.75rem;text-shadow:0 2px 28px rgba(0,0,0,.5);}
 .esh h1 .line2{font-family:'Playfair Display',Georgia,serif;font-style:italic;font-weight:700;color:#a0cde0;display:block;font-size:105%;}
+.esh-badge{display:inline-flex;align-items:center;gap:9px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.32);color:#fff;padding:9px 18px;border-radius:100px;font-size:14px;font-weight:700;letter-spacing:.01em;margin:0 0 1.6rem;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);}
+.esh-dot{width:9px;height:9px;border-radius:50%;background:#4ade80;box-shadow:0 0 0 0 rgba(74,222,128,.6);}
+@media (prefers-reduced-motion:no-preference){.esh-dot{animation:eshLive 2s infinite;}}
+@keyframes eshLive{0%{box-shadow:0 0 0 0 rgba(74,222,128,.55);}70%{box-shadow:0 0 0 9px rgba(74,222,128,0);}100%{box-shadow:0 0 0 0 rgba(74,222,128,0);}}
 .esh-sub{font-size:clamp(17px,2.8vw,22px);line-height:1.9;color:rgba(255,255,255,.78);margin:0 0 2.5rem;}
 .esh-sub strong{color:#7ab8d8;font-weight:500;text-decoration:underline;text-underline-offset:4px;}
 .esh-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;}
@@ -127,6 +131,7 @@ gtag('config', 'AW-16886735349');
 </style>
 <div class="esh">
   <div class="esh-in">
+    <div class="esh-badge"><span class="esh-dot"></span>실시간 상담 가능</div>
     <h1>1:1 맞춤 관리<br><span class="line2">TEAM 에듀솔루션</span></h1>
     <p class="esh-sub">학위취득, 대학입시, 대학원 진학, 자격증 등<br>각 분야 전문가들이 맞춤형 상담을 통해<br><strong>여러분의 미래를 함께 설계합니다</strong></p>
     <div class="esh-btns">
@@ -549,6 +554,8 @@ gtag('config', 'AW-16886735349');
 .es6-success.show{display:block;}
 .es6-success-ico{font-size:56px;margin-bottom:1rem;}
 .es6-success-title{font-size:24px;font-weight:900;color:#fff;margin-bottom:.75rem;}
+.es6-reply{grid-column:1/-1;margin:.9rem 0 0;font-size:15px;line-height:1.7;color:rgba(255,255,255,.72);text-align:center;}
+.es6-reply strong{color:#a0cde0;font-weight:700;}
 .es6-success-sub{font-size:16px;color:rgba(255,255,255,.55);line-height:1.8;}
 @media(max-width:600px){.es6-grid{grid-template-columns:1fr;}.es6-fg.full{grid-column:1;}}
 </style>
@@ -614,13 +621,14 @@ gtag('config', 'AW-16886735349');
       <button class="es6-submit" id="es6-submit-btn" onclick="es6Submit()">
         무료 상담 신청하기
       </button>
+      <p class="es6-reply">작성 후 <strong>평균 3시간 이내</strong> 연락드립니다.</p>
     </div>
 
     <!-- 완료 메시지 -->
     <div class="es6-success" id="es6-success">
       <div class="es6-success-ico">✅</div>
       <p class="es6-success-title">신청이 완료되었습니다!</p>
-      <p class="es6-success-sub">전담 담당자가 빠른 시간 내에<br>직접 연락드리겠습니다.</p>
+      <p class="es6-success-sub">평균 3시간 이내에<br>전담 담당자가 직접 연락드리겠습니다.</p>
     </div>
   </div>
 </div>

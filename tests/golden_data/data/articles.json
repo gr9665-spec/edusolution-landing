@@ -1,0 +1,13 @@
+[
+  {
+    "id": "g-a1",
+    "slug": "sample-article",
+    "title": "기준본 테스트용 글",
+    "description": "기준본 테스트용 설명 문장입니다.",
+    "category": "degree",
+    "date": "2026-10-14",
+    "source": "기준본 테스트용 고정 데이터",
+    "related": [],
+    "body": "<p>첫 문단 <strong>강조</strong></p><h2>소제목</h2><table><tr><th>구분</th><th>값</th></tr><tr><td>가</td><td>1</td></tr></table><p><a href=\"/#es-form\">상담</a></p>"
+  }
+]

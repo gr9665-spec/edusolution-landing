@@ -40,6 +40,8 @@
 .es6-success.show{display:block;}
 .es6-success-ico{font-size:56px;margin-bottom:1rem;}
 .es6-success-title{font-size:24px;font-weight:900;color:#fff;margin-bottom:.75rem;}
+.es6-reply{grid-column:1/-1;margin:.9rem 0 0;font-size:15px;line-height:1.7;color:rgba(255,255,255,.72);text-align:center;}
+.es6-reply strong{color:#a0cde0;font-weight:700;}
 .es6-success-sub{font-size:16px;color:rgba(255,255,255,.55);line-height:1.8;}
 @media(max-width:600px){.es6-grid{grid-template-columns:1fr;}.es6-fg.full{grid-column:1;}}
 </style>
@@ -105,13 +107,14 @@
       <button class="es6-submit" id="es6-submit-btn" onclick="es6Submit()">
         무료 상담 신청하기
       </button>
+      <p class="es6-reply">작성 후 <strong>평균 3시간 이내</strong> 연락드립니다.</p>
     </div>
 
     <!-- 완료 메시지 -->
     <div class="es6-success" id="es6-success">
       <div class="es6-success-ico">✅</div>
       <p class="es6-success-title">신청이 완료되었습니다!</p>
-      <p class="es6-success-sub">전담 담당자가 빠른 시간 내에<br>직접 연락드리겠습니다.</p>
+      <p class="es6-success-sub">평균 3시간 이내에<br>전담 담당자가 직접 연락드리겠습니다.</p>
     </div>
   </div>
 </div>
