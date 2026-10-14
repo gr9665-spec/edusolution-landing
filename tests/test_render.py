@@ -116,6 +116,20 @@ def test_team_card_shows_slogan_only_when_given_and_escapes_it():
     assert '<p class="pt-mem-slogan">' in html and "처음부터 &lt;끝까지&gt; &quot;함께&quot;" in html
 
 
+def test_team_card_shows_contact_block_only_when_given_with_a_tel_link():
+    assert "pt-mem-contact" not in render.team_cards([member()])
+    html = render.team_cards([member(kakao="zmzm65", phone="010-2100-0321")])
+    assert 'class="pt-mem-contact"' in html and "카카오톡" in html and "zmzm65" in html
+    assert 'href="tel:01021000321"' in html and "010-2100-0321" in html
+    only_kakao = render.team_cards([member(kakao="jm8146")])
+    assert "jm8146" in only_kakao and "tel:" not in only_kakao
+
+
+def test_team_card_escapes_contact_values():
+    html = render.team_cards([member(kakao='a"<b>')])
+    assert "a&quot;&lt;b&gt;" in html
+
+
 def test_team_card_has_a_consultation_button_and_a_labelled_specialty_list():
     html = render.team_cards([member()])
     assert 'class="pt-mem-cta" href="/#es-form"' in html and "무료 상담" in html

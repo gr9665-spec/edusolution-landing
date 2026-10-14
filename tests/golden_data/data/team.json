@@ -12,7 +12,9 @@
       "유튜브 희경쌤",
       "3,000+ 수강생"
     ],
-    "youtube": "https://www.youtube.com/@Heekyoungsam"
+    "youtube": "https://www.youtube.com/@Heekyoungsam",
+    "kakao": "sample_sanghu",
+    "phone": "010-0000-0000"
   },
   {
     "id": "leejeongmin",
@@ -26,7 +28,9 @@
       "편입",
       "빠른 답변"
     ],
-    "youtube": "https://www.youtube.com/@%ED%95%99%EC%A0%90%EC%9D%80%ED%96%89%EC%A0%95%EB%AF%BC%EC%8C%A4"
+    "youtube": "https://www.youtube.com/@%ED%95%99%EC%A0%90%EC%9D%80%ED%96%89%EC%A0%95%EB%AF%BC%EC%8C%A4",
+    "kakao": "sample_leejeo",
+    "phone": "010-0000-0000"
   },
   {
     "id": "seongseoa",

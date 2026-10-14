@@ -122,6 +122,16 @@ def team_cards(team: Sequence[Mapping], rel: str = "../../") -> str:
         lines.append('%s<div class="pt-mem-tags">' % i2)
         lines += ['%s<span class="pt-mem-tag">%s</span>' % (i3 + "  ", esc(t)) for t in m["tags"]]
         lines.append('%s</div>' % i2)
+        if m.get("kakao") or m.get("phone"):
+            lines.append('%s<p class="pt-mem-tags-label">상담 문의</p>' % i2)
+            lines.append('%s<ul class="pt-mem-contact">' % i2)
+            if m.get("kakao"):
+                lines.append('%s<li><span class="pt-mem-ck">카카오톡</span><span class="pt-mem-cv">%s</span></li>' % (i3, esc(m["kakao"])))
+            if m.get("phone"):
+                digits = "".join(ch for ch in m["phone"] if ch.isdigit())
+                lines.append('%s<li><span class="pt-mem-ck">전화</span><a class="pt-mem-cv" href="tel:%s">%s</a></li>'
+                             % (i3, digits, esc(m["phone"])))
+            lines.append('%s</ul>' % i2)
         actions = ['%s<a class="pt-mem-cta" href="/#es-form">무료 상담 신청</a>' % i3]
         if m.get("youtube"):
             actions.append('%s<a class="pt-mem-yt" href="%s" target="_blank" rel="noopener noreferrer">%s유튜브 채널</a>'

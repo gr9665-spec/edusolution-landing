@@ -219,6 +219,8 @@ def validate_articles(items: Sequence[Mapping], root: Path) -> None:
 
 # ---------------------------------------------------------------- 팀 (team.json)
 
+PHONE_RE = re.compile(r"0\d{1,2}-\d{3,4}-\d{4}")
+KAKAO_ID_RE = re.compile(r"[A-Za-z0-9._-]{3,30}")
 YOUTUBE_RE = re.compile(r"^https://(www\.|m\.)?(youtube\.com|youtu\.be)/\S+$")
 
 
@@ -242,6 +244,10 @@ def validate_team(items: Sequence[Mapping], root: Path) -> set:
             raise DataError("%s: career는 비어 있지 않은 문자열 목록이어야 합니다" % where)
         if "slogan" in item and not (isinstance(item["slogan"], str) and item["slogan"].strip()):
             raise DataError("%s: slogan은 비어 있지 않은 문장이어야 합니다 (쓰지 않으려면 항목을 지우세요)" % where)
+        if "phone" in item and not (isinstance(item["phone"], str) and PHONE_RE.fullmatch(item["phone"])):
+            raise DataError("%s: phone은 010-1234-5678 같은 형식이어야 합니다: %s" % (where, item["phone"]))
+        if "kakao" in item and not (isinstance(item["kakao"], str) and KAKAO_ID_RE.fullmatch(item["kakao"])):
+            raise DataError("%s: kakao는 영문·숫자·밑줄(_)·점(.)·하이픈(-)으로 된 3~30자 카카오톡 아이디여야 합니다: %s" % (where, item["kakao"]))
         if item.get("youtube"):
             _check_youtube(item["youtube"], where)
     return ids

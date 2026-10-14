@@ -12,7 +12,9 @@
       "유튜브 희경쌤",
       "3,000+ 수강생"
     ],
-    "youtube": "https://www.youtube.com/@Heekyoungsam"
+    "youtube": "https://www.youtube.com/@Heekyoungsam",
+    "kakao": "zmzm65",
+    "phone": "010-2100-0321"
   },
   {
     "id": "leejeongmin",
@@ -27,7 +29,9 @@
       "빠른 답변",
       "편입합격자 최다배출"
     ],
-    "youtube": "https://www.youtube.com/@%ED%95%99%EC%A0%90%EC%9D%80%ED%96%89%EC%A0%95%EB%AF%BC%EC%8C%A4"
+    "youtube": "https://www.youtube.com/@%ED%95%99%EC%A0%90%EC%9D%80%ED%96%89%EC%A0%95%EB%AF%BC%EC%8C%A4",
+    "kakao": "jm8146",
+    "phone": "010-8146-9838"
   },
   {
     "id": "seongseoa",
@@ -42,7 +46,9 @@
       "대학원 준비",
       "친절 상담"
     ],
-    "youtube": "https://www.youtube.com/@steady_seoa_T"
+    "youtube": "https://www.youtube.com/@steady_seoa_T",
+    "kakao": "seo_a_T",
+    "phone": "010-2694-6975"
   },
   {
     "id": "hongsihyeon",
@@ -56,6 +62,8 @@
       "편입",
       "대학원",
       "기사·산업기사"
-    ]
+    ],
+    "kakao": "SHSH8366",
+    "phone": "010-2682-8366"
   }
 ]

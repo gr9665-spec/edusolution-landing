@@ -162,6 +162,17 @@ def test_team_slogan_is_optional_but_must_be_text_when_given(root):
             data.validate_team([team_member(slogan=bad)], root)
 
 
+def test_team_contact_fields_are_optional_but_must_look_right(root):
+    data.validate_team([team_member(kakao="seo_a_T", phone="010-2694-6975")], root)
+    data.validate_team([team_member(kakao="SHSH8366")], root)
+    for bad in ("010 8146 9838", "01081469838", "010-81469838", "전화번호", "", "02-12-3456"):
+        with pytest.raises(DataError, match="phone"):
+            data.validate_team([team_member(phone=bad)], root)
+    for bad in ("ab", "카톡 아이디", "has space", "x" * 31, "", "a<b"):
+        with pytest.raises(DataError, match="kakao"):
+            data.validate_team([team_member(kakao=bad)], root)
+
+
 # ---- 수치
 
 def stat(**over):
