@@ -10,6 +10,6 @@ def analytics_head(cfg: Mapping) -> str:
     if cfg.get("ga4"):
         parts.append("<script>gtag('config', '%s');</script>" % cfg["ga4"])
     if cfg.get("naver"):
-        parts.append('<script src="//wcs.naver.net/wcslog.js"></script>\n'
+        parts.append('<script src="//wcs.pstatic.net/wcslog.js"></script>\n'
                      '<script>\nif(!wcs_add) var wcs_add = {};\nwcs_add["wa"] = "%s";\nif(window.wcs){ wcs_do(); }\n</script>' % cfg["naver"])
     return "\n".join(parts)
