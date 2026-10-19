@@ -26,7 +26,14 @@
 .pr-grid{display:grid;grid-template-columns:1fr;gap:1.5rem;}
 .pr-card{display:flex;flex-direction:column;background:#fff;border-radius:18px;border:1px solid rgba(74,127,165,.1);overflow:hidden;color:inherit;text-decoration:none;transition:border-color .3s,transform .3s,box-shadow .3s;}
 .pr-card:hover,.pr-card:focus-visible{border-color:rgba(74,127,165,.3);transform:translateY(-6px);box-shadow:0 20px 56px rgba(74,127,165,.12);}
-.pr-card.pr-hide{display:none;}
+.pr-card.pr-hide,.pr-card.pr-off{display:none;}
+.pr-pager{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:8px;margin-top:40px;}
+.pr-pager:empty{display:none;}
+.pr-pg{min-width:44px;height:44px;padding:0 14px;border:1px solid rgba(74,127,165,.25);background:#fff;border-radius:12px;font-family:'Noto Sans KR',sans-serif;font-size:16px;font-weight:700;color:#1a2d4a;cursor:pointer;transition:border-color .2s,color .2s,background .2s;}
+.pr-pg:hover:not(:disabled):not(.on){border-color:#4a7fa5;color:#2f6b97;}
+.pr-pg.on{background:#1a2d4a;border-color:#1a2d4a;color:#fff;cursor:default;}
+.pr-pg:disabled{opacity:.4;cursor:default;}
+.pr-pg-side{padding:0 18px;}
 .pr-img{display:block;aspect-ratio:16/10;background:#1a2d4a;overflow:hidden;}
 .pr-img img{display:block;width:100%;height:100%;object-fit:cover;}
 .pr-body{display:flex;flex-direction:column;flex:1;padding:1.25rem 1.4rem 1.3rem;}
@@ -74,6 +81,7 @@
       <div class="pr-filter" id="pr-filter">{{reviews_filters}}</div>
 
       <div class="pr-grid" id="pr-grid">{{reviews_grid}}</div>
+      <nav class="pr-pager" id="pr-pager" aria-label="후기 페이지"></nav>
     </div>
   </div>
 

@@ -130,7 +130,14 @@ gtag('config', 'AW-16886735349');
 .pr-grid{display:grid;grid-template-columns:1fr;gap:1.5rem;}
 .pr-card{display:flex;flex-direction:column;background:#fff;border-radius:18px;border:1px solid rgba(74,127,165,.1);overflow:hidden;color:inherit;text-decoration:none;transition:border-color .3s,transform .3s,box-shadow .3s;}
 .pr-card:hover,.pr-card:focus-visible{border-color:rgba(74,127,165,.3);transform:translateY(-6px);box-shadow:0 20px 56px rgba(74,127,165,.12);}
-.pr-card.pr-hide{display:none;}
+.pr-card.pr-hide,.pr-card.pr-off{display:none;}
+.pr-pager{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:8px;margin-top:40px;}
+.pr-pager:empty{display:none;}
+.pr-pg{min-width:44px;height:44px;padding:0 14px;border:1px solid rgba(74,127,165,.25);background:#fff;border-radius:12px;font-family:'Noto Sans KR',sans-serif;font-size:16px;font-weight:700;color:#1a2d4a;cursor:pointer;transition:border-color .2s,color .2s,background .2s;}
+.pr-pg:hover:not(:disabled):not(.on){border-color:#4a7fa5;color:#2f6b97;}
+.pr-pg.on{background:#1a2d4a;border-color:#1a2d4a;color:#fff;cursor:default;}
+.pr-pg:disabled{opacity:.4;cursor:default;}
+.pr-pg-side{padding:0 18px;}
 .pr-img{display:block;aspect-ratio:16/10;background:#1a2d4a;overflow:hidden;}
 .pr-img img{display:block;width:100%;height:100%;object-fit:cover;}
 .pr-body{display:flex;flex-direction:column;flex:1;padding:1.25rem 1.4rem 1.3rem;}
@@ -230,6 +237,7 @@ gtag('config', 'AW-16886735349');
         </a>
 
       </div>
+      <nav class="pr-pager" id="pr-pager" aria-label="후기 페이지"></nav>
     </div>
   </div>
 
@@ -922,21 +930,78 @@ gtag('config', 'AW-16886735349');
 </style>
 <script>
 (function(){
-  /* 분류 필터: 칩을 누르면 data-cat이 맞는 카드만 보임(pr-hide 클래스) */
+  /* 분류 필터 + 페이지 넘김: 칩을 누르면 data-cat이 맞는 카드만 남고(pr-hide),
+     남은 카드는 두 줄씩 나눠 보여준다(pr-off). 한 줄 카드 수는 화면 폭에 따라 달라서 실제 열 수를 읽어 계산한다.
+     모든 카드는 HTML에 그대로 있어 자바스크립트가 꺼져도 전부 보이고, 보던 페이지는 ?p= 로 주소에 남는다. */
   function initFilter(){
     var chips = document.querySelectorAll('#pr-filter .pr-chip');
-    var cards = document.querySelectorAll('#pr-grid .pr-card');
+    var grid = document.getElementById('pr-grid');
+    var nav = document.getElementById('pr-pager');
+    var cards = [].slice.call(document.querySelectorAll('#pr-grid .pr-card'));
+    var filter = 'all';
+    var page = 1;
+    var m = /[?&]p=(\d+)/.exec(location.search);
+    if (m) page = parseInt(m[1], 10) || 1;
+
+    function matches(card){
+      var cats = (card.getAttribute('data-cat') || '').split(' ');
+      return filter === 'all' || cats.indexOf(filter) !== -1;
+    }
+    function perPage(){
+      var cols = getComputedStyle(grid).gridTemplateColumns.split(' ').length || 1;
+      return Math.max(cols * 2, 4);
+    }
+    function btn(label, target, extra, aria){
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'pr-pg' + (extra ? ' ' + extra : '');
+      b.textContent = label;
+      if (aria) b.setAttribute('aria-label', aria);
+      if (target) b.addEventListener('click', function(){ show(target, true); });
+      else b.disabled = true;
+      return b;
+    }
+    function render(){
+      var list = cards.filter(matches);
+      var per = perPage();
+      var pages = Math.max(1, Math.ceil(list.length / per));
+      page = Math.min(Math.max(page, 1), pages);
+      cards.forEach(function(card){ card.classList.toggle('pr-hide', !matches(card)); card.classList.remove('pr-off'); });
+      list.forEach(function(card, i){ card.classList.toggle('pr-off', Math.floor(i / per) + 1 !== page); });
+      nav.textContent = '';
+      if (pages < 2) return;
+      nav.appendChild(btn('‹ 이전', page > 1 ? page - 1 : 0, 'pr-pg-side', '이전 페이지'));
+      for (var p = 1; p <= pages; p++){
+        var b = btn(String(p), p === page ? 0 : p, p === page ? 'on' : '', p + '페이지');
+        if (p === page){ b.disabled = false; b.setAttribute('aria-current', 'page'); }
+        nav.appendChild(b);
+      }
+      nav.appendChild(btn('다음 ›', page < pages ? page + 1 : 0, 'pr-pg-side', '다음 페이지'));
+    }
+    function remember(){
+      var url = location.pathname + (filter === 'all' && page > 1 ? '?p=' + page : '') + location.hash;
+      history.replaceState(null, '', url);
+    }
+    function show(target, scroll){
+      page = target;
+      render();
+      remember();
+      if (scroll) window.scrollTo({ top: grid.getBoundingClientRect().top + window.scrollY - 180, behavior: 'smooth' });
+    }
+
     chips.forEach(function(chip){
       chip.addEventListener('click', function(){
-        var f = chip.getAttribute('data-filter');
+        filter = chip.getAttribute('data-filter');
         chips.forEach(function(c){ c.classList.remove('on'); });
         chip.classList.add('on');
-        cards.forEach(function(card){
-          var cats = (card.getAttribute('data-cat') || '').split(' ');
-          card.classList.toggle('pr-hide', !(f === 'all' || cats.indexOf(f) !== -1));
-        });
+        page = 1;
+        render();
+        remember();
       });
     });
+    var timer;
+    window.addEventListener('resize', function(){ clearTimeout(timer); timer = setTimeout(function(){ render(); remember(); }, 150); });
+    render();
   }
 
   function reveal(){
