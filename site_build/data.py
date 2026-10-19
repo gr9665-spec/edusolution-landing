@@ -276,6 +276,19 @@ def validate_stats(items: Sequence[Mapping]) -> None:
             raise DataError("%s: asOf는 '2026-10' 또는 '2026-10-12' 형식이어야 합니다" % where)
 
 
+# ---------------------------------------------------------------- 분석 도구 (analytics.json)
+
+GA4_RE = re.compile(r"G-[A-Z0-9]{6,14}")
+NAVER_WA_RE = re.compile(r"[A-Za-z0-9_]{6,30}")
+
+
+def validate_analytics(cfg: Mapping) -> None:
+    """구글 애널리틱스 4 측정 ID(G-…)와 네이버 애널리틱스 ID. 둘 다 선택이며, 코드에 그대로 들어가므로 형식을 엄격히 검사한다."""
+    for key, rule, example in (("ga4", GA4_RE, "G-ABC123XYZ9"), ("naver", NAVER_WA_RE, "s_1a2b3c4d5e6f")):
+        if key in cfg and not (isinstance(cfg[key], str) and rule.fullmatch(cfg[key])):
+            raise DataError("analytics.json: %s 형식이 올바르지 않습니다 (예: %s): %s" % (key, example, cfg[key]))
+
+
 # ---------------------------------------------------------------- 사업자 정보 (business.json)
 
 def validate_business(biz: Mapping) -> None:

@@ -76,4 +76,5 @@ def post_page(item: Mapping, root: Path) -> ExtraPage:
                root / "sections" / "09-kakao-float-button.html",
                root / "sections" / "10-diagnostic-popup.html"],
         og_image=SITE + url_path(image) if image else "",
+        lastmod=item.get("date", ""),
     )

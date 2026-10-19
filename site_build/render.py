@@ -2,9 +2,12 @@
 from __future__ import annotations
 
 import html
+import json
 import urllib.parse
 from pathlib import Path
 from typing import Mapping, Sequence
+
+from .core import SITE as SITE_URL
 
 GOAL_ORDER = ["degree", "license", "transfer", "grad"]
 GOAL_LABELS = {"degree": "학위 취득", "license": "자격증", "transfer": "편입", "grad": "대학원"}
@@ -241,7 +244,20 @@ def stats_strip(stats: Sequence[Mapping]) -> str:
             "\n  </div>\n</div>\n" + STATS_JS)
 
 
-FOOTER_CSS = """<style>
+def org_jsonld(business: Mapping, channel: Mapping) -> str:
+    """메인 페이지에 넣는 회사 구조화 정보(검색엔진용). 개인 연락처는 넣지 않고, 사업자 정보·유튜브 채널만 쓴다."""
+    if not business:
+        return ""
+    doc = {"@context": "https://schema.org", "@type": "EducationalOrganization", "name": business["company"],
+           "url": SITE_URL + "/", "logo": SITE_URL + "/assets/logo.png",
+           "address": {"@type": "PostalAddress", "addressCountry": "KR", "streetAddress": business["address"]}}
+    if channel and channel.get("url"):
+        doc["sameAs"] = [channel["url"]]
+    text = json.dumps(doc, ensure_ascii=False).replace("</", "<\\/")
+    return '<script type="application/ld+json">%s</script>' % text
+
+
+FOOTER_CSS ="""<style>
 .esf{width:100%;background:#13213a;font-family:'Noto Sans KR',sans-serif;box-sizing:border-box;}
 .esf-in{max-width:1100px;margin:0 auto;padding:44px 6% 120px;}
 .esf-name{margin:0 0 14px;font-size:17px;font-weight:900;color:#fff;}

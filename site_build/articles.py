@@ -128,6 +128,7 @@ def article_page(item: Mapping, all_items: Sequence[Mapping], root: Path) -> Ext
         title="%s | 에듀솔루션" % item["title"],
         desc=item["description"],
         url_path="%s%s/" % (BASE, slug),
+        lastmod=item.get("updated") or item["date"],
         parts=[root / "sections" / "00-nav.html",
                Inline(article_html(item, all_items)),
                root / "sections" / "12-footer.html",

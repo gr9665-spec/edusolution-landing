@@ -20,7 +20,7 @@ HEAD = Template("""<!doctype html>
 <title>$title</title>
 <meta name="description" content="$desc">
 <link rel="canonical" href="$site$path">
-<link rel="icon" href="/assets/logo.png">
+<link rel="icon" href="/favicon.ico" sizes="any">
 <meta name="theme-color" content="#1a2d4a">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="에듀솔루션">
@@ -77,6 +77,7 @@ MAIN_FRAGMENTS = [
     "sections/05-reviews.html",
     "sections/06-consult-form.html",
     "sections/12-footer.html",
+    "sections/13-org-schema.html",
     "sections/09-kakao-float-button.html",
     "sections/10-diagnostic-popup.html",
     "sections/08-form-label-fix.html",
@@ -85,13 +86,14 @@ MAIN_FRAGMENTS = [
 
 # (폴더, 제목, 설명)
 SUBPAGES = [
-    ("team", "팀 에듀솔루션 | 에듀솔루션", "에듀솔루션 팀과 상담 담당자를 소개합니다."),
+    ("team", "학점은행제 전문 플래너 팀 소개 | 에듀솔루션",
+     "학점은행제 학위·편입·대학원·자격증을 1:1로 설계하는 에듀솔루션 전문 플래너 팀을 소개합니다. 담당자별 전문 분야와 카카오톡·전화 상담 방법을 확인하세요."),
     ("credit-bank", "학점은행제란? 제도 개요·목표·진행 절차 | 에듀솔루션",
-     "학점은행제의 제도 개요, 목표별 활용법, 진행 절차와 자주 묻는 질문을 한눈에 정리했습니다."),
+     "학점은행제란 무엇인지 쉽게 설명합니다. 전문학사 80학점·학사 140학점 학위 조건, 진행 절차 4단계, 자주 묻는 질문을 한눈에 정리했습니다."),
     ("education-info", "학점은행제 교육정보 | 학위·자격증·편입·대학원 | 에듀솔루션",
-     "학위 취득, 사회복지사 2급, 보육교사 2급, 기사·산업기사 응시자격, 편입, 대학원까지 목표별 조건과 과정을 정리했습니다."),
-    ("reviews", "수강생 후기 | 에듀솔루션",
-     "에듀솔루션과 함께 학점은행제 과정을 마친 수강생분들의 후기를 목표별로 확인해 보세요."),
+     "학위 취득, 사회복지사 2급, 보육교사 2급, 기사·산업기사 응시자격, 편입, 대학원까지 목표별 조건과 과정, 학위 신청 일정 등 학점은행제 정보 글을 모았습니다."),
+    ("reviews", "학점은행제 수강생 후기 | 에듀솔루션",
+     "학위 취득, 자격증, 편입 등 목표별로 학점은행제 에듀솔루션 수강생의 실제 후기를 모았습니다. 과정과 담당자 관리 경험을 확인해 보세요."),
 ]
 
 # 옛 아임웹 주소 폴더 -> 새 주소
@@ -128,6 +130,7 @@ class ExtraPage:
     parts: Sequence[Part]
     logo: str = "/assets/logo.png"
     og_image: str = ""      # 공유 미리보기 이미지(전체 주소). 비어 있으면 사이트 기본 이미지
+    lastmod: str = ""       # 사이트맵에 적을 수정일(YYYY-MM-DD). 비어 있으면 적지 않는다
 
 
 class BuildError(Exception):
@@ -166,7 +169,8 @@ def make_head(title: str, desc: str, url_path: str, head_extra: str, og_image: s
 
 def assemble_page(root: Path, tokens: Mapping[str, str], logo: str, title: str, desc: str,
                   url_path: str, parts: Sequence[Part], og_image: str = "") -> str:
-    out = [make_head(title, desc, url_path, read_text(root / "head-extra.html"), og_image)]
+    head_extra = expand(read_text(root / "head-extra.html"), {"analytics_head": "", **tokens}, "head-extra.html")
+    out = [make_head(title, desc, url_path, head_extra, og_image)]
     for part in parts:
         if isinstance(part, Inline):
             text, where = part.html, "inline"
@@ -226,6 +230,15 @@ def prune_stale_post_pages(out: Path, extra_pages: Sequence[ExtraPage]) -> None:
                     pass
 
 
+def sitemap_entries(extra_pages: Sequence[ExtraPage]) -> list:
+    """(주소, 수정일) 목록. 수정일은 데이터에 날짜가 있는 글·후기만 적고, 그 글들을 모아 보여 주는 목록 페이지는 가장 최근 날짜를 쓴다."""
+    def latest(prefix: str) -> str:
+        return max((p.lastmod for p in extra_pages if p.lastmod and p.url_path.startswith(prefix)), default="")
+    index_mod = {"/": latest("/pages/"), "/pages/education-info/": latest("/pages/education-info/"),
+                 "/pages/reviews/": latest("/pages/reviews/")}
+    return [(path, index_mod.get(path, "")) for path in SITEMAP_PATHS] + [(p.url_path, p.lastmod) for p in extra_pages]
+
+
 def build_all(root: Path, out: Path, tokens: Mapping[str, str] | None = None,
               extra_pages: Sequence[ExtraPage] = ()) -> None:
     tokens = tokens or {}
@@ -249,10 +262,11 @@ def build_all(root: Path, out: Path, tokens: Mapping[str, str] | None = None,
     for folder, target in REDIRECTS.items():
         write_text(out / folder / "index.html", REDIRECT.substitute(site=SITE, target=target))
 
-    paths = SITEMAP_PATHS + [p.url_path for p in extra_pages]
+    entries = sitemap_entries(extra_pages)
     sitemap = ['<?xml version="1.0" encoding="UTF-8"?>',
                '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
-    sitemap += ["  <url><loc>%s%s</loc></url>" % (SITE, p) for p in paths]
+    sitemap += ["  <url><loc>%s%s</loc>%s</url>" % (SITE, path, "<lastmod>%s</lastmod>" % mod if mod else "")
+                for path, mod in entries]
     sitemap.append("</urlset>")
     write_text(out / "sitemap.xml", "\n".join(sitemap) + "\n")
 

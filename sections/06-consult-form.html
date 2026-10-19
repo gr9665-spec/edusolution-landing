@@ -54,17 +54,17 @@
     <!-- 폼 -->
     <div class="es6-grid" id="es6-form-body">
       <div class="es6-fg">
-        <label class="es6-lbl2">이름</label>
+        <label class="es6-lbl2" for="es6-name">이름</label>
         <input class="es6-input" id="es6-name" type="text" placeholder="홍길동">
         <span class="es6-error" id="err-name">이름을 입력해주세요</span>
       </div>
       <div class="es6-fg">
-        <label class="es6-lbl2">연락처</label>
+        <label class="es6-lbl2" for="es6-phone">연락처</label>
         <input class="es6-input" id="es6-phone" type="tel" placeholder="010-0000-0000">
         <span class="es6-error" id="err-phone">연락처를 입력해주세요</span>
       </div>
       <div class="es6-fg full">
-        <label class="es6-lbl2">목표 과정</label>
+        <label class="es6-lbl2" for="es6-goal">목표 과정</label>
         <select class="es6-select" id="es6-goal">
           <option value="" disabled selected>목표를 선택해주세요</option>
           <option>학위 취득 (전문학사/학사)</option>
@@ -78,7 +78,7 @@
         <span class="es6-error" id="err-goal">목표 과정을 선택해주세요</span>
       </div>
       <div class="es6-fg full">
-        <label class="es6-lbl2">최종 학력</label>
+        <label class="es6-lbl2" for="es6-edu">최종 학력</label>
         <select class="es6-select" id="es6-edu">
           <option value="" disabled selected>최종 학력을 선택해주세요</option>
           <option>고등학교 졸업</option>
@@ -89,14 +89,14 @@
         <span class="es6-error" id="err-edu">최종 학력을 선택해주세요</span>
       </div>
       <div class="es6-fg full">
-        <label class="es6-lbl2">상담 방식</label>
-        <div class="es6-radio-wrap">
+        <span class="es6-lbl2" id="es6-lbl-method">상담 방식</span>
+        <div class="es6-radio-wrap" role="group" aria-labelledby="es6-lbl-method">
           <button class="es6-radio on" onclick="this.parentElement.querySelectorAll('.es6-radio').forEach(b=>b.classList.remove('on'));this.classList.add('on')">💬 카카오톡</button>
           <button class="es6-radio" onclick="this.parentElement.querySelectorAll('.es6-radio').forEach(b=>b.classList.remove('on'));this.classList.add('on')">📞 전화 상담</button>
         </div>
       </div>
       <div class="es6-fg full">
-        <label class="es6-lbl2">문의 내용<span class="es6-optional">(선택)</span></label>
+        <label class="es6-lbl2" for="es6-message">문의 내용<span class="es6-optional">(선택)</span></label>
         <textarea class="es6-input es6-textarea" id="es6-message" placeholder="더 자세히 알고 싶은 내용이나 현재 상황을 자유롭게 적어주세요"></textarea>
       </div>
       <label class="es6-agree">
