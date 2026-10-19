@@ -21,24 +21,81 @@ def _dots(date: str) -> str:
     return date.replace("-", ".")
 
 
+PER_PAGE = 6
+CATEGORY_ICONS = {"degree": "🎓", "license": "📜", "transfer": "🏫", "grad": "📚"}
+
+# 글이 쌓여도 목록이 끝없이 길어지지 않도록 브라우저에서 PER_PAGE 개씩 나눠 보여준다.
+# 모든 글 링크는 HTML에 그대로 두어(검색엔진·자바스크립트 꺼짐 대응) 숨기기만 하고, 보던 페이지는 ?p= 로 주소에 남긴다.
+PAGER_SCRIPT = r"""<script>
+(function(){
+  var list = document.querySelector('.pe-art-list');
+  var nav = document.getElementById('pe-pager');
+  if (!list || !nav) return;
+  var cards = [].slice.call(list.querySelectorAll('.pe-art'));
+  var per = parseInt(list.getAttribute('data-per-page'), 10) || 6;
+  var pages = Math.ceil(cards.length / per);
+  if (pages < 2) return;
+  var cur = 1;
+  var m = /[?&]p=(\d+)/.exec(location.search);
+  if (m) cur = Math.min(Math.max(parseInt(m[1], 10) || 1, 1), pages);
+
+  function btn(label, page, extra, aria) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'pe-pg' + (extra ? ' ' + extra : '');
+    b.textContent = label;
+    if (aria) b.setAttribute('aria-label', aria);
+    if (page) b.addEventListener('click', function(){ go(page, true); });
+    else b.disabled = true;
+    return b;
+  }
+  function render() {
+    cards.forEach(function(c, i){ c.hidden = Math.floor(i / per) + 1 !== cur; });
+    nav.textContent = '';
+    nav.appendChild(btn('‹ 이전', cur > 1 ? cur - 1 : 0, 'pe-pg-side', '이전 페이지'));
+    for (var p = 1; p <= pages; p++) {
+      var b = btn(String(p), p === cur ? 0 : p, p === cur ? 'on' : '', p + '페이지');
+      if (p === cur) { b.disabled = false; b.setAttribute('aria-current', 'page'); }
+      nav.appendChild(b);
+    }
+    nav.appendChild(btn('다음 ›', cur < pages ? cur + 1 : 0, 'pe-pg-side', '다음 페이지'));
+  }
+  function go(p, scroll) {
+    cur = p;
+    render();
+    var url = location.pathname + (p > 1 ? '?p=' + p : '') + location.hash;
+    history.replaceState(null, '', url);
+    if (scroll) {
+      var top = document.getElementById('articles');
+      if (top) top.scrollIntoView({behavior: 'smooth', block: 'start'});
+    }
+  }
+  render();
+})();
+</script>"""
+
+
 def articles_section(items: Sequence[Mapping]) -> str:
-    """교육정보 페이지 아래에 붙는 '교육정보 글' 목록 구역. 글이 없으면 빈 문자열."""
+    """교육정보 페이지의 '교육정보 글' 목록 구역(글이 많아지면 페이지로 나눠 보여준다). 글이 없으면 빈 문자열."""
     if not items:
         return ""
     cards = []
     for it in items:
         cards.append(
             '        <a class="pe-art" href="%s%s/">\n'
-            '          <span class="pe-art-cat">%s</span>\n'
+            '          <span class="pe-art-top"><span class="pe-art-ic" aria-hidden="true">%s</span>'
+            '<span class="pe-art-cat">%s</span></span>\n'
             '          <span class="pe-art-t">%s</span>\n'
             '          <span class="pe-art-d">%s</span>\n'
-            '          <span class="pe-art-m">%s</span>\n'
-            '        </a>' % (BASE, esc(it["slug"]), esc(GOAL_LABELS[it["category"]]), esc(it["title"]),
-                              esc(it["description"]), esc(_dots(it.get("updated") or it["date"]))))
+            '          <span class="pe-art-m"><span>%s</span><span class="pe-art-go">글 읽기 →</span></span>\n'
+            '        </a>' % (BASE, esc(it["slug"]), CATEGORY_ICONS[it["category"]], esc(GOAL_LABELS[it["category"]]),
+                              esc(it["title"]), esc(it["description"]), esc(_dots(it.get("updated") or it["date"]))))
     return ('\n  <div class="pe-sec pe-articles" id="articles">\n    <div class="pe-in">\n'
             '      <h2 class="pe-h2">교육정보 글</h2>\n'
-            '      <p class="pe-lead">자주 묻는 학점은행제 규정과 일정을 글로 정리했어요.</p>\n'
-            '      <div class="pe-art-list">\n' + "\n".join(cards) + '\n      </div>\n    </div>\n  </div>\n')
+            '      <p class="pe-lead">자주 묻는 학점은행제 규정과 일정을 글로 정리했어요. 카드를 눌러 전체 내용을 읽어 보세요.</p>\n'
+            '      <div class="pe-art-list" data-per-page="%d">\n' % PER_PAGE + "\n".join(cards) + '\n      </div>\n'
+            '      <nav class="pe-pager" id="pe-pager" aria-label="교육정보 글 페이지"></nav>\n'
+            '    </div>\n  </div>\n' + PAGER_SCRIPT + '\n')
 
 
 ARTICLE_CSS = """<style>

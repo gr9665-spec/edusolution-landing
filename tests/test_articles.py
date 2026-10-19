@@ -1,4 +1,5 @@
 import json
+import re
 from pathlib import Path
 
 import pytest
@@ -87,6 +88,31 @@ def test_section_lists_cards_with_links_labels_and_escaping():
     assert "학위 학점 &lt;총정리&gt;" in html and "학위 취득" in html and "2026.10.14" in html
     assert "전문학사 80학점" in html
     assert articles_section([]) == ""
+
+
+def test_cards_show_a_category_icon_and_a_read_cue_so_they_look_clickable():
+    html = articles_section([art(), art(id="a2", slug="lic", category="license"), art(id="a3", slug="tr", category="transfer"),
+                             art(id="a4", slug="gr", category="grad")])
+    assert html.count("글 읽기") == 4
+    for icon in ("🎓", "📜", "🏫", "📚"):
+        assert '<span class="pe-art-ic" aria-hidden="true">%s</span>' % icon in html
+
+
+def test_list_is_paged_in_the_browser_but_every_card_stays_in_the_html_for_search_engines():
+    items = [art(id="a%d" % n, slug="s%d" % n) for n in range(1, 9)]
+    html = articles_section(items)
+    assert html.count('class="pe-art"') == 8                       # 자바스크립트가 없어도 모든 글 링크가 있다
+    assert 'data-per-page="6"' in html and 'id="pe-pager"' in html
+    assert "history.replaceState" in html and "?p=" in html           # 새로고침·뒤로가기에도 보던 페이지 유지
+
+
+def test_education_info_page_shows_articles_before_the_goal_guides_and_keeps_them_all_closed(tmp_path):
+    tokens, extra = load_site(ROOT)
+    build_all(ROOT, tmp_path, tokens, extra)
+    page = (tmp_path / "pages/education-info/index.html").read_text(encoding="utf-8")
+    assert page.index('id="articles"') < page.index("목표별 상세 안내")
+    assert page.count("<details") == 6 and not re.search(r"<details[^>]*\sopen", page)
+    assert page.count('class="pe-item-c"') == 6                       # 접힌 항목마다 눌러서 여는 버튼 표시
 
 
 # ---- 상세 페이지

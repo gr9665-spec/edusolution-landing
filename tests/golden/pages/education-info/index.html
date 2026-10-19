@@ -125,14 +125,16 @@ gtag('config', 'AW-16886735349');
 /* 목표 목록 */
 .pe-list{margin-top:44px;border-bottom:1px solid #d6e3ee;}
 .pe-item{border-top:1px solid #d6e3ee;}
-.pe-item summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:1fr auto 24px;gap:20px;align-items:center;padding:28px 8px;transition:background .2s;}
+.pe-item summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:52px 1fr auto 40px;gap:18px;align-items:center;padding:24px 8px;transition:background .2s;}
 .pe-item summary::-webkit-details-marker{display:none;}
 .pe-item summary:hover{background:#f7f9fb;}
 .pe-item-t{font-size:22px;font-weight:800;color:#1a2d4a;line-height:1.4;}
 .pe-item-t small{display:block;font-size:15px;font-weight:500;color:#6b7f93;margin-top:4px;}
 .pe-item-k{font-size:16px;font-weight:700;color:#2f6b97;text-align:right;line-height:1.6;}
-.pe-item summary::after{content:'';width:10px;height:10px;border-right:2.5px solid #4a7fa5;border-bottom:2.5px solid #4a7fa5;transform:rotate(45deg);margin:-4px 4px 0 auto;transition:transform .25s;}
-.pe-item[open] summary::after{transform:rotate(-135deg);margin-top:4px;}
+.pe-item-i{width:52px;height:52px;border-radius:14px;background:#e4eef7;display:flex;align-items:center;justify-content:center;font-size:26px;line-height:1;}
+.pe-item-c{width:38px;height:38px;border-radius:50%;border:1.5px solid #bcd3e4;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232f6b97' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") center/18px no-repeat;transition:transform .25s,border-color .2s,background-color .2s;}
+.pe-item summary:hover .pe-item-c{border-color:#4a7fa5;background-color:#e4eef7;}
+.pe-item[open] .pe-item-c{transform:rotate(180deg);background-color:#e4eef7;border-color:#4a7fa5;}
 .pe-item[open] summary{background:#f7f9fb;}
 .pe-body{padding:8px 8px 40px;}
 .pe-intro{font-size:17px;line-height:1.85;color:#4a5a6a;margin-bottom:22px;}
@@ -168,13 +170,28 @@ gtag('config', 'AW-16886735349');
 /* 교육정보 글 목록 */
 .pe-articles{background:#f7f9fb;}
 .pe-art-list{display:grid;grid-template-columns:repeat(2,1fr);gap:1.25rem;margin-top:40px;}
-.pe-art{display:flex;flex-direction:column;gap:6px;background:#fff;border:1px solid #d6e3ee;border-radius:16px;padding:24px 26px;text-decoration:none;color:inherit;transition:border-color .25s,transform .25s,box-shadow .25s;}
+.pe-art{display:flex;flex-direction:column;gap:8px;background:#fff;border:1px solid #d6e3ee;border-radius:16px;padding:24px 26px;text-decoration:none;color:inherit;cursor:pointer;box-shadow:0 2px 8px rgba(26,45,74,.05);transition:border-color .25s,transform .25s,box-shadow .25s;}
+.pe-art[hidden]{display:none;}
 .pe-art:hover{border-color:#4a7fa5;transform:translateY(-4px);box-shadow:0 16px 40px rgba(74,127,165,.12);}
+.pe-art-top{display:flex;align-items:center;gap:10px;}
+.pe-art-ic{width:38px;height:38px;border-radius:11px;background:#e4eef7;display:flex;align-items:center;justify-content:center;font-size:19px;line-height:1;}
 .pe-art-cat{font-size:13px;font-weight:800;color:#4a7fa5;}
-.pe-art-t{font-size:19px;font-weight:800;color:#1a2d4a;line-height:1.5;letter-spacing:-.01em;}
+.pe-art-t{font-size:19px;font-weight:800;color:#1a2d4a;line-height:1.5;letter-spacing:-.01em;transition:color .2s;}
+.pe-art:hover .pe-art-t{color:#2f6b97;}
 .pe-art-d{font-size:15px;color:#4a5a6a;line-height:1.75;}
-.pe-art-m{font-size:13px;color:#8a9ab0;margin-top:4px;}
+.pe-art-m{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:#8a9ab0;margin-top:6px;}
+.pe-art-go{font-size:14px;font-weight:800;color:#2f6b97;transition:transform .2s;}
+.pe-art:hover .pe-art-go{transform:translateX(4px);}
 @media(max-width:760px){.pe-art-list{grid-template-columns:1fr;}}
+
+/* 글 목록 페이지 넘김 */
+.pe-pager{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:8px;margin-top:36px;}
+.pe-pager:empty{display:none;}
+.pe-pg{min-width:44px;height:44px;padding:0 14px;border:1px solid #d6e3ee;background:#fff;border-radius:12px;font-family:'Noto Sans KR',sans-serif;font-size:16px;font-weight:700;color:#1a2d4a;cursor:pointer;transition:border-color .2s,color .2s,background .2s;}
+.pe-pg:hover:not(:disabled):not(.on){border-color:#4a7fa5;color:#2f6b97;}
+.pe-pg.on{background:#1a2d4a;border-color:#1a2d4a;color:#fff;cursor:default;}
+.pe-pg:disabled{opacity:.4;cursor:default;}
+.pe-pg-side{padding:0 18px;}
 
 /* CTA */
 .pe-cta{background:#1a2d4a;padding:88px 6%;text-align:center;}
@@ -184,10 +201,11 @@ gtag('config', 'AW-16886735349');
 .pe-cta-btn:hover{background:#6b9dbd;transform:translateY(-2px);}
 
 @media(max-width:760px){
-  .pe-item summary{grid-template-columns:1fr 24px;gap:6px 12px;padding:22px 4px;}
-  .pe-item-k{grid-column:1;grid-row:2;text-align:left;font-size:15px;}
-  .pe-item summary::after{grid-column:2;grid-row:1 / span 2;}
-  .pe-item-t{font-size:20px;}
+  .pe-item summary{grid-template-columns:44px 1fr 36px;gap:4px 12px;padding:20px 4px;}
+  .pe-item-i{grid-column:1;grid-row:1 / span 2;width:44px;height:44px;font-size:22px;border-radius:12px;}
+  .pe-item-t{grid-column:2;grid-row:1;font-size:19px;}
+  .pe-item-k{grid-column:2;grid-row:2;text-align:left;font-size:15px;}
+  .pe-item-c{grid-column:3;grid-row:1 / span 2;width:34px;height:34px;}
   .pe-body{padding:6px 4px 34px;}
   .pe-table th,.pe-table td{padding:11px 10px;font-size:14px;}
 }
@@ -205,17 +223,82 @@ gtag('config', 'AW-16886735349');
     <p class="pe-hero-sub">학위 취득부터 자격증, 편입, 대학원까지.<br>목표마다 필요한 조건과 과정을 한눈에 정리했어요.</p>
   </div>
 
+
+  <div class="pe-sec pe-articles" id="articles">
+    <div class="pe-in">
+      <h2 class="pe-h2">교육정보 글</h2>
+      <p class="pe-lead">자주 묻는 학점은행제 규정과 일정을 글로 정리했어요. 카드를 눌러 전체 내용을 읽어 보세요.</p>
+      <div class="pe-art-list" data-per-page="6">
+        <a class="pe-art" href="/pages/education-info/sample-article/">
+          <span class="pe-art-top"><span class="pe-art-ic" aria-hidden="true">🎓</span><span class="pe-art-cat">학위 취득</span></span>
+          <span class="pe-art-t">기준본 테스트용 글</span>
+          <span class="pe-art-d">기준본 테스트용 설명 문장입니다.</span>
+          <span class="pe-art-m"><span>2026.10.14</span><span class="pe-art-go">글 읽기 →</span></span>
+        </a>
+      </div>
+      <nav class="pe-pager" id="pe-pager" aria-label="교육정보 글 페이지"></nav>
+    </div>
+  </div>
+<script>
+(function(){
+  var list = document.querySelector('.pe-art-list');
+  var nav = document.getElementById('pe-pager');
+  if (!list || !nav) return;
+  var cards = [].slice.call(list.querySelectorAll('.pe-art'));
+  var per = parseInt(list.getAttribute('data-per-page'), 10) || 6;
+  var pages = Math.ceil(cards.length / per);
+  if (pages < 2) return;
+  var cur = 1;
+  var m = /[?&]p=(\d+)/.exec(location.search);
+  if (m) cur = Math.min(Math.max(parseInt(m[1], 10) || 1, 1), pages);
+
+  function btn(label, page, extra, aria) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'pe-pg' + (extra ? ' ' + extra : '');
+    b.textContent = label;
+    if (aria) b.setAttribute('aria-label', aria);
+    if (page) b.addEventListener('click', function(){ go(page, true); });
+    else b.disabled = true;
+    return b;
+  }
+  function render() {
+    cards.forEach(function(c, i){ c.hidden = Math.floor(i / per) + 1 !== cur; });
+    nav.textContent = '';
+    nav.appendChild(btn('‹ 이전', cur > 1 ? cur - 1 : 0, 'pe-pg-side', '이전 페이지'));
+    for (var p = 1; p <= pages; p++) {
+      var b = btn(String(p), p === cur ? 0 : p, p === cur ? 'on' : '', p + '페이지');
+      if (p === cur) { b.disabled = false; b.setAttribute('aria-current', 'page'); }
+      nav.appendChild(b);
+    }
+    nav.appendChild(btn('다음 ›', cur < pages ? cur + 1 : 0, 'pe-pg-side', '다음 페이지'));
+  }
+  function go(p, scroll) {
+    cur = p;
+    render();
+    var url = location.pathname + (p > 1 ? '?p=' + p : '') + location.hash;
+    history.replaceState(null, '', url);
+    if (scroll) {
+      var top = document.getElementById('articles');
+      if (top) top.scrollIntoView({behavior: 'smooth', block: 'start'});
+    }
+  }
+  render();
+})();
+</script>
+
+
   <!-- 목표별 안내 -->
   <div class="pe-sec">
     <div class="pe-in">
       <h2 class="pe-h2">목표별 상세 안내</h2>
-      <p class="pe-lead">궁금한 목표를 눌러 자세한 내용을 확인하세요. 내 상황에 맞는 플랜은 전담 담당자가 설계해 드립니다.</p>
+      <p class="pe-lead">궁금한 목표를 눌러 자세한 내용을 펼쳐 보세요. 내 상황에 맞는 플랜은 전담 담당자가 설계해 드립니다.</p>
 
       <div class="pe-list">
 
         <!-- 학위 -->
-        <details class="pe-item" id="degree" open>
-          <summary><span class="pe-item-t">학위 취득<small>전문학사 · 학사 · 타전공</small></span><span class="pe-item-k">전문학사 80학점 · 학사 140학점</span></summary>
+        <details class="pe-item" id="degree">
+          <summary><span class="pe-item-i" aria-hidden="true">🎓</span><span class="pe-item-t">학위 취득<small>전문학사 · 학사 · 타전공</small></span><span class="pe-item-k">전문학사 80학점 · 학사 140학점</span><span class="pe-item-c" aria-hidden="true"></span></summary>
           <div class="pe-body">
             <p class="pe-intro">교육부 장관 명의의 정식 학위예요. 일반 대학과 동등하게 인정됩니다.</p>
             <dl class="pe-facts">
@@ -236,7 +319,7 @@ gtag('config', 'AW-16886735349');
 
         <!-- 사회복지사 -->
         <details class="pe-item" id="social-worker">
-          <summary><span class="pe-item-t">사회복지사 2급<small>국가자격증 · 복지관·요양원·상담소 취업 필수 자격</small></span><span class="pe-item-k">신법 17과목 · 구법 14과목 + 실습 160시간</span></summary>
+          <summary><span class="pe-item-i" aria-hidden="true">🤝</span><span class="pe-item-t">사회복지사 2급<small>국가자격증 · 복지관·요양원·상담소 취업 필수 자격</small></span><span class="pe-item-k">신법 17과목 · 구법 14과목 + 실습 160시간</span><span class="pe-item-c" aria-hidden="true"></span></summary>
           <div class="pe-body">
             <dl class="pe-facts">
               <div class="pe-fact"><dt>이수 과목</dt><dd><b>신법 17과목 · 구법 14과목</b>사회복지학 전공 교과목</dd></div>
@@ -257,7 +340,7 @@ gtag('config', 'AW-16886735349');
 
         <!-- 보육교사 -->
         <details class="pe-item" id="childcare">
-          <summary><span class="pe-item-t">보육교사 2급<small>국가자격증 · 어린이집 취업 필수 자격</small></span><span class="pe-item-k">17과목 + 보육실습 240시간</span></summary>
+          <summary><span class="pe-item-i" aria-hidden="true">🧸</span><span class="pe-item-t">보육교사 2급<small>국가자격증 · 어린이집 취업 필수 자격</small></span><span class="pe-item-k">17과목 + 보육실습 240시간</span><span class="pe-item-c" aria-hidden="true"></span></summary>
           <div class="pe-body">
             <dl class="pe-facts">
               <div class="pe-fact"><dt>이수 과목</dt><dd><b>17과목</b>이론 8과목 + 대면 8과목 + 실습 1과목</dd></div>
@@ -275,7 +358,7 @@ gtag('config', 'AW-16886735349');
 
         <!-- 기사·산업기사 -->
         <details class="pe-item" id="engineer">
-          <summary><span class="pe-item-t">기사 · 산업기사<small>전공 학점으로 시험 응시자격 확보 · 큐넷 접수 가능</small></span><span class="pe-item-k">기사 106학점 · 산업기사 41학점</span></summary>
+          <summary><span class="pe-item-i" aria-hidden="true">⚙️</span><span class="pe-item-t">기사 · 산업기사<small>전공 학점으로 시험 응시자격 확보 · 큐넷 접수 가능</small></span><span class="pe-item-k">기사 106학점 · 산업기사 41학점</span><span class="pe-item-c" aria-hidden="true"></span></summary>
           <div class="pe-body">
             <dl class="pe-facts">
               <div class="pe-fact"><dt>기사 응시자격</dt><dd><b>106학점 이수</b>4년제 학사 또는 전공 학점 취득</dd></div>
@@ -296,7 +379,7 @@ gtag('config', 'AW-16886735349');
 
         <!-- 편입 -->
         <details class="pe-item" id="transfer">
-          <summary><span class="pe-item-t">편입 지원자격<small>학점은행제 학점으로 대학 편입 지원 가능</small></span><span class="pe-item-k">일반편입 70학점 이상 · 학사편입 학사 학위</span></summary>
+          <summary><span class="pe-item-i" aria-hidden="true">🏫</span><span class="pe-item-t">편입 지원자격<small>학점은행제 학점으로 대학 편입 지원 가능</small></span><span class="pe-item-k">일반편입 70학점 이상 · 학사편입 학사 학위</span><span class="pe-item-c" aria-hidden="true"></span></summary>
           <div class="pe-body">
             <dl class="pe-facts">
               <div class="pe-fact"><dt>일반편입 조건</dt><dd><b>2년제 수료 또는 70학점 이상</b>대학마다 다르니 꼭 확인하세요</dd></div>
@@ -315,7 +398,7 @@ gtag('config', 'AW-16886735349');
 
         <!-- 대학원 -->
         <details class="pe-item" id="grad">
-          <summary><span class="pe-item-t">대학원 지원자격<small>학점은행제 학사 학위로 대학원 지원 가능</small></span><span class="pe-item-k">학사 학위 소지</span></summary>
+          <summary><span class="pe-item-i" aria-hidden="true">📚</span><span class="pe-item-t">대학원 지원자격<small>학점은행제 학사 학위로 대학원 지원 가능</small></span><span class="pe-item-k">학사 학위 소지</span><span class="pe-item-c" aria-hidden="true"></span></summary>
           <div class="pe-body">
             <dl class="pe-facts">
               <div class="pe-fact"><dt>기본 조건</dt><dd><b>학사 학위 소지</b>학점은행제 학위도 동일하게 인정</dd></div>
@@ -341,22 +424,6 @@ gtag('config', 'AW-16886735349');
     </div>
   </div>
 
-
-  <div class="pe-sec pe-articles" id="articles">
-    <div class="pe-in">
-      <h2 class="pe-h2">교육정보 글</h2>
-      <p class="pe-lead">자주 묻는 학점은행제 규정과 일정을 글로 정리했어요.</p>
-      <div class="pe-art-list">
-        <a class="pe-art" href="/pages/education-info/sample-article/">
-          <span class="pe-art-cat">학위 취득</span>
-          <span class="pe-art-t">기준본 테스트용 글</span>
-          <span class="pe-art-d">기준본 테스트용 설명 문장입니다.</span>
-          <span class="pe-art-m">2026.10.14</span>
-        </a>
-      </div>
-    </div>
-  </div>
-
   <!-- CTA -->
   <div class="pe-cta">
     <h2>내 목표에 맞는 플랜,<br>지금 바로 확인하세요</h2>
@@ -365,6 +432,22 @@ gtag('config', 'AW-16886735349');
   </div>
 
 </div>
+
+<script>
+/* #social-worker 같은 주소로 들어오면 해당 항목을 자동으로 펼친다(항목이 모두 접힌 채 시작하므로) */
+(function(){
+  function openFromHash(scroll) {
+    var id = decodeURIComponent(location.hash.slice(1));
+    var el = id ? document.getElementById(id) : null;
+    if (el && el.tagName === 'DETAILS') {
+      el.open = true;
+      if (scroll) el.scrollIntoView({block: 'start'});
+    }
+  }
+  openFromHash(true);
+  window.addEventListener('hashchange', function(){ openFromHash(true); });
+})();
+</script>
 
 
 <style>
