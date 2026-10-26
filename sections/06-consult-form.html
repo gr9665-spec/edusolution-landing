@@ -120,6 +120,19 @@
 </div>
 
 <script>
+// 연속 제출 제한 — 같은 브라우저에서 24시간에 3번까지 (저장소가 막혀 있으면 이 페이지 안에서만 센다)
+var ES6_LIMIT = 3, ES6_WINDOW = 24 * 3600e3, ES6_KEY = 'es_consult_sends', es6Memory = [];
+function es6RecentSends() {
+  var h = es6Memory;
+  try { h = JSON.parse(localStorage.getItem(ES6_KEY)) || es6Memory; } catch (e) {}
+  var now = Date.now();
+  return (Array.isArray(h) ? h : []).filter(function(t){ return typeof t === 'number' && now - t < ES6_WINDOW; });
+}
+function es6RecordSend() {
+  es6Memory = es6RecentSends().concat(Date.now());
+  try { localStorage.setItem(ES6_KEY, JSON.stringify(es6Memory)); } catch (e) {}
+}
+
 function es6Submit() {
   var name  = document.getElementById('es6-name').value.trim();
   var phone = document.getElementById('es6-phone').value.trim();
@@ -139,6 +152,11 @@ function es6Submit() {
   if (!agree) { document.getElementById('err-agree').classList.add('show'); ok = false; }
   if (!ok) return;
 
+  if (es6RecentSends().length >= ES6_LIMIT) {
+    alert('오늘은 이미 여러 번 신청하셨어요. 추가 문의는 카카오톡으로 부탁드려요.');
+    return;
+  }
+
   var btn = document.getElementById('es6-submit-btn');
   btn.textContent = '전송 중...';
   btn.disabled = true;
@@ -151,6 +169,7 @@ function es6Submit() {
     user_method: method,
     user_message: message || '(작성 안 함)'
   }).then(function() {
+    es6RecordSend();
     document.getElementById('es6-form-body').style.display = 'none';
     document.getElementById('es6-success').classList.add('show');
 
