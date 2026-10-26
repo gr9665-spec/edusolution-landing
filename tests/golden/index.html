@@ -520,7 +520,20 @@ gtag('config', 'AW-16886735349');
 ================================================ -->
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-<script>emailjs.init('k9jqBez4YeBqYDgzf');</script>
+<script>
+/* 자동화 브라우저 차단, 같은 브라우저 10초에 1번.
+   init이 기본 저장소를 지워 limitRate가 꺼지는 SDK 동작 때문에 storageProvider를 직접 지정한다 */
+emailjs.init({
+  publicKey: 'k9jqBez4YeBqYDgzf',
+  blockHeadless: true,
+  limitRate: { id: 'es-consult', throttle: 10000 },
+  storageProvider: {
+    get: function(k){ return Promise.resolve(localStorage.getItem(k)); },
+    set: function(k, v){ return Promise.resolve(localStorage.setItem(k, v)); },
+    remove: function(k){ return Promise.resolve(localStorage.removeItem(k)); }
+  }
+});
+</script>
 
 <style>
 .es6{width:100%;background:#1a2d4a;padding:100px 6%;box-sizing:border-box;font-family:'Noto Sans KR',sans-serif;position:relative;overflow:hidden;}
