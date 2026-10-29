@@ -25,6 +25,7 @@ HEAD = Template("""<!doctype html>
 <link rel="icon" type="image/png" sizes="96x96" href="/assets/icon-96.png">
 <link rel="icon" type="image/png" sizes="192x192" href="/assets/icon-192.png">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="alternate" type="text/plain" href="/llms.txt" title="llms.txt">
 <meta name="theme-color" content="#1a2d4a">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="에듀솔루션">
@@ -243,6 +244,25 @@ def sitemap_entries(extra_pages: Sequence[ExtraPage]) -> list:
     return [(path, index_mod.get(path, "")) for path in SITEMAP_PATHS] + [(p.url_path, p.lastmod) for p in extra_pages]
 
 
+def llms_txt(extra_pages: Sequence[ExtraPage]) -> str:
+    """AI 에이전트용 사이트 안내(llms.txt). 페이지 목록은 빌드 데이터에서 만들어 글을 더해도 어긋나지 않는다."""
+    def clean(title: str) -> str:
+        return title.replace(" | 에듀솔루션", "").strip()
+
+    lines = ["# 에듀솔루션", "",
+             "> 학점은행제 전문 플래너 팀 에듀솔루션의 공식 사이트입니다. 학위 취득, 자격증, 편입, 대학원 진학 목표에 맞는 수강 플랜을 1:1로 설계해 드리고, 상담은 무료입니다.", "",
+             "## 주요 페이지", "",
+             "- [%s](%s/): %s" % (clean(MAIN_TITLE), SITE, MAIN_DESC)]
+    lines += ["- [%s](%s/pages/%s/): %s" % (clean(title), SITE, folder, desc) for folder, title, desc in SUBPAGES]
+    articles = [p for p in extra_pages if p.url_path.startswith("/pages/education-info/")]
+    if articles:
+        lines += ["", "## 교육정보 글", ""]
+        lines += ["- [%s](%s%s): %s" % (clean(p.title), SITE, p.url_path, p.desc) for p in articles]
+    lines += ["", "## 기타", "", "- [사이트맵](%s/sitemap.xml)" % SITE, "",
+              "## 이용 조건", "", "상업적 이용과 연구 목적 이용을 허용합니다. 학점은행제 규정·일정은 개정될 수 있으니 각 글의 출처와 기준 시점을 함께 확인해 주세요.", ""]
+    return "\n".join(lines)
+
+
 def build_all(root: Path, out: Path, tokens: Mapping[str, str] | None = None,
               extra_pages: Sequence[ExtraPage] = ()) -> None:
     tokens = tokens or {}
@@ -274,4 +294,5 @@ def build_all(root: Path, out: Path, tokens: Mapping[str, str] | None = None,
     sitemap.append("</urlset>")
     write_text(out / "sitemap.xml", "\n".join(sitemap) + "\n")
 
+    write_text(out / "llms.txt", llms_txt(extra_pages))
     write_text(out / "robots.txt", "User-agent: *\nAllow: /\n\nSitemap: %s/sitemap.xml\n" % SITE)
