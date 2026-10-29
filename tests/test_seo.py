@@ -56,8 +56,10 @@ def test_head_extra_receives_analytics_when_configured(tmp_path):
 def test_organization_jsonld_uses_business_and_channel_data_without_phone_numbers():
     html = render.org_jsonld({"company": "에듀 <솔루션>", "regno": "000-00-00000", "address": "서울시 성북구 종암로"},
                              {"name": "팀 채널", "url": "https://www.youtube.com/@EDUSOLUTIONN"})
-    start = html.index(">") + 1
-    doc = json.loads(html[start:html.rindex("</script>")].replace("<\\/", "</"))
+    blocks = [json.loads(b.replace("<\\/", "</")) for b in re.findall(r'<script type="application/ld\+json">(.*?)</script>', html, re.S)]
+    doc = next(b for b in blocks if b["@type"] == "EducationalOrganization")
+    site = next(b for b in blocks if b["@type"] == "WebSite")
+    assert site["name"] == "에듀 <솔루션>" and site["url"] == SITE + "/" and site["inLanguage"] == "ko-KR"
     assert doc["@type"] == "EducationalOrganization" and doc["name"] == "에듀 <솔루션>" and doc["url"] == SITE + "/"
     assert doc["logo"] == SITE + "/assets/logo.png" and doc["sameAs"] == ["https://www.youtube.com/@EDUSOLUTIONN"]
     assert doc["address"]["streetAddress"] == "서울시 성북구 종암로"
@@ -123,3 +125,13 @@ def test_every_consult_form_control_has_a_label(tmp_path):
     assert len(form) >= 5
     for tag, attrs, wrapped in form:
         assert wrapped or attrs.get("aria-label") or attrs.get("id") in p.labels_for, "라벨이 연결되지 않은 입력: %s" % attrs
+
+
+def test_llms_txt_is_markdown_with_real_page_links(tmp_path):
+    tokens, _ = load_site(ROOT, data_root=tmp_path / "no-data")
+    build_all(ROOT, tmp_path, tokens, [page("/pages/education-info/a/", "2026-10-14")])
+    text = (tmp_path / "llms.txt").read_text(encoding="utf-8")
+    assert text.startswith("# 에듀솔루션\n")
+    assert "](%s/pages/credit-bank/)" % SITE in text and "](%s/pages/education-info/a/)" % SITE in text
+    assert "](%s/sitemap.xml)" % SITE in text
+    assert 'rel="alternate" type="text/plain" href="/llms.txt"' in (tmp_path / "index.html").read_text(encoding="utf-8")

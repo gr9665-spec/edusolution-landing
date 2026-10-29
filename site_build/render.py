@@ -253,8 +253,10 @@ def org_jsonld(business: Mapping, channel: Mapping) -> str:
            "address": {"@type": "PostalAddress", "addressCountry": "KR", "streetAddress": business["address"]}}
     if channel and channel.get("url"):
         doc["sameAs"] = [channel["url"]]
-    text = json.dumps(doc, ensure_ascii=False).replace("</", "<\\/")
-    return '<script type="application/ld+json">%s</script>' % text
+    site = {"@context": "https://schema.org", "@type": "WebSite", "name": business["company"],
+            "url": SITE_URL + "/", "inLanguage": "ko-KR"}
+    return "\n".join('<script type="application/ld+json">%s</script>' % json.dumps(d, ensure_ascii=False).replace("</", "<\\/")
+                     for d in (doc, site))
 
 
 FOOTER_CSS ="""<style>

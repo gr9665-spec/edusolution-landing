@@ -1,4 +1,42 @@
-User-agent: *
-Allow: /
-Commercial-use: allowed
-Research-use: allowed
+# 에듀솔루션
+
+> 학점은행제 전문 플래너 팀 에듀솔루션의 공식 사이트입니다. 학위 취득, 자격증, 편입, 대학원 진학 목표에 맞는 수강 플랜을 1:1로 설계해 드리고, 상담은 무료입니다.
+
+## 주요 페이지
+
+- [학점은행제 전문 플래너 edusolution](https://edu-solution.co.kr/): 학점은행제 전문 플래너 팀이 학위 취득 목표에 맞는 수강 플랜을 1:1로 설계해 드립니다. 사회복지사, 보육교사, 편입 준비 등 다양한 목적에 맞춰 빠르고 정확하게 안내해 드리니 지금 바로 무료 상담을 신청해보세요!
+- [학점은행제 전문 플래너 팀 소개](https://edu-solution.co.kr/pages/team/): 학점은행제 학위·편입·대학원·자격증을 1:1로 설계하는 에듀솔루션 전문 플래너 팀을 소개합니다. 담당자별 전문 분야와 카카오톡·전화 상담 방법을 확인하세요.
+- [학점은행제란? 제도 개요·목표·진행 절차](https://edu-solution.co.kr/pages/credit-bank/): 학점은행제란 무엇인지 쉽게 설명합니다. 전문학사 80학점·학사 140학점 학위 조건, 진행 절차 4단계, 자주 묻는 질문을 한눈에 정리했습니다.
+- [학점은행제 교육정보 | 학위·자격증·편입·대학원](https://edu-solution.co.kr/pages/education-info/): 학위 취득, 사회복지사 2급, 보육교사 2급, 기사·산업기사 응시자격, 편입, 대학원까지 목표별 조건과 과정, 학위 신청 일정 등 학점은행제 정보 글을 모았습니다.
+- [학점은행제 수강생 후기](https://edu-solution.co.kr/pages/reviews/): 학위 취득, 자격증, 편입 등 목표별로 학점은행제 에듀솔루션 수강생의 실제 후기를 모았습니다. 과정과 담당자 관리 경험을 확인해 보세요.
+
+## 교육정보 글
+
+- [2027학년도 수의대 편입 변경사항: 1+5 학제 개편으로 달라진 편입 학년과 일정](https://edu-solution.co.kr/pages/education-info/vet-school-transfer-2027-changes/): 수의학과 학제가 예과 1년·본과 5년으로 개편되면서 편입 학년이 학교마다 달라졌어요. 충북대·전북대 등 2027학년도 기본계획 변경점과 일정, 지금 시작할 때의 현실적인 목표 시기를 정리했어요.
+- [수의대 편입 총정리: 학점은행제 지원자격·전형·영어 기준 (2027학년도 대비)](https://edu-solution.co.kr/pages/education-info/vet-school-transfer-guide/): 수의대 편입은 전국에서 해마다 100명 안팎만 뽑아요. 10개 대학의 모집인원, 학점은행제 지원자격, 전형 배점, 영어 기준, 합격 후 유의점을 원문 기준으로 정리했어요.
+- [약대 편입 선수과목: 학점은행제로 이수하는 방법과 학교별 인정 기준](https://edu-solution.co.kr/pages/education-info/pharmacy-transfer-prerequisite-courses/): 약대 편입은 학교마다 선수과목이 다르고 서류 마감까지 성적증명서가 필요한 곳도 있어요. 연세·전남·제주·전북·한양·강원 등 학교별 과목, 학점은행제 이수 순서와 시기를 정리했어요.
+- [약대 편입 총정리: 학점은행제 지원자격·선수과목·전형 비교 (2027학년도 대비)](https://edu-solution.co.kr/pages/education-info/pharmacy-school-transfer-guide/): 약대 편입은 학교마다 경쟁률이 8대 1에서 100대 1 이상까지 갈려요. 14개 대학의 모집인원, 학점은행제 지원 경로, 선수과목, 전형 배점과 2027학년도 변경점을 원문 기준으로 정리했어요.
+- [사회복지직 공무원 응시요건: 사회복지사 2급이면 되나요? 2026 공고 기준](https://edu-solution.co.kr/pages/education-info/social-welfare-civil-servant-requirements/): 지방직 9급 사회복지직은 사회복지사 3급 이상 자격이 응시요건이고 학력 제한은 없어요. 2026년 서울·인천·대구 공고 기준 자격, 거주지, 시험과목과 학점은행제로 준비하는 순서를 정리했어요.
+- [학점은행제 vs 독학사 vs 방통대: 학위 따는 3가지 길 비교](https://edu-solution.co.kr/pages/education-info/credit-bank-vs-bachelor-exam-vs-knou/): 학점은행제는 학점을 쌓고, 독학사는 4단계 시험에 합격하고, 방통대는 입학해서 졸업요건을 채워요. 학위 요건, 자격, 수여 시기, 비용 구조와 함께 쓰는 방법까지 비교했어요.
+- [학점은행제 기간과 비용: 최단 몇 학기에 끝나고 수수료는 얼마인가요?](https://edu-solution.co.kr/pages/education-info/credit-bank-period-and-cost/): 학점은행제는 학기당 24학점, 연 42학점까지 수강할 수 있고 자격증·독학사 학점은 한도와 별도예요. 목표별 최단 기간, 학위 신청 시기, 학습자등록·학점인정 수수료를 정리했어요.
+- [학점은행제 청소년지도사 2급: 8과목 이수로 필기시험 면제, 3급은 2027년 변경](https://edu-solution.co.kr/pages/education-info/youth-guidance-teacher-credit-bank/): 청소년지도사 2급은 청소년학 전공으로 필요한 8과목을 모두 이수하면 필기시험 없이 면접으로 응시할 수 있어요. 필기 면제 조건과 2027년부터 달라지는 등급 체계를 정리했어요.
+- [학점은행제 한국어교원 2급: 45학점 구성과 학위·타전공 병행 방법](https://edu-solution.co.kr/pages/education-info/korean-language-teacher-2-credit-bank/): 한국어교원 2급은 외국어로서의 한국어학 전공 학사학위를 받으면서 영역별 45학점을 채워야 해요. 학위가 없는 경우와 이미 학사학위가 있는 타전공 경우를 나눠 정리했어요.
+- [경희대 편입 지원자격·전형방법: 학점은행제 전문학사로 지원할 수 있나요?](https://edu-solution.co.kr/pages/education-info/kyunghee-transfer-credit-bank/): 경희대 일반편입은 학점은행제 전문학사 취득(예정)자도 지원할 수 있어요. 2026학년도 모집요강의 지원자격, 필답고사 90%·공인영어 10% 전형, 일정과 2027학년도 변경점을 정리했어요.
+- [독학사 1단계(교양과정 인정시험) 시험정보: 과목·시간·합격기준·응시료 정리](https://edu-solution.co.kr/pages/education-info/bachelor-exam-stage1-info/): 독학학위제 1과정은 고졸 이상이면 응시할 수 있고, 국어·국사·외국어와 선택 2과목 등 5과목에 합격하면 돼요. 시험 시간, 응시료, 학점 인정과 면제 조건까지 정리했어요.
+- [학점은행제 보육교사 2급: 17과목 51학점과 전문학사 학위 조건 정리](https://edu-solution.co.kr/pages/education-info/childcare-teacher-2-credit-bank/): 학점은행제로 보육교사 2급을 받으려면 보육 관련 17과목 51학점 이상을 이수하고 전문학사 이상 학위를 취득해야 해요. 보육실습과 과목 누락 주의점까지 정리했어요.
+- [학점은행제 수강하면 군 입영연기 되나요? 조건·서류·횟수 정리](https://edu-solution.co.kr/pages/education-info/military-postponement-credit-bank/): 학점은행제 교육훈련기관에서 출석수업으로 수강 중이고 학사 미만이면 입영일자 연기를 한 차례 받을 수 있어요. 28세 미만 조건, 신청 시기와 서류까지 병무청 기준으로 정리했어요.
+- [학점은행제 평생교육사 2급: 10과목 30학점, 필수 4과목과 실습 정리](https://edu-solution.co.kr/pages/education-info/lifelong-educator-2-credit-bank/): 평생교육사 2급은 평생교육 관련 10과목 30학점을 이수하면 받을 수 있어요. 필수 4과목, 평생교육실습, 선택 영역 규칙과 평균 80점 조건까지 정리했어요.
+- [방송대 편입, 학점은행제로 지원할 수 있나요? 3학년 63학점·전문학사 조건 정리](https://edu-solution.co.kr/pages/education-info/knou-transfer-with-credit-bank/): 한국방송통신대학교 3학년 편입은 학점은행제 전문학사 또는 63학점 이상이면 전공과 관계없이 지원할 수 있어요. 2026학년도 기준 자격·전형·일정을 정리했어요.
+- [전적대 학점인정: 대학 다니다 그만뒀다면 몇 학점까지 인정될까요?](https://edu-solution.co.kr/pages/education-info/credit-bank-previous-school-credits/): 전문대는 최대 80학점, 4년제는 제적한 학점에 한해 최대 140학점까지 인정돼요. 성적 기준, 휴학 중 인정 여부, 전공에 따라 달라지는 인정 범위를 정리했어요.
+- [학점은행제 사회복지사 2급: 신법 17과목·구법 14과목, 실습 160시간 정리](https://edu-solution.co.kr/pages/education-info/social-worker-2-credit-bank/): 학점은행제로 사회복지사 2급을 받으려면 신법은 17과목, 구법은 14과목을 이수하고 현장실습 160시간을 채워야 해요. 구법·신법 적용 기준과 주의점을 정리했어요.
+- [학점은행제 학위 신청 기간: 2월·8월 학위, 언제까지 해야 하나요?](https://edu-solution.co.kr/pages/education-info/credit-bank-degree-application-schedule/): 학점은행제 학위는 매년 2월과 8월에 수여돼요. 학위 신청 기간, 학습자등록·학점인정 신청 시기, 학위수여예정증명서 발급까지 일정으로 정리했어요.
+- [학점은행제 학위 취득 조건: 전문학사 80학점·학사 140학점 구성 정리](https://edu-solution.co.kr/pages/education-info/credit-bank-degree-requirements/): 학점은행제로 전문학사와 학사를 받으려면 몇 학점이 필요한지, 전공·교양·일반선택 구성과 수강 학점 한도까지 한 번에 정리했어요.
+- [학점은행제로 기사·산업기사 응시자격 만들기: 106학점·41학점 정리](https://edu-solution.co.kr/pages/education-info/credit-bank-engineer-eligibility/): 학점은행제 106학점이면 기사, 41학점이면 산업기사 응시자격이 돼요. 관련 전공 기준과 경력으로 응시하는 방법, 전공이 필요 없는 종목까지 정리했어요.
+
+## 기타
+
+- [사이트맵](https://edu-solution.co.kr/sitemap.xml)
+
+## 이용 조건
+
+상업적 이용과 연구 목적 이용을 허용합니다. 학점은행제 규정·일정은 개정될 수 있으니 각 글의 출처와 기준 시점을 함께 확인해 주세요.
